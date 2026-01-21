@@ -419,24 +419,10 @@ export default {
           "Código",
 
         "content-manager.plugin.name": "Gestor de contenidos",
-        User: "Usuario",
-        "tipo de venta": "Tipo de ventas",
-        service: "Service",
-        remito: "Remitos",
-        producto: "Productos",
-        "PDF Templates": "PDF Templates",
-        local: "Local",
-        gasto: "Gastos",
-        "estado de service": "Estado de service",
-        "gasto diario": "Gastos diarios",
-        venta: "Ventas",
-
         "app.utils.drag": "Drag",
         "productos.productos": "Productos",
         productos: "Productos",
         "gastos.gastos-items": "Gastos items",
-        Gastos: "Gastos",
-        gastos: "Gastos",
         "api::venta.venta": "Venta",
         "plugin::users-permissions.user": "Usuario",
         "api::tipo-de-venta.tipo-de-venta": "Tipo de venta",
@@ -452,9 +438,24 @@ export default {
         "app.utils.toggle": "Toggle",
         "Settings.application.header": "Encabezado",
         "review-workflows.plugin.name": "Nombre",
+        //Menu
+        
+        "PDF Templates": "PDF Templates",
+        User: "Usuario",
         "Tipo de moneda": "Tipo de moneda",
         "Forma de pago": "Forma de pago",
         "Caja Diaria": "Caja Diaria",
+        "estado de service": "Estado de service",
+        "gasto diario": "Gastos diarios",
+        Gastos: "Gastos",
+        gastos: "Gastos",
+        "tipo de venta": "Tipo de ventas",
+        service: "Service",
+        remito: "Remitos",
+        producto: "Productos",
+        local: "Local",
+        gasto: "Gastos",
+        venta: "Ventas",
       },
     },
     theme: {
@@ -476,15 +477,15 @@ export default {
   bootstrap(app: StrapiApp) {
     observarPaginaVentas();
     observarPaginaGastos();
-    bloquearBotones();
+    //bloquearBotones();
     const style = document.createElement("style");
     style.innerHTML = `
-      nav ol li ol li:nth-child(7),
+      /*nav ol li ol li:nth-child(7),
       nav ol li ol li:nth-child(13),
       nav ul li:nth-child(n+3),
       nav:not([aria-label="Pagination"]) ol li span {
           display: none !important;
-      }
+      }*/
       #main-content div:first-child div:first-child img ~ div{
         display: none !important;
       }
