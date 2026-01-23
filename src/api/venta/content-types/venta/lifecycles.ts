@@ -19,7 +19,7 @@ export default {
 
     if (ctxBody.Productos.length == 0) {
       throw new errors.ApplicationError(
-        "Para crear una venta como mínimo debe haber un producto."
+        "Para crear una venta como mínimo debe haber un producto.",
       );
     }
 
@@ -40,7 +40,7 @@ export default {
     event.params.data.tipo_de_venta = {
       connect: [{ id: tipoDeVentaId }],
     };
-    console.log(ctxBody)
+    console.log(ctxBody);
     if (
       !ctxBody.forma_de_pago ||
       ctxBody.forma_de_pago.length === 0 ||
@@ -62,7 +62,7 @@ export default {
 
       if (productoDb.tipo_de_moneda.id !== tipoDeMonedaId) {
         throw new ApplicationError(
-          `La moneda del producto ${productoDb.nombre} no coincide con la moneda seleccionada para la venta.`
+          `La moneda del producto ${productoDb.nombre} no coincide con la moneda seleccionada para la venta.`,
         );
       }
 
@@ -70,7 +70,7 @@ export default {
       const nombreProducto = productoDb.nombre;
       if (cantidad > stock || cantidad == 0) {
         throw new errors.ApplicationError(
-          `La cantidad supera el stock, usted dispone de ${stock} unidades de ${nombreProducto}`
+          `La cantidad supera el stock, usted dispone de ${stock} unidades de ${nombreProducto}`,
         );
       }
     }
@@ -88,7 +88,7 @@ export default {
 
       const productoDb = await strapi.entityService.findOne(
         "api::producto.producto",
-        id
+        id,
       );
 
       if (productoDb) {
@@ -103,8 +103,33 @@ export default {
     }
   },
   beforeUpdate(event) {
-    throw new errors.ApplicationError(
+    const ctx = strapi.requestContext.get();
+    const ctxBody = ctx.request.body;
+    
+    if (
+      ctxBody.tipo_de_moneda.connect.length === 0 &&
+      ctxBody.tipo_de_moneda.disconnect.length > 0
+    ) {
+      throw new errors.ApplicationError(`Debe seleccionar un "Tipo de moneda"`);
+    }
+
+    if (
+      ctxBody.tipo_de_moneda.connect.length > 0 &&
+      ctxBody.tipo_de_moneda.disconnect.length > 0
+    ) {
+      if (
+        ctxBody.tipo_de_moneda.connect[0].id !==
+        ctxBody.tipo_de_moneda.disconnect[0].id
+      ) {
+        throw new errors.ApplicationError(
+          `No puede editar el "Tipo de moneda"`,
+        );
+      }
+    }
+
+    /*throw new errors.ApplicationError(
       `No se puede editar una venta una vez creada.`
-    );
+    );*/
+
   },
 };
