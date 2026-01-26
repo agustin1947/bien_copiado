@@ -40,7 +40,7 @@ export default {
     event.params.data.tipo_de_venta = {
       connect: [{ id: tipoDeVentaId }],
     };
-    console.log(ctxBody);
+
     if (
       !ctxBody.forma_de_pago ||
       ctxBody.forma_de_pago.length === 0 ||
@@ -77,12 +77,22 @@ export default {
     (strapi as any).io.emit("refresh", "actualizado");
   },
   async afterCreate(event) {
-    const ctx = strapi.requestContext.get();
-    const ctxBody = ctx.request.body;
+    //const ctx = strapi.requestContext.get();
+    //const ctxBody = ctx.request.body;
+    const ventaId = event.result.id;
+    //console.log(`ventaId: ${ventaId}`);
+    const ventaOriginal = await strapi.entityService.findOne(
+      "api::venta.venta",
+      ventaId,
+      {
+        populate: "*",
+      },
+    );
+    //console.log(`Venta: `, ventaOriginal);
+    //const productos = ctxBody.Productos;
+    const productosActualizados = [];
 
-    const productos = ctxBody.Productos;
-
-    for (const producto of productos) {
+    for (const producto of ventaOriginal["Productos"]) {
       const cantidad = producto.cantidad;
       const id = parseInt(producto.productoItem);
 
@@ -99,23 +109,54 @@ export default {
             stock: stockNuevo < 0 ? 0 : stockNuevo,
           },
         });
+
+        productosActualizados.push({
+          id: producto.id,
+          __component: "productos.productos",
+          productoItem: id,
+          cantidad: cantidad,
+          cantidadOriginal: cantidad, // 🔥 ACÁ se guarda bien
+          total: producto.total,
+          ganancia_por_item: producto.ganancia_por_item,
+        });
       }
     }
+    console.log("Producto actualizado: ", productosActualizados)
+    await strapi.entityService.update("api::venta.venta", ventaId, {
+      data: {
+        Productos: productosActualizados,
+      },
+    });
+
   },
-  beforeUpdate(event) {
+  async beforeUpdate(event) {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
-    
+    const { params } = event;
+    const ventaId = params.where.id;
+
+    const ventaOriginal = await strapi.entityService.findOne(
+      "api::venta.venta",
+      ventaId,
+      {
+        populate: "*",
+      },
+    );
+    //console.log(ventaOriginal);
+    //console.log("ctxBody", ctxBody);
+    //console.log("TIPO DE MONEDA 1", ctxBody.tipo_de_moneda)
     if (
       ctxBody.tipo_de_moneda.connect.length === 0 &&
       ctxBody.tipo_de_moneda.disconnect.length > 0
     ) {
       throw new errors.ApplicationError(`Debe seleccionar un "Tipo de moneda"`);
     }
-
+    //console.log("TIPO DE MONEDA 2", ctxBody.tipo_de_moneda.connect)
+    //console.log("TIPO DE MONEDA 2", ctxBody.tipo_de_moneda.disconnect)
     if (
       ctxBody.tipo_de_moneda.connect.length > 0 &&
-      ctxBody.tipo_de_moneda.disconnect.length > 0
+      (ctxBody.tipo_de_moneda.disconnect && ctxBody.tipo_de_moneda.disconnect.length > 0)
+      
     ) {
       if (
         ctxBody.tipo_de_moneda.connect[0].id !==
@@ -127,9 +168,12 @@ export default {
       }
     }
 
-    /*throw new errors.ApplicationError(
-      `No se puede editar una venta una vez creada.`
-    );*/
+    for (const producto of ctxBody.Productos) {
+      console.log(producto);
+    }
 
+    /*throw new errors.ApplicationError(
+      `No se puede editar una venta una vez creada.`,
+    );*/
   },
 };
