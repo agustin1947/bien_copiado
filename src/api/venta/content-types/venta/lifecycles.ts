@@ -190,7 +190,14 @@ export default {
       const cantidad = producto.cantidad;
       const id = parseInt(producto.productoItem); //id del producto
       const cantidadOriginal = producto.cantidadOriginal; 
-      
+      const idProductoOriginal = producto.idProductoOriginal;
+
+      if( id !== idProductoOriginal ){
+        throw new errors.ApplicationError(
+          `No puede cambiar de producto.`,
+        );        
+      }
+
       const productoDb = await strapi.entityService.findOne(
         "api::producto.producto",
         id,
