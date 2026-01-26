@@ -77,10 +77,8 @@ export default {
     (strapi as any).io.emit("refresh", "actualizado");
   },
   async afterCreate(event) {
-    //const ctx = strapi.requestContext.get();
-    //const ctxBody = ctx.request.body;
     const ventaId = event.result.id;
-    //console.log(`ventaId: ${ventaId}`);
+
     const ventaOriginal = await strapi.entityService.findOne(
       "api::venta.venta",
       ventaId,
@@ -88,8 +86,7 @@ export default {
         populate: "*",
       },
     );
-    //console.log(`Venta: `, ventaOriginal);
-    //const productos = ctxBody.Productos;
+
     const productosActualizados = [];
 
     for (const producto of ventaOriginal["Productos"]) {
@@ -121,7 +118,7 @@ export default {
         });
       }
     }
-    console.log("Producto actualizado: ", productosActualizados);
+
     await strapi.entityService.update("api::venta.venta", ventaId, {
       data: {
         Productos: productosActualizados,
@@ -200,13 +197,32 @@ export default {
 
       if (productoDb) {
         if(cantidad !== cantidadOriginal){
-          //const stockNuevo = productoDb.stock - cantidad;
+          let diferenciaCantidad = 0;
+          let stockNuevo = 0;
 
-          /*await strapi.entityService.update("api::producto.producto", id, {
+          if(cantidad > cantidadOriginal) {
+            diferenciaCantidad = cantidad - cantidadOriginal;
+            if( productoDb.stock < diferenciaCantidad ){
+              throw new errors.ApplicationError(
+                `La cantidad supera el stock, usted dispone de ${productoDb.stock} unidades de ${productoDb.nombre}`,
+              );
+            }
+            stockNuevo = productoDb.stock - diferenciaCantidad;
+          }else{ 
+            if(cantidad === 0 ){
+              throw new errors.ApplicationError(
+                `La cantidad de ${productoDb.nombre} no puede ser cero`,
+              );
+            }
+            diferenciaCantidad = cantidadOriginal - cantidad;
+            stockNuevo = productoDb.stock + diferenciaCantidad;
+          }
+
+          await strapi.entityService.update("api::producto.producto", id, {
             data: {
-              stock: stockNuevo < 0 ? 0 : stockNuevo,
+              stock: stockNuevo,
             },
-          });*/
+          });
 
           productosActualizados.push({
             id: producto.id,
