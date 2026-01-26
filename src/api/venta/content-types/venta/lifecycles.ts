@@ -121,13 +121,12 @@ export default {
         });
       }
     }
-    console.log("Producto actualizado: ", productosActualizados)
+    console.log("Producto actualizado: ", productosActualizados);
     await strapi.entityService.update("api::venta.venta", ventaId, {
       data: {
         Productos: productosActualizados,
       },
     });
-
   },
   async beforeUpdate(event) {
     const ctx = strapi.requestContext.get();
@@ -155,8 +154,8 @@ export default {
     //console.log("TIPO DE MONEDA 2", ctxBody.tipo_de_moneda.disconnect)
     if (
       ctxBody.tipo_de_moneda.connect.length > 0 &&
-      (ctxBody.tipo_de_moneda.disconnect && ctxBody.tipo_de_moneda.disconnect.length > 0)
-      
+      ctxBody.tipo_de_moneda.disconnect &&
+      ctxBody.tipo_de_moneda.disconnect.length > 0
     ) {
       if (
         ctxBody.tipo_de_moneda.connect[0].id !==
@@ -175,5 +174,59 @@ export default {
     /*throw new errors.ApplicationError(
       `No se puede editar una venta una vez creada.`,
     );*/
+  },
+  async afterUpdate(event) {
+    const ventaId = event.result.id;
+    
+    const ventaOriginal = await strapi.entityService.findOne(
+      "api::venta.venta",
+      ventaId,
+      {
+        populate: "*",
+      },
+    );
+    
+    const productosActualizados = [];
+
+    for (const producto of ventaOriginal["Productos"]) {
+      const cantidad = producto.cantidad;
+      const id = parseInt(producto.productoItem);
+      const cantidadOriginal = producto.cantidadOriginal; 
+      
+      const productoDb = await strapi.entityService.findOne(
+        "api::producto.producto",
+        id,
+      );
+
+      if (productoDb) {
+        if(cantidad !== cantidadOriginal){
+          //const stockNuevo = productoDb.stock - cantidad;
+
+          /*await strapi.entityService.update("api::producto.producto", id, {
+            data: {
+              stock: stockNuevo < 0 ? 0 : stockNuevo,
+            },
+          });*/
+
+          productosActualizados.push({
+            id: producto.id,
+            __component: "productos.productos",
+            productoItem: id,
+            cantidad: cantidad,
+            cantidadOriginal: cantidad, // 🔥 ACÁ se guarda bien
+            total: producto.total,
+            ganancia_por_item: producto.ganancia_por_item,
+          });
+        }
+      }
+    }
+    console.log("Producto actualizado afterUpdate: ", productosActualizados);
+    if(productosActualizados.length > 0){
+      await strapi.entityService.update("api::venta.venta", ventaId, {
+        data: {
+          Productos: productosActualizados,
+        },
+      });
+    }
   },
 };
