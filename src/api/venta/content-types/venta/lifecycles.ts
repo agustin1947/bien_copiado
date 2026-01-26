@@ -115,6 +115,7 @@ export default {
           cantidadOriginal: cantidad, // 🔥 ACÁ se guarda bien
           total: producto.total,
           ganancia_por_item: producto.ganancia_por_item,
+          idProductoOriginal: id
         });
       }
     }
@@ -187,7 +188,7 @@ export default {
 
     for (const producto of ventaOriginal["Productos"]) {
       const cantidad = producto.cantidad;
-      const id = parseInt(producto.productoItem);
+      const id = parseInt(producto.productoItem); //id del producto
       const cantidadOriginal = producto.cantidadOriginal; 
       
       const productoDb = await strapi.entityService.findOne(
@@ -223,7 +224,7 @@ export default {
               stock: stockNuevo,
             },
           });
-
+          //producto.id es el id del componente en el que se grabo el producto.
           productosActualizados.push({
             id: producto.id,
             __component: "productos.productos",
