@@ -134,12 +134,21 @@ export default {
 
     const ventaOriginal = await strapi.entityService.findOne(
       "api::venta.venta",
-      ventaId,
-      {
-        populate: "*",
-      },
+      ventaId
     );
-
+    console.log("VENTA ORIGINAL: ", ventaOriginal)
+    
+    const fechaIngreso = ventaOriginal["fecha_de_ingreso"];
+    console.log("FECHA DE INGRESO: ", fechaIngreso);
+    const hoy = new Date();
+    const hoyStr = hoy.toISOString().split("T")[0];
+    console.log("FECHA DE HOY", hoyStr);
+    
+    if (hoyStr > fechaIngreso) {
+      throw new errors.ApplicationError(
+        "No se puede editar la venta después del día de ingreso.",
+      );
+    }
     if (
       ctxBody.tipo_de_moneda.connect.length === 0 &&
       ctxBody.tipo_de_moneda.disconnect.length > 0
@@ -224,11 +233,6 @@ export default {
       }
 
       // 🟢 3- PRODUCTO EDITADO
-      /*if (
-        cantidad > 0 &&
-        cantidadOriginal > 0 &&
-        cantidad !== cantidadOriginal
-      ) {*/
       let diferenciaCantidad = 0;
       let stockNuevo = 0;
 
@@ -256,7 +260,7 @@ export default {
           stock: stockNuevo,
         },
       });
-      
+
       // ❗❗ producto.id es el id del componente en el que se grabo el producto.
       productosActualizados.push({
         id: producto.id,
@@ -267,7 +271,6 @@ export default {
         total: producto.total,
         ganancia_por_item: producto.ganancia_por_item,
       });
-      //}
     }
     
     await strapi.entityService.update("api::venta.venta", ventaId, {
