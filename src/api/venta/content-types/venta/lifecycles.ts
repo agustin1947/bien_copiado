@@ -115,7 +115,7 @@ export default {
           cantidadOriginal: cantidad, // 🔥 ACÁ se guarda bien
           total: producto.total,
           ganancia_por_item: producto.ganancia_por_item,
-          idProductoOriginal: id
+          idProductoOriginal: id,
         });
       }
     }
@@ -139,17 +139,14 @@ export default {
         populate: "*",
       },
     );
-    //console.log(ventaOriginal);
-    //console.log("ctxBody", ctxBody);
-    //console.log("TIPO DE MONEDA 1", ctxBody.tipo_de_moneda)
+
     if (
       ctxBody.tipo_de_moneda.connect.length === 0 &&
       ctxBody.tipo_de_moneda.disconnect.length > 0
     ) {
       throw new errors.ApplicationError(`Debe seleccionar un "Tipo de moneda"`);
     }
-    //console.log("TIPO DE MONEDA 2", ctxBody.tipo_de_moneda.connect)
-    //console.log("TIPO DE MONEDA 2", ctxBody.tipo_de_moneda.disconnect)
+
     if (
       ctxBody.tipo_de_moneda.connect.length > 0 &&
       ctxBody.tipo_de_moneda.disconnect &&
@@ -164,18 +161,14 @@ export default {
         );
       }
     }
-
-    for (const producto of ctxBody.Productos) {
-      console.log(producto);
-    }
-
-    /*throw new errors.ApplicationError(
-      `No se puede editar una venta una vez creada.`,
-    );*/
   },
   async afterUpdate(event) {
     const ventaId = event.result.id;
-    
+
+    if (event.params?.data?.__internal_update) {
+      return;
+    }
+
     const ventaOriginal = await strapi.entityService.findOne(
       "api::venta.venta",
       ventaId,
@@ -183,74 +176,105 @@ export default {
         populate: "*",
       },
     );
-    
+
     const productosActualizados = [];
 
     for (const producto of ventaOriginal["Productos"]) {
       const cantidad = producto.cantidad;
-      const id = parseInt(producto.productoItem); //id del producto
-      const cantidadOriginal = producto.cantidadOriginal; 
+      const id = parseInt(producto.productoItem);
+      const cantidadOriginal = producto.cantidadOriginal;
       const idProductoOriginal = producto.idProductoOriginal;
-
-      if( id !== idProductoOriginal ){
-        throw new errors.ApplicationError(
-          `No puede cambiar de producto.`,
-        );        
-      }
 
       const productoDb = await strapi.entityService.findOne(
         "api::producto.producto",
         id,
       );
 
-      if (productoDb) {
-        if(cantidad !== cantidadOriginal){
-          let diferenciaCantidad = 0;
-          let stockNuevo = 0;
-
-          if(cantidad > cantidadOriginal) {
-            diferenciaCantidad = cantidad - cantidadOriginal;
-            if( productoDb.stock < diferenciaCantidad ){
-              throw new errors.ApplicationError(
-                `La cantidad supera el stock, usted dispone de ${productoDb.stock} unidades de ${productoDb.nombre}`,
-              );
-            }
-            stockNuevo = productoDb.stock - diferenciaCantidad;
-          }else{ 
-            if(cantidad === 0 ){
-              throw new errors.ApplicationError(
-                `La cantidad de ${productoDb.nombre} no puede ser cero`,
-              );
-            }
-            diferenciaCantidad = cantidadOriginal - cantidad;
-            stockNuevo = productoDb.stock + diferenciaCantidad;
-          }
-
-          await strapi.entityService.update("api::producto.producto", id, {
-            data: {
-              stock: stockNuevo,
-            },
-          });
-          //producto.id es el id del componente en el que se grabo el producto.
-          productosActualizados.push({
-            id: producto.id,
-            __component: "productos.productos",
-            productoItem: id,
-            cantidad: cantidad,
-            cantidadOriginal: cantidad, // 🔥 ACÁ se guarda bien
-            total: producto.total,
-            ganancia_por_item: producto.ganancia_por_item,
-          });
+      // 🟢 1- PRODUCTO NUEVO
+      if (idProductoOriginal == null) {
+        if (!productoDb || productoDb.stock < cantidad) {
+          throw new errors.ApplicationError(
+            `La cantidad supera el stock, usted dispone de ${productoDb?.stock ?? 0} unidades`,
+          );
         }
+
+        await strapi.entityService.update("api::producto.producto", id, {
+          data: {
+            stock: productoDb.stock - cantidad,
+          },
+        });
+
+        productosActualizados.push({
+          ...producto,
+          cantidadOriginal: cantidad,
+          idProductoOriginal: id,
+        });
+
+        continue;
       }
-    }
-    console.log("Producto actualizado afterUpdate: ", productosActualizados);
-    if(productosActualizados.length > 0){
-      await strapi.entityService.update("api::venta.venta", ventaId, {
+      
+      if (id !== idProductoOriginal) {
+        throw new errors.ApplicationError(`No puede cambiar de producto.`);
+      }
+
+      // 🟢 2- PRODUCTO SIN EDITAR
+      if (cantidad === cantidadOriginal) {
+        productosActualizados.push(producto);
+        continue;
+      }
+
+      // 🟢 3- PRODUCTO EDITADO
+      /*if (
+        cantidad > 0 &&
+        cantidadOriginal > 0 &&
+        cantidad !== cantidadOriginal
+      ) {*/
+      let diferenciaCantidad = 0;
+      let stockNuevo = 0;
+
+      /** actualizo stock */
+      if (cantidad > cantidadOriginal) {
+        diferenciaCantidad = cantidad - cantidadOriginal;
+        if (productoDb.stock < diferenciaCantidad) {
+          throw new errors.ApplicationError(
+            `La cantidad supera el stock, usted dispone de ${productoDb.stock} unidades de ${productoDb.nombre}`,
+          );
+        }
+        stockNuevo = productoDb.stock - diferenciaCantidad;
+      } else {
+        if (cantidad === 0) {
+          throw new errors.ApplicationError(
+            `La cantidad de ${productoDb.nombre} no puede ser cero`,
+          );
+        }
+        diferenciaCantidad = cantidadOriginal - cantidad;
+        stockNuevo = productoDb.stock + diferenciaCantidad;
+      }
+
+      await strapi.entityService.update("api::producto.producto", id, {
         data: {
-          Productos: productosActualizados,
+          stock: stockNuevo,
         },
       });
+      
+      // ❗❗ producto.id es el id del componente en el que se grabo el producto.
+      productosActualizados.push({
+        id: producto.id,
+        __component: "productos.productos",
+        productoItem: id,
+        cantidad: cantidad,
+        cantidadOriginal: cantidad,
+        total: producto.total,
+        ganancia_por_item: producto.ganancia_por_item,
+      });
+      //}
     }
+    
+    await strapi.entityService.update("api::venta.venta", ventaId, {
+      data: {
+        Productos: productosActualizados,
+        __internal_update: true,
+      },
+    });
   },
 };
