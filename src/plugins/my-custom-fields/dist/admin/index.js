@@ -362,7 +362,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CBQhq2Ab.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DmxAYdHi.js")).then((module2) => ({
           default: module2.SalesDetectChangesInItems
         }))
       },

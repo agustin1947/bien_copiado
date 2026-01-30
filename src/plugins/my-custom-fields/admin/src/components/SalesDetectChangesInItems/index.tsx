@@ -5,12 +5,17 @@ const SalesDetectChangesInItems = (props: any, ref: any) => {
   
   useEffect(() => {
     const timer = setTimeout(() => {
-      const buttonClosed = document.querySelectorAll('form h3 button[aria-expanded="false"]');
-      const divClosed = document.querySelectorAll('form div[data-state=closed]');
+      const buttonClosed  = document.querySelectorAll('form h3 button[aria-expanded="false"]');
+      const divClosed     = document.querySelectorAll('form div[data-state=closed]');
+      const buttonAction  = document.querySelectorAll("h3 span button[data-state=closed]"); 
+      
 
       buttonClosed.forEach((button) => {
         (button as HTMLButtonElement).click();
       });
+      buttonAction.forEach((button) => {
+        button.classList.add('hidden-delete');
+      })
 
     }, 500); // podés subirlo a 800 / 1000 si no aparece
 

@@ -486,6 +486,11 @@ export default {
       nav:not([aria-label="Pagination"]) ol li span {
           display: none !important;
       }
+     .hidden-delete {
+      display: none;
+      visibility: hidden;
+      pointer-events: none;
+     }
       #main-content div:first-child div:first-child img ~ div{
         display: none !important;
       }
