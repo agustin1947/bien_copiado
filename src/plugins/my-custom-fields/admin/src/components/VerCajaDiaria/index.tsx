@@ -84,7 +84,7 @@ const VerCajaDiaria = (props: any, ref: any) => {
 
     Promise.all([
       fetch(`/api/ventas?populate=*&${baseFechaIngreso}`).then(r => r.json()),
-      fetch(`/api/services?populate=*&${baseFechaIngreso}`).then(r => r.json()),
+      fetch(`/api/services?populate=*&${baseFechaIngreso}&filters[estado_de_service][id][$eq]=4`).then(r => r.json()),
       fetch(`/api/gastos?populate=*&${baseFechaIngreso}`).then(r => r.json()),
       fetch(`/api/gasto-diarios?populate=*&${baseFechaIngreso}`).then(r => r.json()),
     ])

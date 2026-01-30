@@ -562,11 +562,14 @@ export default () => {
             },
             local: {
               id: localId,  // <--- acá filtrás por ID
-            }
+            },
+            estado_de_service: {
+              id: 4, // 👈 SOLO estado con ID = 4
+            },
           },
           populate: true,
         });
-
+      console.log(serviceHoy)  
       const entradasMerged = [...ventasHoy, ...serviceHoy];
       const entradasTotales = calcularTotales(entradasMerged);
 
