@@ -136,14 +136,11 @@ export default {
       "api::venta.venta",
       ventaId
     );
-    console.log("VENTA ORIGINAL: ", ventaOriginal)
     
     const fechaIngreso = ventaOriginal["fecha_de_ingreso"];
-    console.log("FECHA DE INGRESO: ", fechaIngreso);
     const hoy = new Date();
     const hoyStr = hoy.toISOString().split("T")[0];
-    console.log("FECHA DE HOY", hoyStr);
-    
+
     if (hoyStr > fechaIngreso) {
       throw new errors.ApplicationError(
         "No se puede editar la venta después del día de ingreso.",

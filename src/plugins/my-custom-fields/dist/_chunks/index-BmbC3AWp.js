@@ -1,9 +1,26 @@
 "use strict";
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const jsxRuntime = require("react/jsx-runtime");
-const InputTotalVentaCustomize = (props, ref) => {
+const react = require("react");
+const InputNumberTotalItemCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
-  props.initialValue > 0 ? console.log("Initial Value:", props.initialValue) : console.log("value ", value);
+  react.useEffect(() => {
+    const totals = document.querySelectorAll(".input_total_item_product");
+    let total = 0;
+    for (const input of totals) {
+      const val = parseFloat(input.value);
+      if (!isNaN(val)) {
+        total += val;
+      }
+    }
+    onChange({
+      target: {
+        name: "total",
+        type: "number",
+        value: total
+      }
+    });
+  }, [value]);
   return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
     /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize", children: "Total" }),
     /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "container-number-currency", children: [
@@ -14,13 +31,13 @@ const InputTotalVentaCustomize = (props, ref) => {
           name,
           disabled: true,
           required,
-          value: props.initialValue > 0 ? props.initialValue : value,
+          value,
           min: "0",
           type: "number",
-          className: "input-customize"
+          className: "input-customize input_total_item_product"
         }
       )
     ] })
   ] });
 };
-exports.InputTotalVentaCustomize = InputTotalVentaCustomize;
+exports.InputNumberTotalItemCustomize = InputNumberTotalItemCustomize;

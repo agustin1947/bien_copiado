@@ -2,8 +2,22 @@ import { useEffect } from 'react';
 
 const SalesDetectChangesInItems = (props: any, ref: any) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const buttonClosed = document.querySelectorAll('form h3 button[aria-expanded="false"]');
+      const divClosed = document.querySelectorAll('form div[data-state=closed]');
 
-  useEffect(() => {    
+      buttonClosed.forEach((button) => {
+        (button as HTMLButtonElement).click();
+      });
+
+    }, 500); // podés subirlo a 800 / 1000 si no aparece
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  /*useEffect(() => {
     const observer = new MutationObserver(() => {
       console.log('Detecting changes in items...');
       getTotals('.input_total_item_product', 'total');
@@ -34,7 +48,7 @@ const SalesDetectChangesInItems = (props: any, ref: any) => {
         },
       });
     }
-  };
+  };*/
   return ( 
     <></>
   )

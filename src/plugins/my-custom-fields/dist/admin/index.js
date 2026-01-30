@@ -77,7 +77,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CArECXHu.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-BmbC3AWp.js")).then((module2) => ({
           default: module2.InputNumberTotalItemCustomize
         }))
       },
@@ -96,7 +96,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-FB39NT1u.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-BvnlXQFY.js")).then((module2) => ({
           default: module2.InputTotalVentaCustomize
         }))
       },
@@ -305,7 +305,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CAg8vELF.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DGok1S7K.js")).then((module2) => ({
           default: module2.InputTotalVentaGanancia
         }))
       },
@@ -362,7 +362,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-C-H06IEE.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CBQhq2Ab.js")).then((module2) => ({
           default: module2.SalesDetectChangesInItems
         }))
       },
