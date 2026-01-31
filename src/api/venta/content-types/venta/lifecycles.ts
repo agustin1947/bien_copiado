@@ -243,11 +243,6 @@ export default {
         }
         stockNuevo = productoDb.stock - diferenciaCantidad;
       } else {
-        if (cantidad === 0) {
-          throw new errors.ApplicationError(
-            `La cantidad de ${productoDb.nombre} no puede ser cero`,
-          );
-        }
         diferenciaCantidad = cantidadOriginal - cantidad;
         stockNuevo = productoDb.stock + diferenciaCantidad;
       }
@@ -258,16 +253,17 @@ export default {
         },
       });
 
-      // ❗❗ producto.id es el id del componente en el que se grabo el producto.
-      productosActualizados.push({
-        id: producto.id,
-        __component: "productos.productos",
-        productoItem: id,
-        cantidad: cantidad,
-        cantidadOriginal: cantidad,
-        total: producto.total,
-        ganancia_por_item: producto.ganancia_por_item,
-      });
+      if(cantidad !== 0){ // Si la cantidad es igual a 0 el producto sera eliminado de la venta.
+        productosActualizados.push({// ❗❗ producto.id es el id del componente en el que se grabo el producto.
+          id: producto.id,
+          __component: "productos.productos",
+          productoItem: id,
+          cantidad: cantidad,
+          cantidadOriginal: cantidad,
+          total: producto.total,
+          ganancia_por_item: producto.ganancia_por_item,
+        });
+      }
     }
     
     await strapi.entityService.update("api::venta.venta", ventaId, {
