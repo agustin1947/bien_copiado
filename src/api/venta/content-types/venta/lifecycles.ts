@@ -275,7 +275,6 @@ export default {
   },
   async beforeDelete(event) {
     const ventaId = event.params.where.id;
-    // 🔎 Traemos la venta con productos
     const venta = await strapi.entityService.findOne(
       "api::venta.venta",
       ventaId,
@@ -289,8 +288,6 @@ export default {
     if (!venta || !venta["Productos"]?.length) return;
 
     for (const producto of venta["Productos"]) {
-      console.log("Producto venta: ", producto)
-      
       const cantidadOriginal = producto.cantidadOriginal;
       const productoId = parseInt(producto.productoItem);
 
@@ -300,12 +297,9 @@ export default {
         "api::producto.producto",
         productoId
       );
-      
-      console.log("Producto DB: ", productoDb)
 
       if (!productoDb) continue;
 
-      // 🔄 devolver stock
       await strapi.entityService.update("api::producto.producto", productoId, {
         data: {
           stock: productoDb.stock + cantidadOriginal,
