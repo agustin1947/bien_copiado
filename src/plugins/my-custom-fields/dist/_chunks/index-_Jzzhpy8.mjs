@@ -1,8 +1,8 @@
 import { jsxs, Fragment, jsx } from "react/jsx-runtime";
-const InputTotalVentaGanancia = (props, ref) => {
+const InputTotalVentaCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("label", { className: "label-customize", children: "Total ganancia" }),
+    /* @__PURE__ */ jsx("label", { className: "label-customize", children: "Total" }),
     /* @__PURE__ */ jsxs("div", { className: "container-number-currency", children: [
       /* @__PURE__ */ jsx("span", { children: "$" }),
       /* @__PURE__ */ jsx(
@@ -11,7 +11,7 @@ const InputTotalVentaGanancia = (props, ref) => {
           name,
           disabled: true,
           required,
-          value: props.initialValue > 0 ? props.initialValue : value,
+          value: value ?? 0,
           min: "0",
           type: "number",
           className: "input-customize"
@@ -21,5 +21,5 @@ const InputTotalVentaGanancia = (props, ref) => {
   ] });
 };
 export {
-  InputTotalVentaGanancia
+  InputTotalVentaCustomize
 };

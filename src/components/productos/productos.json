@@ -12,18 +12,24 @@
     },
     "cantidad": {
       "type": "integer",
-      "default": 0,
-      "customField": "plugin::my-custom-fields.my-input-number-field"
+      "customField": "plugin::my-custom-fields.my-input-number-field",
+      "default": 0
     },
     "total": {
-      "type": "decimal",
-      "default": 0,
-      "customField": "plugin::my-custom-fields.my-input-number-total-field"
+      "type": "integer",
+      "customField": "plugin::my-custom-fields.my-input-number-total-field",
+      "default": 0
     },
     "ganancia_por_item": {
-      "type": "decimal",
-      "default": 0,
-      "customField": "plugin::my-custom-fields.input-number-venta-ganancia-item"
+      "type": "integer",
+      "customField": "plugin::my-custom-fields.input-number-venta-ganancia-item",
+      "default": 0
+    },
+    "cantidadOriginal": {
+      "type": "integer"
+    },
+    "idProductoOriginal": {
+      "type": "integer"
     }
   },
   "config": {}
