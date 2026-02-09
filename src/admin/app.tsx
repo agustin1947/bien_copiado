@@ -418,6 +418,16 @@ export default {
         "content-manager.content-types.api::tipo-de-moneda.tipo-de-moneda.codigo":
           "Código",
 
+        "content-manager.content-types.api::ingreso.ingreso.monto": "Monto",
+        "content-manager.content-types.api::ingreso.ingreso.descripcion": "Descripción",
+        "content-manager.content-types.api::ingreso.ingreso.fecha_de_ingreso": "Fecha de ingreso",
+        "content-manager.content-types.api::ingreso.ingreso.local": "Local",
+        "content-manager.content-types.api::ingreso.ingreso.tipo_de_moneda": "Tipo de moneda",
+        "content-manager.content-types.api::ingreso.ingreso.forma_de_pago": "Forma de pago",
+        "content-manager.content-types.api::ingreso.ingreso.titulo": "Título",
+        "content-manager.content-types.api::ingreso.ingreso.n_orden_cc": "N° de orden Cuenta Corriente (opcional)",
+        "content-manager.content-types.api::ingreso.ingreso.n_orden_st": "N° de orden Servicio Técnico (opcional)",
+
         "content-manager.plugin.name": "Gestor de contenidos",
         "app.utils.drag": "Drag",
         "productos.productos": "Productos",
