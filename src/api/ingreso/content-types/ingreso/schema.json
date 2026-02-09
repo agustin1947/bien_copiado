@@ -47,7 +47,9 @@
       "target": "api::forma-de-pago.forma-de-pago"
     },
     "monto": {
-      "type": "decimal"
+      "type": "decimal",
+      "required": true,
+      "min": 0
     }
   }
 }

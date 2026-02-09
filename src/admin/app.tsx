@@ -466,6 +466,7 @@ export default {
         local: "Local",
         gasto: "Gastos",
         venta: "Ventas",
+        ingreso: "Ingresos",
       },
     },
     theme: {
