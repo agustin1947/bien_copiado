@@ -105,7 +105,6 @@ export default {
     const ingresoId = params.where.id;
 
     console.log("ctxBody", ctxBody);
-    console.log("params", params);
     //(strapi as any).io.emit("refresh", "actualizado");
 
     const ingresoOriginal = await strapi.db
@@ -115,7 +114,11 @@ export default {
           populate: true,
         });
 
-    console.log("ingresoOriginal", ingresoOriginal);    
+    console.log("ingresoOriginal", ingresoOriginal);
+    const localOriginal = ingresoOriginal.local?.id;
+    const tipoDeMonedaOriginal = ingresoOriginal.tipo_de_moneda?.id;
+    const formaDePagoOriginal = ingresoOriginal.forma_de_pago?.id;
+
     // que no se carguen números de orden de cuenta corriente y servicio técnico al mismo tiempo
     if (ctxBody.n_orden_st && ctxBody.n_orden_cc) {
       throw new errors.ApplicationError(
@@ -144,9 +147,20 @@ export default {
     
 
     // que se seleccione un local y que no se modfique
-    // que se seleccione un tipo de moneda y que no se modifique
-    // que se seleccione una forma de pago
+    if((ctxBody.local.connect.length > 0 && ctxBody.local.connect[0].id !== localOriginal) || 
+        (ctxBody.local.connect.length === 0 && ctxBody.local.disconnect.length > 0)){
+        throw new errors.ApplicationError(`No se puede modificar el "Local" una vez creado el ingreso`);
+    }
 
+    // que se seleccione un tipo de moneda y que no se modifique
+    if((ctxBody.tipo_de_moneda.connect.length > 0 && ctxBody.tipo_de_moneda.connect[0].id !== tipoDeMonedaOriginal) || 
+        (ctxBody.tipo_de_moneda.connect.length === 0 && ctxBody.tipo_de_moneda.disconnect.length > 0)){
+        throw new errors.ApplicationError(`No se puede modificar el "Tipo de Moneda" una vez creado el ingreso`);
+    }
+    // que se seleccione una forma de pago
+    if(ctxBody.forma_de_pago.connect.length === 0 && ctxBody.forma_de_pago.disconnect.length > 0){
+        throw new errors.ApplicationError(`Debe ingresar al menos una "Forma de pago"`);
+    }
     //validar montos
     // obtener todos los ingresos que tengan ese número de orden de servicio técnico para sumar sus montos
     //el monto obtenido de los ingresos restarlo al monto total del servicio técnico
