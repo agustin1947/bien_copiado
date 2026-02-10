@@ -1,12 +1,10 @@
 import { errors } from "@strapi/utils";
 import { factories } from "@strapi/strapi";
-const { ApplicationError } = errors;
 
 export default {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
-    //console.log(ctxBody)
 
     if (ctxBody.n_orden_st && ctxBody.n_orden_cc) {
       throw new errors.ApplicationError(
@@ -75,18 +73,36 @@ export default {
         );
       }
 
-      // validar si coinciden los montos
-      if (
-        ordenST.total &&
-        ctxBody.monto &&
-        parseFloat(ordenST.total) !== parseFloat(ctxBody.monto)
-      ) {
+      // validar montos
+
+      // obtener todos los ingresos que tengan ese número de orden de servicio técnico para sumar sus montos
+      const ingresosRelacionados = await strapi.db
+        .query("api::ingreso.ingreso")
+        .findMany({
+          where: { n_orden_st: ctxBody.n_orden_st },
+        });
+
+      const pagosParciales = ingresosRelacionados.reduce((total, ingreso) => {
+        return total + parseFloat(ingreso.monto);
+      }, 0);
+
+      //el monto obtenido de los ingresos restarlo al monto total del servicio técnico
+      const diferencia = parseFloat(ordenST.total) - pagosParciales;
+
+      // en caso que la diferencia cea cero, quiere decir que ya se termino de pagar.
+      if (diferencia === 0) {
         throw new errors.ApplicationError(
-          `El número de orden de Servicio Técnico ingresado tiene un monto diferente al monto ingresado en el ingreso`,
+          `El pago del Servicio Técnico ya está completado`,
+        );
+      }
+
+      // el monto del ingreso tiene que ser menor o igual a esta diferencia
+      if (ctxBody.monto > diferencia) {
+        throw new errors.ApplicationError(
+          `El monto del ingreso excede la diferencia restante del Servicio Técnico`,
         );
       }
     }
-
   },
   async afterCreate(event) {},
   async beforeUpdate(event) {
