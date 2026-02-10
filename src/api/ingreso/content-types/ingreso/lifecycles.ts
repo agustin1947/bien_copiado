@@ -7,6 +7,9 @@ export default {
         const ctx = strapi.requestContext.get();
         const ctxBody = ctx.request.body;
         
+        if(ctxBody.n_orden_st && ctxBody.n_orden_cc ) {
+            throw new errors.ApplicationError(`No puede ingresar número de orden de Cuenta Corriente y Servicio Técnico al mismo tiempo, debe elegir una o ninguna de las dos opciones`);
+        }
         if (
             !ctxBody.local ||
             !ctxBody.local.connect ||
