@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-const jsxRuntime = require("react/jsx-runtime");
-const react = require("react");
+import { jsx, jsxs } from "react/jsx-runtime";
+import { useState, useEffect } from "react";
 const PACKET_TYPES = /* @__PURE__ */ Object.create(null);
 PACKET_TYPES["open"] = "0";
 PACKET_TYPES["close"] = "1";
@@ -3305,15 +3303,15 @@ Object.assign(lookup, {
 });
 const VerCajaDiaria = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value: value2 } = props;
-  const [caja, setCaja] = react.useState([]);
-  const [entradas, setEntradas] = react.useState([]);
-  const [salidas, setSalidas] = react.useState([]);
-  const [loading, setLoading] = react.useState(true);
-  const [tbodyHtml, setTbodyHtml] = react.useState("");
+  const [caja, setCaja] = useState([]);
+  const [entradas, setEntradas] = useState([]);
+  const [salidas, setSalidas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [tbodyHtml, setTbodyHtml] = useState("");
   let urlSplit = window.location.href.split("/");
   let documentId = urlSplit[urlSplit.length - 1];
   if (!documentId || documentId === "create") return;
-  react.useEffect(() => {
+  useEffect(() => {
     const socket = lookup("/", {
       transports: ["websocket"]
       // recomendado
@@ -3326,7 +3324,7 @@ const VerCajaDiaria = (props, ref) => {
       socket.disconnect();
     };
   }, []);
-  react.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     fetch(`/api/caja-diarias?populate=*&filters[documentId][$eq]=${documentId}`).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
@@ -3335,31 +3333,28 @@ const VerCajaDiaria = (props, ref) => {
       console.error("Error al cargar productos", err);
     });
   }, [documentId]);
-  react.useEffect(() => {
+  useEffect(() => {
     if (!caja || caja.length === 0) return;
-    console.log(`CAJA`, caja);
     const [year, month, day] = caja.fecha_de_ingreso.split("-");
     const created = new Date(
       Number(year),
       Number(month) - 1,
       Number(day)
     );
-    console.log(created);
     const startOfDay = new Date(created);
     startOfDay.setHours(0, 0, 0, 0);
-    console.log("startOfDay: ", startOfDay);
     const endOfDay = new Date(created);
     endOfDay.setHours(23, 59, 59, 999);
-    console.log("endOfDay: ", endOfDay);
     const localId = caja?.local?.id;
     `&filters[local][id][$eq]=${localId}&filters[createdAt][$gte]=${startOfDay.toISOString()}&filters[createdAt][$lte]=${endOfDay.toISOString()}`;
     const baseFechaIngreso = `&filters[local][id][$eq]=${localId}&filters[fecha_de_ingreso][$gte]=${startOfDay.toISOString()}&filters[fecha_de_ingreso][$lte]=${endOfDay.toISOString()}`;
     setLoading(true);
     Promise.all([
-      fetch(`/api/ventas?populate=*&${baseFechaIngreso}`).then((r) => r.json()),
-      fetch(`/api/services?populate=*&${baseFechaIngreso}&filters[estado_de_service][id][$eq]=4`).then((r) => r.json()),
-      fetch(`/api/gastos?populate=*&${baseFechaIngreso}`).then((r) => r.json()),
-      fetch(`/api/gasto-diarios?populate=*&${baseFechaIngreso}`).then((r) => r.json())
+      fetch(`/api/ventas?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json()),
+      //fetch(`/api/services?populate=*&${baseFechaIngreso}&filters[estado_de_service][id][$eq]=4`).then(r => r.json()),
+      fetch(`/api/ingresos?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json()),
+      fetch(`/api/gastos?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json()),
+      fetch(`/api/gasto-diarios?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json())
     ]).then(async ([ventasRes, servicesRes, gastosRes, gastosDiariosRes]) => {
       const ventas = ventasRes?.data || [];
       const services = servicesRes?.data || [];
@@ -3386,7 +3381,6 @@ const VerCajaDiaria = (props, ref) => {
   const crearTablaEntradasSalidas = async (entradas2, salidas2) => {
     let table = "";
     const maxLength = Math.max(entradas2.length, salidas2.length);
-    console.log(maxLength);
     if (maxLength === 0) {
       return "<tr><td colspan='8'>No hay datos registrados</td></tr>";
     }
@@ -3436,26 +3430,28 @@ const VerCajaDiaria = (props, ref) => {
     }
     return table;
   };
-  if (loading) return /* @__PURE__ */ jsxRuntime.jsx("p", { children: "Cargando..." });
-  if (!caja) return /* @__PURE__ */ jsxRuntime.jsx("p", { children: "No se encontró caja diaria." });
-  return /* @__PURE__ */ jsxRuntime.jsx("div", { children: /* @__PURE__ */ jsxRuntime.jsxs("table", { className: "table w-100", children: [
-    /* @__PURE__ */ jsxRuntime.jsxs("thead", { children: [
-      /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
-        /* @__PURE__ */ jsxRuntime.jsx("th", { colSpan: 4, children: "Entradas" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { colSpan: 4, children: "Salidas" })
+  if (loading) return /* @__PURE__ */ jsx("p", { children: "Cargando..." });
+  if (!caja) return /* @__PURE__ */ jsx("p", { children: "No se encontró caja diaria." });
+  return /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("table", { className: "table w-100", children: [
+    /* @__PURE__ */ jsxs("thead", { children: [
+      /* @__PURE__ */ jsxs("tr", { children: [
+        /* @__PURE__ */ jsx("th", { colSpan: 4, children: "Entradas" }),
+        /* @__PURE__ */ jsx("th", { colSpan: 4, children: "Salidas" })
       ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
-        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Concepto" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Total" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Moneda" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Forma de pago" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Concepto" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Total" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Moneda" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Forma de pago" })
+      /* @__PURE__ */ jsxs("tr", { children: [
+        /* @__PURE__ */ jsx("th", { scope: "col", children: "Concepto" }),
+        /* @__PURE__ */ jsx("th", { scope: "col", children: "Total" }),
+        /* @__PURE__ */ jsx("th", { scope: "col", children: "Moneda" }),
+        /* @__PURE__ */ jsx("th", { scope: "col", children: "Forma de pago" }),
+        /* @__PURE__ */ jsx("th", { scope: "col", children: "Concepto" }),
+        /* @__PURE__ */ jsx("th", { scope: "col", children: "Total" }),
+        /* @__PURE__ */ jsx("th", { scope: "col", children: "Moneda" }),
+        /* @__PURE__ */ jsx("th", { scope: "col", children: "Forma de pago" })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntime.jsx("tbody", { dangerouslySetInnerHTML: { __html: tbodyHtml } })
+    /* @__PURE__ */ jsx("tbody", { dangerouslySetInnerHTML: { __html: tbodyHtml } })
   ] }) });
 };
-exports.VerCajaDiaria = VerCajaDiaria;
+export {
+  VerCajaDiaria
+};

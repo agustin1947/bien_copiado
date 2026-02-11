@@ -54,9 +54,6 @@ const VerCajaDiaria = (props: any, ref: any) => {
 
   useEffect(() => {
     if (!caja || caja.length === 0) return;
-    console.log(`CAJA`,caja)
-    //console.log("Created: ", created)
-    //console.log("Fecha de ingreso: ", new Date(caja.fecha_de_ingreso))
     const [year, month, day] = caja.fecha_de_ingreso.split("-");
 
     const created = new Date(
@@ -64,29 +61,24 @@ const VerCajaDiaria = (props: any, ref: any) => {
       Number(month) - 1,
       Number(day)
     );
-    //console.log("fechaLocal: ", fechaLocal);
-    //const created = new Date(caja.createdAt);
     
-    console.log(created)
     const startOfDay = new Date(created);
     startOfDay.setHours(0, 0, 0, 0);
-    console.log("startOfDay: ", startOfDay)
     const endOfDay = new Date(created);
     endOfDay.setHours(23, 59, 59, 999);
-    console.log("endOfDay: ", endOfDay)
 
     const localId = caja?.local?.id;
 
     const base = `&filters[local][id][$eq]=${localId}&filters[createdAt][$gte]=${startOfDay.toISOString()}&filters[createdAt][$lte]=${endOfDay.toISOString()}`;
     const baseFechaIngreso = `&filters[local][id][$eq]=${localId}&filters[fecha_de_ingreso][$gte]=${startOfDay.toISOString()}&filters[fecha_de_ingreso][$lte]=${endOfDay.toISOString()}`;
-    
     setLoading(true);
 
     Promise.all([
-      fetch(`/api/ventas?populate=*&${baseFechaIngreso}`).then(r => r.json()),
-      fetch(`/api/services?populate=*&${baseFechaIngreso}&filters[estado_de_service][id][$eq]=4`).then(r => r.json()),
-      fetch(`/api/gastos?populate=*&${baseFechaIngreso}`).then(r => r.json()),
-      fetch(`/api/gasto-diarios?populate=*&${baseFechaIngreso}`).then(r => r.json()),
+      fetch(`/api/ventas?populate=*&${baseFechaIngreso}&sort=id:desc`).then(r => r.json()),
+      //fetch(`/api/services?populate=*&${baseFechaIngreso}&filters[estado_de_service][id][$eq]=4`).then(r => r.json()),
+      fetch(`/api/ingresos?populate=*&${baseFechaIngreso}&sort=id:desc`).then(r => r.json()),
+      fetch(`/api/gastos?populate=*&${baseFechaIngreso}&sort=id:desc`).then(r => r.json()),
+      fetch(`/api/gasto-diarios?populate=*&${baseFechaIngreso}&sort=id:desc`).then(r => r.json()),
     ])
       .then(async([ventasRes, servicesRes, gastosRes, gastosDiariosRes]) => {
         const ventas = ventasRes?.data || [];
@@ -122,7 +114,7 @@ const VerCajaDiaria = (props: any, ref: any) => {
   const crearTablaEntradasSalidas = async (entradas: any, salidas: any) => {
     let table = "";
     const maxLength = Math.max(entradas.length, salidas.length);
-    console.log(maxLength)
+    
     if(maxLength === 0 ){
       return "<tr><td colspan='8'>No hay datos registrados</td></tr>";
     }
