@@ -446,14 +446,14 @@ export default () => {
         //Datos de entrada
         const idEntrada = entrada ? entrada.id || "" : "";
         const tipoEntrada = entrada
-          ? entrada.numero_de_orden
-            ? "Service"
-            : "Venta"
+          ? ("n_orden_st" in entrada || "n_orden_cc" in entrada
+            ? "Ingreso"
+            : "Venta")
           : "";
         const conceptoTextoEntrada = entrada
-          ? entrada.numero_de_orden
-            ? `${entrada.descripcion_estado_del_equipo || ""}`
-            : `${entradaProductos}`
+          ? ("n_orden_st" in entrada || "n_orden_cc" in entrada
+            ? `${entrada.titulo || ""}`
+            : `${entradaProductos}`)
           : "";
 
         const conceptoEntrada = idEntrada
@@ -552,7 +552,7 @@ export default () => {
         populate: true,
       });
       
-      const serviceHoy = await strapi.db
+      /*const serviceHoy = await strapi.db
         .query("api::service.service")
         .findMany({
           where: {
@@ -569,8 +569,24 @@ export default () => {
           },
           populate: true,
         });
-      console.log(serviceHoy)  
-      const entradasMerged = [...ventasHoy, ...serviceHoy];
+      console.log(serviceHoy)*/
+      
+      const ingresosHoy = await strapi.db
+        .query("api::ingreso.ingreso")
+        .findMany({
+          where: {
+            fecha_de_ingreso: {
+              $gte: startOfDay,
+              $lte: endOfDay,
+            },
+            local: {
+              id: localId,  // <--- acá filtrás por ID
+            }
+          },
+          populate: ["local", "tipo_de_moneda", "forma_de_pago"],
+        });
+      console.log("INGRESOS HOY", ingresosHoy)
+      const entradasMerged = [...ventasHoy, ...ingresosHoy];
       const entradasTotales = calcularTotales(entradasMerged);
 
       /** BLOQUE DE SALIDA */
