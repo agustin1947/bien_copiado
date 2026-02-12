@@ -145,7 +145,7 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     where: { id: n_orden },
     populate: true,
   });
-
+  
   if (!orden) {
     return {
       error: true,
@@ -188,9 +188,9 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     .findMany({
       where: whereClause,
     });
-
+    
   const pagosParciales = ingresosRelacionados.reduce((total, ingreso) => {
-    return total + parseFloat(ingreso.monto);
+    return total + parseFloat(ingreso.total);
   }, 0);
 
   const diferencia = parseFloat(orden.total) - pagosParciales;
@@ -202,7 +202,7 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     };
   }
 
-  if (ctxBody.monto > diferencia) {
+  if (ctxBody.total > diferencia) {
     return {
       error: true,
       message: `${name}: el monto del ingreso excede la diferencia restante`,
