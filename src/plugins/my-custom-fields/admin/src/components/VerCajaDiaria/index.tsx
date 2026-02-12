@@ -150,14 +150,14 @@ const VerCajaDiaria = (props: any, ref: any) => {
 
       const idEntrada = entrada ? entrada.id || "" : "";
       const tipoEntrada = entrada
-        ? entrada.numero_de_orden
-          ? "Service"
-          : "Venta"
+        ?  ("n_orden_st" in entrada || "n_orden_cc" in entrada
+            ? "Ingreso"
+            : "Venta")
         : "";
       const conceptoTextoEntrada = entrada
-        ? entrada.numero_de_orden
-          ? `${entrada.descripcion_estado_del_equipo || ""}`
-          : `${entradaProductos}`
+        ? ("n_orden_st" in entrada || "n_orden_cc" in entrada
+            ? `${entrada.titulo || ""}`
+            : `${entradaProductos}`)
         : "";
 
       const conceptoEntrada = idEntrada
