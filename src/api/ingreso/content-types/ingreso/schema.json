@@ -46,7 +46,7 @@
       "relation": "oneToOne",
       "target": "api::forma-de-pago.forma-de-pago"
     },
-    "monto": {
+    "total": {
       "type": "decimal",
       "required": true,
       "min": 0
