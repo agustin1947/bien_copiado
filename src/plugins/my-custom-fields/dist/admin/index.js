@@ -368,6 +368,25 @@ const index = {
       },
       options: {}
     });
+    app.customFields.register({
+      name: "pagos-parciales",
+      pluginId: PLUGIN_ID,
+      type: "string",
+      intlLabel: {
+        id: "pagos-parciales-label",
+        defaultMessage: "label"
+      },
+      intlDescription: {
+        id: "pagos-parciales-description",
+        defaultMessage: "Select any color"
+      },
+      components: {
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DB9pbqJ2.js")).then((module2) => ({
+          default: module2.PagosParciales
+        }))
+      },
+      options: {}
+    });
     app.registerPlugin({
       id: PLUGIN_ID,
       initializer: Initializer,

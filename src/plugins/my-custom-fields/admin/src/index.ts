@@ -383,6 +383,27 @@ export default {
       options: {},
     });
 
+    app.customFields.register({
+      name: 'pagos-parciales',
+      pluginId: PLUGIN_ID,
+      type: 'string',
+      intlLabel: {
+        id: 'pagos-parciales-label',
+        defaultMessage: 'label',
+      },
+      intlDescription: {
+        id: 'pagos-parciales-description',
+        defaultMessage: 'Select any color',
+      },
+      components: {
+        Input: async () =>
+          import('./components/PagosParciales').then((module) => ({
+            default: module.PagosParciales,
+          })),
+      },
+      options: {},
+    });
+
     app.registerPlugin({
       id: PLUGIN_ID,
       initializer: Initializer,
