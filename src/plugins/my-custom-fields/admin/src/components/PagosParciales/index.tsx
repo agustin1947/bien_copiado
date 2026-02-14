@@ -7,8 +7,8 @@ const PagosParciales = (props: any, ref: any) => {
   const [service, setService] = useState<any>(null);
   const [ingresos, setIngresos] = useState<any[]>([]);
   const [totalPagado, setTotalPagado] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  console.log('documentId: ', documentId);
   useEffect(() => {
     const fetchService = async () => {
       fetch(`/api/services?populate=*&filters[documentId][$eq]=${documentId}&sort[id]=desc`)
@@ -31,6 +31,7 @@ const PagosParciales = (props: any, ref: any) => {
 
   useEffect(() => {
     if (!service?.id) return;
+    setLoading(false);
     const fetchIngresos = () => {
       fetch(`/api/ingresos?populate=*&filters[n_orden_st][$eq]=${service?.id}&sort[id]=desc`)
         .then((res) => res.json())
@@ -56,49 +57,64 @@ const PagosParciales = (props: any, ref: any) => {
       return acc + Number(ingreso.total || 0);
     }, 0);
     setTotalPagado(totalPagado);
+    setLoading(false);
   }, [ingresos]);
+
+  if (loading) return <p>Cargando...</p>;
 
   return (
     <>
-      <h1 className="h1">Pagos Parciales #{service?.id}</h1>
+      <h1 className="h1">Pagos Parciales</h1>
       <br />
       <table border={1} className="table w-100">
         <thead>
           <tr>
-            <th>N° orden</th>
+            <th>Id</th>
             <th>Título</th>
             <th>Fecha de ingreso</th>
             <th>Monto</th>
           </tr>
         </thead>
         <tbody>
-          {ingresos.map((ingreso) => (
-            <tr key={ingreso.id}>
-              <td>{ingreso.id}</td>
-              <td>{ingreso.titulo}</td>
-              <td>
-                {new Date(ingreso.fecha_de_ingreso + 'T00:00:00').toLocaleDateString('es-AR')}
-              </td>
-              <td>${ingreso.total}</td>
+          {ingresos.length === 0 && (
+            <tr>
+              <td colSpan={4}>No se registran pagos.</td>
             </tr>
-          ))}
+          )}
+          {ingresos.length > 0 &&
+            ingresos.map((ingreso) => (
+              <tr key={ingreso.id}>
+                <td>{ingreso.id}</td>
+                <td>{ingreso.titulo}</td>
+                <td>
+                  {new Date(ingreso.fecha_de_ingreso + 'T00:00:00').toLocaleDateString('es-AR')}
+                </td>
+                <td>${ingreso.total}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
-      <br/>
-      <table className="table w-100">
-        <thead>
-          <tr>
-            <th>Total pagado</th>
-            <th>Falta por pagar</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>${totalPagado}</td>
-            <td>${service?.total - totalPagado}</td>
-          </tr>
-        </tbody>
-      </table>
+      <br />
+      {ingresos.length > 0 && (
+        <table className="table w-100">
+          <thead>
+            <tr>
+              <th>Total pagado</th>
+              <th>Falta por pagar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <b style={{ color: 'green' }}>${totalPagado}</b>
+              </td>
+              <td>
+                <b style={{ color: 'red' }}>${service?.total - totalPagado}</b>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
