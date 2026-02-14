@@ -381,7 +381,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DB9pbqJ2.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-B3_cPlsq.js")).then((module2) => ({
           default: module2.PagosParciales
         }))
       },
