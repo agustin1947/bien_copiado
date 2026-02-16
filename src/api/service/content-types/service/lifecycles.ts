@@ -95,7 +95,7 @@ export default {
     if (!data.numero_de_orden) {
       event.params.data.numero_de_orden = where.id;
     }
-    console.log("Data: ", data);
+    
     const fechaDeEntrega = data?.fecha_de_entrega?.split("T")[0];
     if (fechaDeEntrega) {
       if (fechaDeEntrega < data?.fecha_de_ingreso) {
