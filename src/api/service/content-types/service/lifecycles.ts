@@ -95,7 +95,7 @@ export default {
     if (!data.numero_de_orden) {
       event.params.data.numero_de_orden = where.id;
     }
-    console.log("Data: ", data)
+    console.log("Data: ", data);
     const fechaDeEntrega = data?.fecha_de_entrega?.split("T")[0];
     if (fechaDeEntrega) {
       if (fechaDeEntrega < data?.fecha_de_ingreso) {
@@ -103,7 +103,7 @@ export default {
           "La fecha de entrega no puede ser menor a la fecha de ingreso.",
         );
       }
-      
+
       if (serviceData?.estado_de_service?.id !== 4) {
         throw new errors.ApplicationError(
           `No se puede cargar una fecha de entrega, sin actualizar el estado a "Entregado"`,
