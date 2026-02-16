@@ -39,6 +39,8 @@ export default {
         where: { id: result.id },
         data: {
           numero_de_orden: result.id,
+          fecha_de_ingreso: result.fecha_de_ingreso,
+          fecha_de_entrega: result.fecha_de_entrega,
           local: { connect: [], disconnect: [] },
           forma_de_pago: { connect: [], disconnect: [] },
           estado_de_service: { connect: [], disconnect: [] },
@@ -50,6 +52,12 @@ export default {
   },
   async beforeUpdate(event) {
     const { data, where } = event.params;
+    const serviceId = where.id;
+
+    const serviceData = await strapi.db.query("api::service.service").findOne({
+      where: { id: serviceId },
+      populate: ["estado_de_service"],
+    });
 
     if (data.local.connect.length === 0 && data.local.disconnect.length > 0) {
       throw new errors.ApplicationError(`Debe seleccionar un local.`);
@@ -86,6 +94,33 @@ export default {
 
     if (!data.numero_de_orden) {
       event.params.data.numero_de_orden = where.id;
+    }
+    console.log("Data: ", data)
+    const fechaDeEntrega = data?.fecha_de_entrega?.split("T")[0];
+    if (fechaDeEntrega) {
+      if (fechaDeEntrega < data?.fecha_de_ingreso) {
+        throw new errors.ApplicationError(
+          "La fecha de entrega no puede ser menor a la fecha de ingreso.",
+        );
+      }
+      
+      if (serviceData?.estado_de_service?.id !== 4) {
+        throw new errors.ApplicationError(
+          `No se puede cargar una fecha de entrega, sin actualizar el estado a "Entregado"`,
+        );
+      }
+    }
+
+    if (
+      data.estado_de_service?.connect &&
+      data.estado_de_service?.connect[0] &&
+      data?.estado_de_service?.connect[0]?.id === 4
+    ) {
+      if (data?.fecha_de_entrega === null) {
+        throw new errors.ApplicationError(
+          `No se puede actualizar el estado a Entregado, sin agregarle una "Fecha de entrega"`,
+        );
+      }
     }
   },
   async afterUpdate(event) {
