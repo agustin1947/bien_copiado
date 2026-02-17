@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cuenta_corrientes",
+  "info": {
+    "singularName": "cuenta-corriente",
+    "pluralName": "cuenta-corrientes",
+    "displayName": "Cuenta Corriente"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cliente": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::cliente.cliente"
+    },
+    "numero_de_orden": {
+      "type": "biginteger",
+      "required": true
+    },
+    "fecha_de_ingreso": {
+      "type": "date",
+      "required": true
+    },
+    "local": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::local.local"
+    },
+    "Productos": {
+      "type": "dynamiczone",
+      "components": [
+        "productos.productos"
+      ]
+    }
+  }
+}

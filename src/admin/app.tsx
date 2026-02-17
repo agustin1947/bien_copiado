@@ -428,6 +428,16 @@ export default {
         "content-manager.content-types.api::ingreso.ingreso.n_orden_cc": "N° de orden Cuenta Corriente (opcional)",
         "content-manager.content-types.api::ingreso.ingreso.n_orden_st": "N° de orden Servicio Técnico (opcional)",
 
+        "content-manager.content-types.api::cliente.cliente.nombre": "Nombre",
+        "content-manager.content-types.api::cliente.cliente.apellido": "Apellido",
+        "content-manager.content-types.api::cliente.cliente.telefono": "Teléfono",
+
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.Productos": "Productos",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.local": "Local",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.cliente": "Cliente",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.numero_de_orden": "N° de orden",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.fecha_de_ingreso": "Fecha de ingreso",
+
         "content-manager.plugin.name": "Gestor de contenidos",
         "app.utils.drag": "Drag",
         "productos.productos": "Productos",
@@ -467,6 +477,8 @@ export default {
         gasto: "Gastos",
         venta: "Ventas",
         ingreso: "Ingresos",
+        Cliente: "Cliente",
+        "Cuenta Corriente": "Cuenta Corriente"
       },
     },
     theme: {
