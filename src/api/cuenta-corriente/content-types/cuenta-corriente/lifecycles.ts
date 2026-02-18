@@ -13,6 +13,15 @@ export default {
     ) {
       throw new errors.ApplicationError(`Debe seleccionar un "Cliente"`);
     }
+
+    if (
+      !ctxBody.tipo_de_moneda ||
+      ctxBody.tipo_de_moneda.length === 0 ||
+      ctxBody.tipo_de_moneda.connect.length === 0
+    ) {
+      throw new errors.ApplicationError(`Debe seleccionar un "Tipo de moneda"`);
+    }
+
   },
   async afterCreate(event) {},
 };
