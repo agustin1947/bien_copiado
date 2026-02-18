@@ -43,7 +43,7 @@ export default {
             where: { id: id },
             populate: true,
           });
-        
+
         if (productoDb.tipo_de_moneda.id !== tipoDeMonedaId) {
           throw new ApplicationError(
             `La moneda del producto ${productoDb.nombre} no coincide con la moneda seleccionada para la venta.`,
@@ -59,11 +59,19 @@ export default {
         }
       }
     }
-    throw new errors.ApplicationError(`ERROR`);
   },
   async afterCreate(event) {
     const { result } = event;
-    //const { data } = event.params;
+    const ccId = result.id;
+
+    const cuentaCorriente = await strapi.entityService.findOne(
+      "api::cuenta-corriente.cuenta-corriente" as any,
+      ccId,
+      {
+        populate: "*",
+      },
+    );
+
     if (!result.numero_de_orden) {
       await strapi.db.query("api::cuenta-corriente.cuenta-corriente").update({
         where: { id: result.id },
@@ -71,6 +79,31 @@ export default {
           numero_de_orden: result.id,
         },
       });
+    }
+
+    if (
+      cuentaCorriente["Productos"] &&
+      cuentaCorriente["Productos"].length > 0
+    ) {
+      for (const producto of cuentaCorriente["Productos"]) {
+        const cantidad = producto.cantidad;
+        const id = parseInt(producto.productoItem);
+
+        const productoDb = await strapi.entityService.findOne(
+          "api::producto.producto",
+          id,
+        );
+
+        if (productoDb) {
+          const stockNuevo = productoDb.stock - cantidad;
+
+          await strapi.entityService.update("api::producto.producto", id, {
+            data: {
+              stock: stockNuevo < 0 ? 0 : stockNuevo,
+            },
+          });
+        }
+      }
     }
   },
 };

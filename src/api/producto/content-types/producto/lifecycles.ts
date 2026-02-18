@@ -37,7 +37,10 @@ export default {
     if (
       !strapi.requestContext
         .get()
-        .url.startsWith("/content-manager/collection-types/api::venta.venta")
+        .url.startsWith("/content-manager/collection-types/api::venta.venta") &&
+      !strapi.requestContext
+        .get()
+        .url.startsWith("/content-manager/collection-types/api::cuenta-corriente.cuenta-corriente")
     ) {
       const { data } = event.params;
       const productoDb = await strapi.db
