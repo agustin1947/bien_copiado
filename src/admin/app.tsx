@@ -9,85 +9,12 @@ function limpiarDuplicadosLocalesButtons(id: any) {
   }
 }
 
-function insertarBotonesLocales() {
-  limpiarDuplicadosLocalesButtons("#locales-buttons");
-  if (document.getElementById("locales-buttons")) return;
-
-  const containerAnchor = document.querySelector(
-    '[data-strapi-header="true"] div:nth-child(2) a'
-  ) as HTMLElement;
-
-  if (containerAnchor) {
-    containerAnchor.remove();
-    containerAnchor.classList.add("d-none");
-  }
-
-  const container = document.querySelector(
-    '[data-strapi-header="true"] div:nth-child(2)'
-  ) as HTMLElement;
-
-  if (!container) return;
-
-  const btns = document.createElement("div");
-  btns.id = "locales-buttons";
-
-  fetch("/api/locals")
-    .then((res) => res.json())
-    .then((data) => {
-      if (!data?.data) return;
-
-      data.data.forEach((local: any) => {
-        fetch("/api/tipo-de-ventas")
-          .then((res) => res.json())
-          .then((tipos) => {
-            if (!tipos?.data) return;
-            tipos.data.forEach((tipoDeVenta: any) => {
-              const a = document.createElement("a");
-              a.href = `/admin/content-manager/collection-types/api::venta.venta/create?localId=${local.id}&tipoDeVentaId=${tipoDeVenta.id}`;
-              a.innerText =
-                `${local.nombre} - ${tipoDeVenta.nombre}` ||
-                `Local ${local.id} - ${tipoDeVenta.id}`;
-              a.classList.add("boton-local");
-              btns.appendChild(a);
-            });
-          });
-      });
-
-      container.appendChild(btns);
-    });
-  limpiarDuplicadosLocalesButtons("#locales-buttons");
-}
-
-function observarPaginaVentas() {
-  const observer = new MutationObserver(() => {
-    const pathname = window.location.pathname;
-    const isVentaList =
-      pathname === "/admin/content-manager/collection-types/api::venta.venta";
-    if (isVentaList) {
-      insertarBotonesLocales();
-    } else {
-      document.getElementById("locales-buttons")?.remove();
-      const containerAnchor = document.querySelector(
-        '[data-strapi-header="true"] div:nth-child(2) a'
-      ) as HTMLElement;
-      if (containerAnchor && containerAnchor.classList.contains("d-none")) {
-        containerAnchor.classList.remove("d-none");
-      }
-    }
-  });
-
-  observer.observe(document.body, {
-    childList: true, // detecta nodos agregados o eliminados
-    subtree: true, // detecta cambios dentro de hijos
-  });
-}
-
-function insertarBotonesLocalesGastos() {
+function insertarBotonesLocales(contentType: string) {
   limpiarDuplicadosLocalesButtons("#locales-buttons-gastos");
   if (document.getElementById("locales-buttons-gastos")) return;
 
   const containerAnchor = document.querySelector(
-    '[data-strapi-header="true"] div:nth-child(2) a'
+    '[data-strapi-header="true"] div:nth-child(2) a',
   ) as HTMLElement;
 
   if (containerAnchor) {
@@ -96,7 +23,7 @@ function insertarBotonesLocalesGastos() {
   }
 
   const container = document.querySelector(
-    '[data-strapi-header="true"] div:nth-child(2)'
+    '[data-strapi-header="true"] div:nth-child(2)',
   ) as HTMLElement;
 
   if (!container) return;
@@ -104,34 +31,86 @@ function insertarBotonesLocalesGastos() {
   const btns = document.createElement("div");
   btns.id = "locales-buttons-gastos";
 
-  fetch("/api/locals")
-    .then((res) => res.json())
-    .then((data) => {
-      if (!data?.data) return;
-      data.data.forEach((local: any) => {
-        const a = document.createElement("a");
-        a.href = `/admin/content-manager/collection-types/api::gasto.gasto/create?localId=${local.id}`;
-        a.innerText = `${local.nombre}` || `Local ${local.id}`;
-        a.classList.add("boton-local");
-        btns.appendChild(a);
+  if (contentType === "api::venta.venta") {
+    fetch("/api/locals")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data?.data) return;
+
+        data.data.forEach((local: any) => {
+          fetch("/api/tipo-de-ventas")
+            .then((res) => res.json())
+            .then((tipos) => {
+              if (!tipos?.data) return;
+              tipos.data.forEach((tipoDeVenta: any) => {
+                const a = document.createElement("a");
+                a.href = `/admin/content-manager/collection-types/api::venta.venta/create?localId=${local.id}&tipoDeVentaId=${tipoDeVenta.id}`;
+                a.innerText =
+                  `${local.nombre} - ${tipoDeVenta.nombre}` ||
+                  `Local ${local.id} - ${tipoDeVenta.id}`;
+                a.classList.add("boton-local");
+                btns.appendChild(a);
+              });
+            });
+        });
+
+        container.appendChild(btns);
       });
-      container.appendChild(btns);
-    });
+  } else {
+    fetch("/api/locals")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data?.data) return;
+        data.data.forEach((local: any) => {
+          const a = document.createElement("a");
+          a.href = `/admin/content-manager/collection-types/${contentType}/create?localId=${local.id}`;
+          a.innerText = `${local.nombre}` || `Local ${local.id}`;
+          a.classList.add("boton-local");
+          btns.appendChild(a);
+        });
+        container.appendChild(btns);
+      });
+  }
 
   limpiarDuplicadosLocalesButtons("#locales-buttons-gastos");
 }
 
-function observarPaginaGastos() {
+function observarPaginaConLocales() {
   const observer = new MutationObserver(() => {
     const pathname = window.location.pathname;
-    const isVentaList =
-      pathname === "/admin/content-manager/collection-types/api::gasto.gasto";
-    if (isVentaList) {
-      insertarBotonesLocalesGastos();
+    let contentType: string | null = null;
+    if (
+      pathname.includes(
+        "/admin/content-manager/collection-types/api::venta.venta",
+      )
+    ) {
+      contentType = "api::venta.venta";
+    }
+
+    if (
+      pathname.includes(
+        "/admin/content-manager/collection-types/api::gasto.gasto",
+      )
+    ) {
+      contentType = "api::gasto.gasto";
+    }
+
+    if (
+      pathname.includes(
+        "/admin/content-manager/collection-types/api::cuenta-corriente.cuenta-corriente",
+      )
+    ) {
+      contentType = "api::cuenta-corriente.cuenta-corriente";
+    }
+
+    /*const isVentaList =
+      pathname === "/admin/content-manager/collection-types/api::gasto.gasto";*/
+    if (contentType) {
+      insertarBotonesLocales(contentType);
     } else {
       document.getElementById("locales-buttons-gastos")?.remove();
       const containerAnchor = document.querySelector(
-        '[data-strapi-header="true"] div:nth-child(2) a'
+        '[data-strapi-header="true"] div:nth-child(2) a',
       ) as HTMLElement;
       if (containerAnchor && containerAnchor.classList.contains("d-none")) {
         containerAnchor.classList.remove("d-none");
@@ -149,7 +128,7 @@ function bloquearBotones() {
   const observer = new MutationObserver(() => {
     // bloquear botones con aria-haspopup="menu", dentro de formularios
     const buttonsHasPopup = document.querySelectorAll(
-      'form button[aria-haspopup="menu"]'
+      'form button[aria-haspopup="menu"]',
     );
 
     buttonsHasPopup.forEach((btn) => {
@@ -159,7 +138,7 @@ function bloquearBotones() {
     });
 
     const buttonsHasDialog = document.querySelectorAll(
-      'button[aria-haspopup="dialog"]'
+      'button[aria-haspopup="dialog"]',
     );
     buttonsHasDialog.forEach((btn, index) => {
       if (index == 1) {
@@ -331,7 +310,8 @@ export default {
           "Precio costo",
         "content-manager.content-types.api::producto.producto.precio_mayorista":
           "Precio Mayorista",
-        "content-manager.content-types.api::producto.producto.tipo_de_moneda": "Tipo de moneda",
+        "content-manager.content-types.api::producto.producto.tipo_de_moneda":
+          "Tipo de moneda",
 
         "content-manager.components.productos.productos.ganancia_por_item":
           "Ganancia por ítem",
@@ -343,17 +323,26 @@ export default {
         "content-manager.components.DynamicZone.add-item-above": "Agregar ítem",
         "content-manager.components.DynamicZone.more-actions": "Más acciones",
 
-        "content-manager.components.gastos.gastos-items.total_por_item": "Total",
-        "content-manager.components.gastos.gastos-items.precio_por_unidad":"Precio",
-        "content-manager.components.gastos.gastos-items.cantidad":"Cantidad",
-        "content-manager.components.gastos.gastos-items.nombre_producto_nuevo": "Nombre producto nuevo",
+        "content-manager.components.gastos.gastos-items.total_por_item":
+          "Total",
+        "content-manager.components.gastos.gastos-items.precio_por_unidad":
+          "Precio",
+        "content-manager.components.gastos.gastos-items.cantidad": "Cantidad",
+        "content-manager.components.gastos.gastos-items.nombre_producto_nuevo":
+          "Nombre producto nuevo",
 
-        "content-manager.content-types.api::gasto-diario.gasto-diario.fecha_de_ingreso": "Fecha de ingreso",
-        "content-manager.content-types.api::gasto-diario.gasto-diario.local": "Local",
-        "content-manager.content-types.api::gasto-diario.gasto-diario.forma_de_pago":"Forma de pago",
-        "content-manager.content-types.api::gasto-diario.gasto-diario.tipo_de_moneda": "Tipo de moneda",
-        "content-manager.content-types.api::gasto-diario.gasto-diario.total":"Total",
-        "content-manager.content-types.api::gasto-diario.gasto-diario.descripcion": "Descripción",
+        "content-manager.content-types.api::gasto-diario.gasto-diario.fecha_de_ingreso":
+          "Fecha de ingreso",
+        "content-manager.content-types.api::gasto-diario.gasto-diario.local":
+          "Local",
+        "content-manager.content-types.api::gasto-diario.gasto-diario.forma_de_pago":
+          "Forma de pago",
+        "content-manager.content-types.api::gasto-diario.gasto-diario.tipo_de_moneda":
+          "Tipo de moneda",
+        "content-manager.content-types.api::gasto-diario.gasto-diario.total":
+          "Total",
+        "content-manager.content-types.api::gasto-diario.gasto-diario.descripcion":
+          "Descripción",
 
         "content-manager.content-types.api::venta.venta.sales_detect_changes_in_items":
           "Se detectaron cambios en los ítems de la venta",
@@ -381,8 +370,10 @@ export default {
         "content-manager.content-types.api::gasto.gasto.id": "Id",
         "content-manager.content-types.api::gasto.gasto.Gastos": "Gastos",
         "content-manager.content-types.api::gasto.gasto.total": "Total",
-        "content-manager.content-types.api::gasto.gasto.fecha_de_ingreso": "Fecha de ingreso",
-        "content-manager.content-types.api::gasto.gasto.tipo_de_moneda":"Tipo de moneda",
+        "content-manager.content-types.api::gasto.gasto.fecha_de_ingreso":
+          "Fecha de ingreso",
+        "content-manager.content-types.api::gasto.gasto.tipo_de_moneda":
+          "Tipo de moneda",
         "content-manager.content-types.api::gasto.gasto.local": "Local",
 
         "content-manager.content-types.api::estado-de-service.estado-de-service.descripcion":
@@ -407,7 +398,8 @@ export default {
         "content-manager.content-types.api::caja-diaria.caja-diaria.createdAt":
           "Creado",
         "content-manager.content-types.api::caja-diaria.caja-diaria.id": "Id",
-        "content-manager.content-types.api::caja-diaria.caja-diaria.fecha_de_ingreso": "Fecha de ingreso",
+        "content-manager.content-types.api::caja-diaria.caja-diaria.fecha_de_ingreso":
+          "Fecha de ingreso",
 
         "content-manager.content-types.api::tipo-de-moneda.tipo-de-moneda.simbolo":
           "Símbolo",
@@ -419,24 +411,37 @@ export default {
           "Código",
 
         "content-manager.content-types.api::ingreso.ingreso.monto": "Monto",
-        "content-manager.content-types.api::ingreso.ingreso.descripcion": "Descripción",
-        "content-manager.content-types.api::ingreso.ingreso.fecha_de_ingreso": "Fecha de ingreso",
+        "content-manager.content-types.api::ingreso.ingreso.descripcion":
+          "Descripción",
+        "content-manager.content-types.api::ingreso.ingreso.fecha_de_ingreso":
+          "Fecha de ingreso",
         "content-manager.content-types.api::ingreso.ingreso.local": "Local",
-        "content-manager.content-types.api::ingreso.ingreso.tipo_de_moneda": "Tipo de moneda",
-        "content-manager.content-types.api::ingreso.ingreso.forma_de_pago": "Forma de pago",
+        "content-manager.content-types.api::ingreso.ingreso.tipo_de_moneda":
+          "Tipo de moneda",
+        "content-manager.content-types.api::ingreso.ingreso.forma_de_pago":
+          "Forma de pago",
         "content-manager.content-types.api::ingreso.ingreso.titulo": "Título",
-        "content-manager.content-types.api::ingreso.ingreso.n_orden_cc": "N° de orden Cuenta Corriente (opcional)",
-        "content-manager.content-types.api::ingreso.ingreso.n_orden_st": "N° de orden Servicio Técnico (opcional)",
+        "content-manager.content-types.api::ingreso.ingreso.n_orden_cc":
+          "N° de orden Cuenta Corriente (opcional)",
+        "content-manager.content-types.api::ingreso.ingreso.n_orden_st":
+          "N° de orden Servicio Técnico (opcional)",
 
         "content-manager.content-types.api::cliente.cliente.nombre": "Nombre",
-        "content-manager.content-types.api::cliente.cliente.apellido": "Apellido",
-        "content-manager.content-types.api::cliente.cliente.telefono": "Teléfono",
+        "content-manager.content-types.api::cliente.cliente.apellido":
+          "Apellido",
+        "content-manager.content-types.api::cliente.cliente.telefono":
+          "Teléfono",
 
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.Productos": "Productos",
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.local": "Local",
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.cliente": "Cliente",
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.numero_de_orden": "N° de orden",
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.fecha_de_ingreso": "Fecha de ingreso",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.Productos":
+          "Productos",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.local":
+          "Local",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.cliente":
+          "Cliente",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.numero_de_orden":
+          "N° de orden",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.fecha_de_ingreso":
+          "Fecha de ingreso",
 
         "content-manager.plugin.name": "Gestor de contenidos",
         "app.utils.drag": "Drag",
@@ -459,7 +464,7 @@ export default {
         "Settings.application.header": "Encabezado",
         "review-workflows.plugin.name": "Nombre",
         //Menu
-        
+
         "PDF Templates": "PDF Templates",
         User: "Usuario",
         "Tipo de moneda": "Tipo de moneda",
@@ -478,7 +483,7 @@ export default {
         venta: "Ventas",
         ingreso: "Ingresos",
         Cliente: "Cliente",
-        "Cuenta Corriente": "Cuenta Corriente"
+        "Cuenta Corriente": "Cuenta Corriente",
       },
     },
     theme: {
@@ -498,8 +503,7 @@ export default {
     },
   },
   bootstrap(app: StrapiApp) {
-    observarPaginaVentas();
-    observarPaginaGastos();
+    observarPaginaConLocales();
     bloquearBotones();
     const style = document.createElement("style");
     style.innerHTML = `
@@ -652,7 +656,7 @@ export default {
     /* evento para ocultar/mostrar nav */
     const interval = setInterval(() => {
       const logo = document.querySelector(
-        "nav > div > div > img"
+        "nav > div > div > img",
       ) as HTMLElement;
       const menu = document.querySelector("nav ~ div div nav") as HTMLElement;
 
@@ -661,7 +665,7 @@ export default {
 
         logo.addEventListener("click", () => {
           const menu = document.querySelector(
-            "nav ~ div div nav"
+            "nav ~ div div nav",
           ) as HTMLElement;
           if (menu) {
             menu.classList.toggle("show");
