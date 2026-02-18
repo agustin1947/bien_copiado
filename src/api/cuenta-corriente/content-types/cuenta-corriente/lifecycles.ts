@@ -22,6 +22,16 @@ export default {
       throw new errors.ApplicationError(`Debe seleccionar un "Tipo de moneda"`);
     }
 
+    const localId = ctx.request.query.localId;
+    if (!localId) {
+      throw new errors.ApplicationError(`Debe seleccionar un local`);
+    }
+
+    event.params.data.local = {
+      connect: [{ id: localId }],
+    };
+    //console.log("DATA: ", event.params.data)
+    //throw new errors.ApplicationError(`ERROR`);
   },
   async afterCreate(event) {},
 };
