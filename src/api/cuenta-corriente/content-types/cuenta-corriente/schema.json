@@ -18,7 +18,7 @@
     },
     "numero_de_orden": {
       "type": "biginteger",
-      "required": true
+      "required": false
     },
     "fecha_de_ingreso": {
       "type": "date",
