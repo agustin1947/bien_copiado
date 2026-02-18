@@ -387,6 +387,25 @@ const index = {
       },
       options: {}
     });
+    app.customFields.register({
+      name: "select-customize-cuenta-corriente",
+      pluginId: PLUGIN_ID,
+      type: "string",
+      intlLabel: {
+        id: "select-customize-cuenta-corriente-label",
+        defaultMessage: "label"
+      },
+      intlDescription: {
+        id: "select-customize-cuenta-corriente-description",
+        defaultMessage: "Select any color"
+      },
+      components: {
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DWJkfNAg.js")).then((module2) => ({
+          default: module2.SelectCustomizeCuentaCorriente
+        }))
+      },
+      options: {}
+    });
     app.registerPlugin({
       id: PLUGIN_ID,
       initializer: Initializer,
