@@ -33,5 +33,16 @@ export default {
     //console.log("DATA: ", event.params.data)
     //throw new errors.ApplicationError(`ERROR`);
   },
-  async afterCreate(event) {},
+  async afterCreate(event) {
+    const { result } = event;
+    //const { data } = event.params;
+    if (!result.numero_de_orden) {
+      await strapi.db.query("api::cuenta-corriente.cuenta-corriente").update({
+        where: { id: result.id },
+        data: {
+          numero_de_orden: result.id,
+        },
+      });
+    }
+  },
 };
