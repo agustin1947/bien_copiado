@@ -387,6 +387,8 @@ export interface ApiCajaDiariaCajaDiaria extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    fecha_de_ingreso: Schema.Attribute.Date & Schema.Attribute.Required;
+    local: Schema.Attribute.Relation<'oneToOne', 'api::local.local'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -400,6 +402,76 @@ export interface ApiCajaDiariaCajaDiaria extends Struct.CollectionTypeSchema {
     saldo_inicial_pesos: Schema.Attribute.Decimal &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ver_caja_diaria: Schema.Attribute.Decimal &
+      Schema.Attribute.CustomField<'plugin::my-custom-fields.ver-caja-diaria'>;
+  };
+}
+
+export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
+  collectionName: 'clientes';
+  info: {
+    displayName: 'Cliente';
+    pluralName: 'clientes';
+    singularName: 'cliente';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    apellido: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cliente.cliente'
+    > &
+      Schema.Attribute.Private;
+    nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    telefono: Schema.Attribute.BigInteger;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiCuentaCorrienteCuentaCorriente
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'cuenta_corrientes';
+  info: {
+    displayName: 'Cuenta Corriente';
+    pluralName: 'cuenta-corrientes';
+    singularName: 'cuenta-corriente';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    cliente: Schema.Attribute.Relation<'oneToOne', 'api::cliente.cliente'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    fecha_de_ingreso: Schema.Attribute.Date & Schema.Attribute.Required;
+    local: Schema.Attribute.Relation<'oneToOne', 'api::local.local'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::cuenta-corriente.cuenta-corriente'
+    > &
+      Schema.Attribute.Private;
+    numero_de_orden: Schema.Attribute.BigInteger;
+    Productos: Schema.Attribute.DynamicZone<['productos.productos']>;
+    publishedAt: Schema.Attribute.DateTime;
+    tipo_de_moneda: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::tipo-de-moneda.tipo-de-moneda'
+    >;
+    total: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -483,10 +555,12 @@ export interface ApiGastoDiarioGastoDiario extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     descripcion: Schema.Attribute.Text & Schema.Attribute.Required;
+    fecha_de_ingreso: Schema.Attribute.Date & Schema.Attribute.Required;
     forma_de_pago: Schema.Attribute.Relation<
       'oneToOne',
       'api::forma-de-pago.forma-de-pago'
     >;
+    local: Schema.Attribute.Relation<'oneToOne', 'api::local.local'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -522,6 +596,7 @@ export interface ApiGastoGasto extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     email: Schema.Attribute.Email;
+    fecha_de_ingreso: Schema.Attribute.Date & Schema.Attribute.Required;
     Gastos: Schema.Attribute.DynamicZone<['gastos.gastos-items']>;
     local: Schema.Attribute.Relation<'oneToOne', 'api::local.local'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -536,6 +611,69 @@ export interface ApiGastoGasto extends Struct.CollectionTypeSchema {
     >;
     total: Schema.Attribute.Decimal &
       Schema.Attribute.CustomField<'plugin::my-custom-fields.input-total-gastos'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiIngresoIngreso extends Struct.CollectionTypeSchema {
+  collectionName: 'ingresos';
+  info: {
+    displayName: 'ingreso';
+    pluralName: 'ingresos';
+    singularName: 'ingreso';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descripcion: Schema.Attribute.Text;
+    fecha_de_ingreso: Schema.Attribute.Date & Schema.Attribute.Required;
+    forma_de_pago: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::forma-de-pago.forma-de-pago'
+    >;
+    local: Schema.Attribute.Relation<'oneToOne', 'api::local.local'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::ingreso.ingreso'
+    > &
+      Schema.Attribute.Private;
+    n_orden_cc: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    n_orden_st: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    publishedAt: Schema.Attribute.DateTime;
+    tipo_de_moneda: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::tipo-de-moneda.tipo-de-moneda'
+    >;
+    titulo: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    total: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -684,7 +822,8 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
       'oneToOne',
       'api::estado-de-service.estado-de-service'
     >;
-    fecha_de_ingreso: Schema.Attribute.Date;
+    fecha_de_entrega: Schema.Attribute.Date;
+    fecha_de_ingreso: Schema.Attribute.Date & Schema.Attribute.Required;
     forma_de_pago: Schema.Attribute.Relation<
       'oneToOne',
       'api::forma-de-pago.forma-de-pago'
@@ -710,6 +849,8 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
     numero_de_orden: Schema.Attribute.String;
     observaciones_del_tecnico: Schema.Attribute.Text;
     otros: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    pagos_parciales: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::my-custom-fields.pagos-parciales'>;
     pantalla_daniada: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     publishedAt: Schema.Attribute.DateTime;
@@ -863,8 +1004,10 @@ export interface ApiVentaVenta extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    descripcion: Schema.Attribute.Text;
     dni: Schema.Attribute.BigInteger;
     email: Schema.Attribute.Email;
+    fecha_de_ingreso: Schema.Attribute.Date & Schema.Attribute.Required;
     forma_de_pago: Schema.Attribute.Relation<
       'oneToOne',
       'api::forma-de-pago.forma-de-pago'
@@ -880,6 +1023,8 @@ export interface ApiVentaVenta extends Struct.CollectionTypeSchema {
       Schema.Attribute.CustomField<'plugin::my-custom-fields.input-nombre-venta'>;
     Productos: Schema.Attribute.DynamicZone<['productos.productos']>;
     publishedAt: Schema.Attribute.DateTime;
+    sales_detect_changes_in_items: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::my-custom-fields.sales-detect-changes-in-items'>;
     telefono: Schema.Attribute.String;
     tipo_de_moneda: Schema.Attribute.Relation<
       'oneToOne',
@@ -1467,10 +1612,13 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::caja-diaria.caja-diaria': ApiCajaDiariaCajaDiaria;
+      'api::cliente.cliente': ApiClienteCliente;
+      'api::cuenta-corriente.cuenta-corriente': ApiCuentaCorrienteCuentaCorriente;
       'api::estado-de-service.estado-de-service': ApiEstadoDeServiceEstadoDeService;
       'api::forma-de-pago.forma-de-pago': ApiFormaDePagoFormaDePago;
       'api::gasto-diario.gasto-diario': ApiGastoDiarioGastoDiario;
       'api::gasto.gasto': ApiGastoGasto;
+      'api::ingreso.ingreso': ApiIngresoIngreso;
       'api::local.local': ApiLocalLocal;
       'api::producto.producto': ApiProductoProducto;
       'api::remito.remito': ApiRemitoRemito;

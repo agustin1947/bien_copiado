@@ -85,6 +85,9 @@ export default {
       cuentaCorriente["Productos"] &&
       cuentaCorriente["Productos"].length > 0
     ) {
+
+      const productosActualizados = [];
+
       for (const producto of cuentaCorriente["Productos"]) {
         const cantidad = producto.cantidad;
         const id = parseInt(producto.productoItem);
@@ -102,8 +105,29 @@ export default {
               stock: stockNuevo < 0 ? 0 : stockNuevo,
             },
           });
+
+          productosActualizados.push({
+            id: producto.id,
+            __component: "productos.productos",
+            productoItem: id,
+            cantidad: cantidad,
+            cantidadOriginal: cantidad, // 🔥 ACÁ se guarda bien
+            total: producto.total,
+            ganancia_por_item: producto.ganancia_por_item,
+            idProductoOriginal: id,
+          });
         }
       }
+
+      await strapi.entityService.update(
+        "api::cuenta-corriente.cuenta-corriente",
+        ccId,
+        {
+          data: {
+            Productos: productosActualizados
+          },
+        },
+      );
     }
   },
 };

@@ -30,7 +30,7 @@
       "relation": "oneToOne",
       "target": "api::local.local"
     },
-    "ver-caja-diaria": {
+    "ver_caja_diaria": {
       "type": "decimal",
       "customField": "plugin::my-custom-fields.ver-caja-diaria"
     }

@@ -184,7 +184,7 @@
       "customField": "plugin::my-custom-fields.input-service-total-ganancia",
       "default": 0
     },
-    "pagos-parciales": {
+    "pagos_parciales": {
       "type": "string",
       "customField": "plugin::my-custom-fields.pagos-parciales"
     }

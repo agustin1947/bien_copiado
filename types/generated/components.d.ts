@@ -31,12 +31,14 @@ export interface ProductosProductos extends Struct.ComponentSchema {
     cantidad: Schema.Attribute.Integer &
       Schema.Attribute.CustomField<'plugin::my-custom-fields.my-input-number-field'> &
       Schema.Attribute.DefaultTo<0>;
-    ganancia_por_item: Schema.Attribute.Decimal &
+    cantidadOriginal: Schema.Attribute.Integer;
+    ganancia_por_item: Schema.Attribute.Integer &
       Schema.Attribute.CustomField<'plugin::my-custom-fields.input-number-venta-ganancia-item'> &
       Schema.Attribute.DefaultTo<0>;
+    idProductoOriginal: Schema.Attribute.Integer;
     productoItem: Schema.Attribute.Integer &
       Schema.Attribute.CustomField<'plugin::my-custom-fields.my-custom-field'>;
-    total: Schema.Attribute.Decimal &
+    total: Schema.Attribute.Integer &
       Schema.Attribute.CustomField<'plugin::my-custom-fields.my-input-number-total-field'> &
       Schema.Attribute.DefaultTo<0>;
   };
