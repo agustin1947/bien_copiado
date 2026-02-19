@@ -139,16 +139,37 @@ export default {
       "api::cuenta-corriente.cuenta-corriente",
       ccId,
     );
-    console.log("ccOriginal: ", ccOriginal)
+    console.log("ccOriginal: ", ccOriginal);
     const fechaIngreso = ccOriginal["fecha_de_ingreso"];
-    console.log("fechaIngreso: ", fechaIngreso)
+    console.log("fechaIngreso: ", fechaIngreso);
     const hoy = new Date();
     const hoyStr = hoy.toISOString().split("T")[0];
-    console.log("Hoy: ", hoyStr)
+    console.log("Hoy: ", hoyStr);
     if (hoyStr > fechaIngreso) {
       throw new errors.ApplicationError(
         "No se puede editar una Cuenta Corriente después del día de ingreso.",
       );
+    }
+    if (
+      ctxBody.tipo_de_moneda.connect.length === 0 &&
+      ctxBody.tipo_de_moneda.disconnect.length > 0
+    ) {
+      throw new errors.ApplicationError(`Debe seleccionar un "Tipo de moneda"`);
+    }
+
+    if (
+      ctxBody.tipo_de_moneda.connect.length > 0 &&
+      ctxBody.tipo_de_moneda.disconnect &&
+      ctxBody.tipo_de_moneda.disconnect.length > 0
+    ) {
+      if (
+        ctxBody.tipo_de_moneda.connect[0].id !==
+        ctxBody.tipo_de_moneda.disconnect[0].id
+      ) {
+        throw new errors.ApplicationError(
+          `No puede editar el "Tipo de moneda"`,
+        );
+      }
     }
   },
   async afterUpdate(event) {},
