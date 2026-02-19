@@ -38,7 +38,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-CfeLpP7N.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-DcJkhMjv.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -382,25 +382,6 @@ const index = {
       components: {
         Input: async () => import("../_chunks/index-CR_gelAh.mjs").then((module) => ({
           default: module.PagosParciales
-        }))
-      },
-      options: {}
-    });
-    app.customFields.register({
-      name: "select-customize-cuenta-corriente",
-      pluginId: PLUGIN_ID,
-      type: "string",
-      intlLabel: {
-        id: "select-customize-cuenta-corriente-label",
-        defaultMessage: "label"
-      },
-      intlDescription: {
-        id: "select-customize-cuenta-corriente-description",
-        defaultMessage: "Select any color"
-      },
-      components: {
-        Input: async () => import("../_chunks/index-22EjPWXU.mjs").then((module) => ({
-          default: module.SelectCustomizeCuentaCorriente
         }))
       },
       options: {}
