@@ -171,6 +171,29 @@ export default {
         );
       }
     }
+
+    if (
+      ctxBody.cliente.connect.length === 0 &&
+      ctxBody.cliente.disconnect.length > 0
+    ) {
+      throw new errors.ApplicationError(`Debe seleccionar un "Cliente"`);
+    }
+
+    if (
+      ctxBody.cliente.connect.length > 0 &&
+      ctxBody.cliente.disconnect &&
+      ctxBody.cliente.disconnect.length > 0
+    ) {
+      if (
+        ctxBody.cliente.connect[0].id !==
+        ctxBody.cliente.disconnect[0].id
+      ) {
+        throw new errors.ApplicationError(
+          `No puede editar el "Cliente"`,
+        );
+      }
+    }
+
   },
   async afterUpdate(event) {},
 };
