@@ -37,7 +37,7 @@
     "Productos": {
       "type": "dynamiczone",
       "components": [
-        "productos.productos"
+        "cuenta-corriente.cuenta-corriente-items"
       ]
     },
     "total": {
