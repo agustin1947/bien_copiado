@@ -85,7 +85,6 @@ export default {
       cuentaCorriente["Productos"] &&
       cuentaCorriente["Productos"].length > 0
     ) {
-
       const productosActualizados = [];
 
       for (const producto of cuentaCorriente["Productos"]) {
@@ -124,10 +123,33 @@ export default {
         ccId,
         {
           data: {
-            Productos: productosActualizados
+            Productos: productosActualizados,
           },
         },
       );
     }
   },
+  async beforeUpdate(event) {
+    const ctx = strapi.requestContext.get();
+    const ctxBody = ctx.request.body;
+    const { params } = event;
+    const ccId = params.where.id;
+
+    const ccOriginal = await strapi.entityService.findOne(
+      "api::cuenta-corriente.cuenta-corriente",
+      ccId,
+    );
+    console.log("ccOriginal: ", ccOriginal)
+    const fechaIngreso = ccOriginal["fecha_de_ingreso"];
+    console.log("fechaIngreso: ", fechaIngreso)
+    const hoy = new Date();
+    const hoyStr = hoy.toISOString().split("T")[0];
+    console.log("Hoy: ", hoyStr)
+    if (hoyStr > fechaIngreso) {
+      throw new errors.ApplicationError(
+        "No se puede editar una Cuenta Corriente después del día de ingreso.",
+      );
+    }
+  },
+  async afterUpdate(event) {},
 };
