@@ -465,7 +465,9 @@ export interface ApiCuentaCorrienteCuentaCorriente
     > &
       Schema.Attribute.Private;
     numero_de_orden: Schema.Attribute.BigInteger;
-    Productos: Schema.Attribute.DynamicZone<['productos.productos']>;
+    Productos: Schema.Attribute.DynamicZone<
+      ['cuenta-corriente.cuenta-corriente-items']
+    >;
     publishedAt: Schema.Attribute.DateTime;
     tipo_de_moneda: Schema.Attribute.Relation<
       'oneToOne',
