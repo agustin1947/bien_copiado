@@ -31,7 +31,7 @@ function insertarBotonesLocales(contentType: string) {
   const btns = document.createElement("div");
   btns.id = "locales-buttons-gastos";
 
-  if (contentType === "api::venta.venta") {
+  if (contentType === "api::venta.venta" || contentType === "api::cuenta-corriente.cuenta-corriente") {
     fetch("/api/locals")
       .then((res) => res.json())
       .then((data) => {
@@ -44,7 +44,7 @@ function insertarBotonesLocales(contentType: string) {
               if (!tipos?.data) return;
               tipos.data.forEach((tipoDeVenta: any) => {
                 const a = document.createElement("a");
-                a.href = `/admin/content-manager/collection-types/api::venta.venta/create?localId=${local.id}&tipoDeVentaId=${tipoDeVenta.id}`;
+                a.href = `/admin/content-manager/collection-types/${contentType}/create?localId=${local.id}&tipoDeVentaId=${tipoDeVenta.id}`;
                 a.innerText =
                   `${local.nombre} - ${tipoDeVenta.nombre}` ||
                   `Local ${local.id} - ${tipoDeVenta.id}`;
