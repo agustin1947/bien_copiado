@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_cuenta_corriente_cuenta_corriente_items",
+  "info": {
+    "displayName": "cuenta_corriente_items",
+    "icon": "plus"
+  },
+  "options": {},
+  "attributes": {
+    "productoItem": {
+      "type": "integer",
+      "customField": "plugin::my-custom-fields.my-custom-field"
+    },
+    "cantidad": {
+      "type": "integer",
+      "customField": "plugin::my-custom-fields.my-input-number-field",
+      "default": 0
+    },
+    "total": {
+      "type": "integer",
+      "customField": "plugin::my-custom-fields.my-input-number-total-field",
+      "default": 0
+    },
+    "ganancia_por_item": {
+      "type": "integer",
+      "customField": "plugin::my-custom-fields.input-number-venta-ganancia-item",
+      "default": 0
+    },
+    "cantidadOriginal": {
+      "type": "integer"
+    },
+    "idProductoOriginal": {
+      "type": "integer"
+    }
+  },
+  "config": {}
+}
