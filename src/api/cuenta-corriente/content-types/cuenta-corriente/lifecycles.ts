@@ -108,7 +108,7 @@ export default {
 
           productosActualizados.push({
             id: producto.id,
-            __component: "productos.productos",
+            __component: "cuenta-corriente.cuenta-corriente-items",
             productoItem: id,
             cantidad: cantidad,
             cantidadOriginal: cantidad, // 🔥 ACÁ se guarda bien
