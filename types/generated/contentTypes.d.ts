@@ -469,6 +469,8 @@ export interface ApiCuentaCorrienteCuentaCorriente
       ['cuenta-corriente.cuenta-corriente-items']
     >;
     publishedAt: Schema.Attribute.DateTime;
+    sales_detect_changes_in_items: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::my-custom-fields.sales-detect-changes-in-items'>;
     tipo_de_moneda: Schema.Attribute.Relation<
       'oneToOne',
       'api::tipo-de-moneda.tipo-de-moneda'

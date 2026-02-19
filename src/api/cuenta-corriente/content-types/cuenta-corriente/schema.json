@@ -42,6 +42,10 @@
     },
     "total": {
       "type": "decimal"
+    },
+    "sales_detect_changes_in_items": {  
+      "type": "string",
+      "customField": "plugin::my-custom-fields.sales-detect-changes-in-items"
     }
   }
 }
