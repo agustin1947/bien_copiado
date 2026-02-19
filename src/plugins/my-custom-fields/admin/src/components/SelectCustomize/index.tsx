@@ -14,13 +14,17 @@ const SelectCustomize = (props: any, ref: any) => {
   const tipoDeVentaId = queryParams.get('tipoDeVentaId');
   const nameSplit = name.split('.');
   const index = parseInt(nameSplit[1]);
+  const pathname = window.location.pathname;
 
   useEffect(() => {
     if (!localId) {
       let urlSplit = window.location.href.split('/');
       let documentId = urlSplit[urlSplit.length - 1];
-
-      fetch(`/api/ventas?populate=*&filters[documentId][$eq]=${documentId}`)
+      let api = "ventas";
+      if(pathname.includes("api::cuenta-corriente.cuenta-corriente")) {
+        api = "cuenta-corrientes"
+      }
+      fetch(`/api/${api}?populate=*&filters[documentId][$eq]=${documentId}`)
         .then((res) => res.json())
         .then((data) => {
           if (!data?.data) return;
@@ -105,12 +109,13 @@ const SelectCustomize = (props: any, ref: any) => {
     if (value && productos.length > 0) {
       handleChange(value);
     }
+    console.log(productos)
   }, [value, productos]);
 
   return (
     <>
       <label className="label-customize" htmlFor={name}>
-        Producto
+        Producto ${value}
       </label>
       <select
         name={name}
