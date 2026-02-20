@@ -1,11 +1,12 @@
 import { errors } from "@strapi/utils";
 const { ApplicationError } = errors;
+import { syncProducts } from "../../../../utils/syncProducts";
 
 export default {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
-    //console.log("ctxBody: ", ctxBody)
+
     if (
       !ctxBody.cliente ||
       ctxBody.cliente === null ||
@@ -139,17 +140,17 @@ export default {
       "api::cuenta-corriente.cuenta-corriente",
       ccId,
     );
-    console.log("ccOriginal: ", ccOriginal);
+
     const fechaIngreso = ccOriginal["fecha_de_ingreso"];
-    console.log("fechaIngreso: ", fechaIngreso);
     const hoy = new Date();
     const hoyStr = hoy.toISOString().split("T")[0];
-    console.log("Hoy: ", hoyStr);
+
     if (hoyStr > fechaIngreso) {
       throw new errors.ApplicationError(
         "No se puede editar una Cuenta Corriente después del día de ingreso.",
       );
     }
+
     if (
       ctxBody.tipo_de_moneda.connect.length === 0 &&
       ctxBody.tipo_de_moneda.disconnect.length > 0
@@ -184,16 +185,25 @@ export default {
       ctxBody.cliente.disconnect &&
       ctxBody.cliente.disconnect.length > 0
     ) {
-      if (
-        ctxBody.cliente.connect[0].id !==
-        ctxBody.cliente.disconnect[0].id
-      ) {
-        throw new errors.ApplicationError(
-          `No puede editar el "Cliente"`,
-        );
+      if (ctxBody.cliente.connect[0].id !== ctxBody.cliente.disconnect[0].id) {
+        throw new errors.ApplicationError(`No puede editar el "Cliente"`);
       }
     }
-
   },
-  async afterUpdate(event) {},
+  async afterUpdate(event) {
+    const ccId = event.result.id;
+
+    if (event.params?.data?.__internal_update) {
+      return;
+    }
+    const result = await syncProducts({
+      uid: "api::cuenta-corriente.cuenta-corriente",
+      entityId: ccId,
+      componentUID: "cuenta-corriente.cuenta-corriente-items",
+      listProducts: "Productos",
+    });
+    if (result.error) {
+      throw new errors.ApplicationError(result.message);
+    }
+  },
 };
