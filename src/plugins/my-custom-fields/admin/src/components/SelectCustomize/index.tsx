@@ -115,7 +115,7 @@ const SelectCustomize = (props: any, ref: any) => {
   return (
     <>
       <label className="label-customize" htmlFor={name}>
-        Producto ${value}
+        Producto
       </label>
       <select
         name={name}
