@@ -443,6 +443,18 @@ export default {
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.fecha_de_ingreso":
           "Fecha de ingreso",
 
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.id":"ID",  
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.ganancia_por_item" : "Ganancia",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.total": "Total",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.cantidad": "Cantidad",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.productoItem": "Producto item",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.sales_detect_changes_in_items": "Detectar cambios en items",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.idProductoOriginal": "ID producto original",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.cantidadOriginal": "Cantidad Original",
+
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.total": "Total",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.tipo_de_moneda": "Tipo de moneda",
+
         "content-manager.plugin.name": "Gestor de contenidos",
         "app.utils.drag": "Drag",
         "productos.productos": "Productos",
@@ -484,6 +496,7 @@ export default {
         ingreso: "Ingresos",
         Cliente: "Cliente",
         "Cuenta Corriente": "Cuenta Corriente",
+        "cuenta-corriente": "Cuenta Corriente"
       },
     },
     theme: {
