@@ -1,6 +1,7 @@
 import { errors } from "@strapi/utils";
 const { ApplicationError } = errors;
 import { syncProducts } from "../../../../utils/syncProducts";
+import { updateToStockAfterDeleting } from "../../../../utils/updateToStockAfterDeleting";
 
 export default {
   async beforeCreate(event) {
@@ -206,4 +207,8 @@ export default {
       throw new errors.ApplicationError(result.message);
     }
   },
+  async beforeDelete(event) { 
+    const ccId = event.params.where.id;
+    const result = await updateToStockAfterDeleting("api::cuenta-corriente.cuenta-corriente", ccId)
+  }
 };
