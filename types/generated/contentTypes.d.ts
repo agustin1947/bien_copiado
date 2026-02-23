@@ -465,6 +465,8 @@ export interface ApiCuentaCorrienteCuentaCorriente
     > &
       Schema.Attribute.Private;
     numero_de_orden: Schema.Attribute.BigInteger;
+    pagos_parciales: Schema.Attribute.String &
+      Schema.Attribute.CustomField<'plugin::my-custom-fields.pagos-parciales'>;
     Productos: Schema.Attribute.DynamicZone<
       ['cuenta-corriente.cuenta-corriente-items']
     >;

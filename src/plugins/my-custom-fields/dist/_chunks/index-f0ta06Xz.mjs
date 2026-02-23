@@ -2,33 +2,43 @@ import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 const PagosParciales = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
+  const pathname = window.location.pathname;
   const segments = window.location.pathname.split("/");
   const documentId = segments[segments.length - 1];
-  const [service, setService] = useState(null);
+  const [entity, setEntity] = useState(null);
   const [ingresos, setIngresos] = useState([]);
   const [totalPagado, setTotalPagado] = useState(0);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const fetchService = async () => {
-      fetch(`/api/services?populate=*&filters[documentId][$eq]=${documentId}&sort[id]=desc`).then((res) => res.json()).then((data) => {
+    const fetchEntity = async () => {
+      let api = "services";
+      if (pathname.includes("api::cuenta-corriente.cuenta-corriente")) {
+        api = "cuenta-corrientes";
+      }
+      fetch(`/api/${api}?populate=*&filters[documentId][$eq]=${documentId}&sort[id]=desc`).then((res) => res.json()).then((data) => {
+        console.log(data);
         if (!data?.data) {
           console.error("No hay pagos parciales");
           return;
         }
-        setService(data.data[0]);
+        setEntity(data.data[0]);
       }).catch((err) => {
         console.error("Error el service", err);
       });
     };
     if (documentId) {
-      fetchService();
+      fetchEntity();
     }
   }, [documentId]);
   useEffect(() => {
-    if (!service?.id) return;
+    if (!entity?.id) return;
     setLoading(false);
+    let api = `/api/ingresos?populate=*&filters[n_orden_st][$eq]=${entity?.id}&sort[id]=desc`;
+    if (pathname.includes("api::cuenta-corriente.cuenta-corriente")) {
+      api = `/api/ingresos?populate=*&filters[n_orden_cc][$eq]=${entity?.id}&sort[id]=desc`;
+    }
     const fetchIngresos = () => {
-      fetch(`/api/ingresos?populate=*&filters[n_orden_st][$eq]=${service?.id}&sort[id]=desc`).then((res) => res.json()).then((data) => {
+      fetch(api).then((res) => res.json()).then((data) => {
         if (!data?.data) {
           console.error("No hay pagos ingresos");
           return;
@@ -39,8 +49,7 @@ const PagosParciales = (props, ref) => {
       });
     };
     fetchIngresos();
-    console.log("service actualizado:", service);
-  }, [service]);
+  }, [entity]);
   useEffect(() => {
     const totalPagado2 = ingresos.reduce((acc, ingreso) => {
       return acc + Number(ingreso.total || 0);
@@ -85,7 +94,7 @@ const PagosParciales = (props, ref) => {
         ] }) }),
         /* @__PURE__ */ jsx("td", { children: /* @__PURE__ */ jsxs("b", { style: { color: "red" }, children: [
           "$",
-          service?.total - totalPagado
+          entity?.total - totalPagado
         ] }) })
       ] }) })
     ] })

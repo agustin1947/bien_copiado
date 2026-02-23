@@ -2,38 +2,50 @@ import { useEffect, useState } from 'react';
 
 const PagosParciales = (props: any, ref: any) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
+  const pathname = window.location.pathname;
   const segments = window.location.pathname.split('/');
   const documentId = segments[segments.length - 1];
-  const [service, setService] = useState<any>(null);
+  const [entity, setEntity] = useState<any>(null);
   const [ingresos, setIngresos] = useState<any[]>([]);
   const [totalPagado, setTotalPagado] = useState(0);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
-    const fetchService = async () => {
-      fetch(`/api/services?populate=*&filters[documentId][$eq]=${documentId}&sort[id]=desc`)
+    const fetchEntity = async () => {
+      let api = "services";
+      if(pathname.includes("api::cuenta-corriente.cuenta-corriente")) {
+        api = "cuenta-corrientes";
+      }
+      
+      fetch(`/api/${api}?populate=*&filters[documentId][$eq]=${documentId}&sort[id]=desc`)
         .then((res) => res.json())
         .then((data) => {
+          console.log(data)
           if (!data?.data) {
             console.error('No hay pagos parciales');
             return;
           }
-          setService(data.data[0]);
+          setEntity(data.data[0]);
         })
         .catch((err) => {
           console.error('Error el service', err);
         });
     };
     if (documentId) {
-      fetchService();
+      fetchEntity();
     }
   }, [documentId]);
 
   useEffect(() => {
-    if (!service?.id) return;
+    if (!entity?.id) return;
     setLoading(false);
+
+    let api = `/api/ingresos?populate=*&filters[n_orden_st][$eq]=${entity?.id}&sort[id]=desc`;
+    if(pathname.includes("api::cuenta-corriente.cuenta-corriente")) {
+      api = `/api/ingresos?populate=*&filters[n_orden_cc][$eq]=${entity?.id}&sort[id]=desc`;
+    }
     const fetchIngresos = () => {
-      fetch(`/api/ingresos?populate=*&filters[n_orden_st][$eq]=${service?.id}&sort[id]=desc`)
+      fetch(api)
         .then((res) => res.json())
         .then((data) => {
           if (!data?.data) {
@@ -49,8 +61,7 @@ const PagosParciales = (props: any, ref: any) => {
 
     fetchIngresos();
 
-    console.log('service actualizado:', service);
-  }, [service]);
+  }, [entity]);
 
   useEffect(() => {
     const totalPagado = ingresos.reduce((acc, ingreso) => {
@@ -109,7 +120,7 @@ const PagosParciales = (props: any, ref: any) => {
                 <b style={{ color: 'green' }}>${totalPagado}</b>
               </td>
               <td>
-                <b style={{ color: 'red' }}>${service?.total - totalPagado}</b>
+                <b style={{ color: 'red' }}>${entity?.total - totalPagado}</b>
               </td>
             </tr>
           </tbody>

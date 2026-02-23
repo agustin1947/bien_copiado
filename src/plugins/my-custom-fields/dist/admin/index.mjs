@@ -380,7 +380,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-CR_gelAh.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-f0ta06Xz.mjs").then((module) => ({
           default: module.PagosParciales
         }))
       },
