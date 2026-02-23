@@ -43,6 +43,10 @@
     "total": {
       "type": "decimal"
     },
+    "pagos_parciales": {
+      "type": "string",
+      "customField": "plugin::my-custom-fields.pagos-parciales"
+    },
     "sales_detect_changes_in_items": {  
       "type": "string",
       "customField": "plugin::my-custom-fields.sales-detect-changes-in-items"
