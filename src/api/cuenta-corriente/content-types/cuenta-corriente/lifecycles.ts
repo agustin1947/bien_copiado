@@ -207,8 +207,25 @@ export default {
       throw new errors.ApplicationError(result.message);
     }
   },
-  async beforeDelete(event) { 
+  async beforeDelete(event) {
     const ccId = event.params.where.id;
-    const result = await updateToStockAfterDeleting("api::cuenta-corriente.cuenta-corriente", ccId)
-  }
+    const result_update_stock = await updateToStockAfterDeleting(
+      "api::cuenta-corriente.cuenta-corriente",
+      ccId,
+    );
+    console.log(`"Result update stock: ${result_update_stock.count}`);
+    const result_delete_ingreso = await strapi.db
+      .query("api::ingreso.ingreso")
+      .deleteMany({
+        where: { n_orden_cc: ccId },
+      });
+
+      const count = result_delete_ingreso.count;
+      const mensaje =
+        count === 1
+          ? `Se eliminó ${count} ingreso`
+          : `Se eliminaron ${count} ingresos`;
+
+      console.log(mensaje);
+  },
 };
