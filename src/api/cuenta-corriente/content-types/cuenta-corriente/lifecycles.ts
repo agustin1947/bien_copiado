@@ -135,22 +135,6 @@ export default {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
     const { params } = event;
-    const ccId = params.where.id;
-
-    const ccOriginal = await strapi.entityService.findOne(
-      "api::cuenta-corriente.cuenta-corriente",
-      ccId,
-    );
-
-    const fechaIngreso = ccOriginal["fecha_de_ingreso"];
-    const hoy = new Date();
-    const hoyStr = hoy.toISOString().split("T")[0];
-
-    if (hoyStr > fechaIngreso) {
-      throw new errors.ApplicationError(
-        "No se puede editar una Cuenta Corriente después del día de ingreso.",
-      );
-    }
 
     if (
       ctxBody.tipo_de_moneda.connect.length === 0 &&
