@@ -1,5 +1,6 @@
 import { jsxs, Fragment, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
+import { GenericSearchableSelect } from "./index-D7Ev0-O1.mjs";
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
@@ -33,7 +34,9 @@ const SelectCustomize = (props, ref) => {
     getTipoDeVenta(tipoDeVentaId);
   }, []);
   const filtrarLocalesPorLocal = (localId2) => {
-    fetch(`/api/productos?populate=*&filters[locales][id][$eq]=${localId2}&sort=nombre:desc&pagination[pageSize]=1000`).then((res) => res.json()).then((data) => {
+    fetch(
+      `/api/productos?populate=*&filters[locales][id][$eq]=${localId2}&sort=nombre:desc&pagination[pageSize]=1000`
+    ).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
       setProductos(data.data);
     }).catch((err) => {
@@ -80,6 +83,10 @@ const SelectCustomize = (props, ref) => {
       });
     }
   };
+  const opcionesProductos = productos.map((producto) => ({
+    id: producto.id,
+    label: `${producto.nombre} (${producto.tipo_de_moneda?.codigo})`
+  }));
   useEffect(() => {
     if (value && productos.length > 0) {
       handleChange(value);
@@ -87,20 +94,17 @@ const SelectCustomize = (props, ref) => {
     console.log(productos);
   }, [value, productos]);
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("label", { className: "label-customize", htmlFor: name, children: "Producto" }),
-    /* @__PURE__ */ jsxs(
-      "select",
+    /* @__PURE__ */ jsx(
+      GenericSearchableSelect,
       {
         name,
-        disabled,
-        required,
+        label: "Producto",
+        options: opcionesProductos,
         value,
-        onChange: (e) => handleChange(e.target.value),
-        className: "input-customize",
-        children: [
-          /* @__PURE__ */ jsx("option", { value: "", children: "Seleccione un producto" }),
-          productos.map((producto) => /* @__PURE__ */ jsx("option", { value: producto.id, children: `${producto?.nombre} (${producto?.tipo_de_moneda?.codigo})` || `Producto ${producto.id}` }, producto.id))
-        ]
+        placeholder: "Seleccione un Producto sss",
+        required,
+        disabled,
+        onChange: (selectedId) => handleChange(selectedId)
       }
     ),
     selectedProducto && /* @__PURE__ */ jsxs(Fragment, { children: [

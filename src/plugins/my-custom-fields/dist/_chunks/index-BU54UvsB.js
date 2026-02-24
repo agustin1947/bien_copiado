@@ -2,6 +2,7 @@
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const jsxRuntime = require("react/jsx-runtime");
 const react = require("react");
+const index = require("./index-CigGbG3F.js");
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
@@ -13,7 +14,7 @@ const SelectCustomize = (props, ref) => {
   const localId = queryParams.get("localId");
   const tipoDeVentaId = queryParams.get("tipoDeVentaId");
   const nameSplit = name.split(".");
-  const index = parseInt(nameSplit[1]);
+  const index$1 = parseInt(nameSplit[1]);
   const pathname = window.location.pathname;
   react.useEffect(() => {
     if (!localId) {
@@ -35,7 +36,9 @@ const SelectCustomize = (props, ref) => {
     getTipoDeVenta(tipoDeVentaId);
   }, []);
   const filtrarLocalesPorLocal = (localId2) => {
-    fetch(`/api/productos?populate=*&filters[locales][id][$eq]=${localId2}&sort=nombre:desc&pagination[pageSize]=1000`).then((res) => res.json()).then((data) => {
+    fetch(
+      `/api/productos?populate=*&filters[locales][id][$eq]=${localId2}&sort=nombre:desc&pagination[pageSize]=1000`
+    ).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
       setProductos(data.data);
     }).catch((err) => {
@@ -54,7 +57,7 @@ const SelectCustomize = (props, ref) => {
     const selectedProductoChange = productos.find((p) => p.id === parseInt(selectedId));
     setSelectedProducto(selectedProductoChange);
     const cantidadHTML = document.querySelector(
-      `input[name="Productos.${index}.cantidad"]`
+      `input[name="Productos.${index$1}.cantidad"]`
     );
     const cantidad = cantidadHTML?.value;
     onChange({
@@ -68,20 +71,24 @@ const SelectCustomize = (props, ref) => {
       const totalGanancia = precioSelected * parseInt(cantidad || "0") - selectedProductoChange.precio_compra * parseInt(cantidad || "0");
       onChange({
         target: {
-          name: `Productos.${index}.total`,
+          name: `Productos.${index$1}.total`,
           type: "number",
           value: parseInt(cantidad || "0") > 0 ? precioSelected * parseInt(cantidad || "0") : 0
         }
       });
       onChange({
         target: {
-          name: `Productos.${index}.ganancia_por_item`,
+          name: `Productos.${index$1}.ganancia_por_item`,
           type: "number",
           value: totalGanancia
         }
       });
     }
   };
+  const opcionesProductos = productos.map((producto) => ({
+    id: producto.id,
+    label: `${producto.nombre} (${producto.tipo_de_moneda?.codigo})`
+  }));
   react.useEffect(() => {
     if (value && productos.length > 0) {
       handleChange(value);
@@ -89,20 +96,17 @@ const SelectCustomize = (props, ref) => {
     console.log(productos);
   }, [value, productos]);
   return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize", htmlFor: name, children: "Producto" }),
-    /* @__PURE__ */ jsxRuntime.jsxs(
-      "select",
+    /* @__PURE__ */ jsxRuntime.jsx(
+      index.GenericSearchableSelect,
       {
         name,
-        disabled,
-        required,
+        label: "Producto",
+        options: opcionesProductos,
         value,
-        onChange: (e) => handleChange(e.target.value),
-        className: "input-customize",
-        children: [
-          /* @__PURE__ */ jsxRuntime.jsx("option", { value: "", children: "Seleccione un producto" }),
-          productos.map((producto) => /* @__PURE__ */ jsxRuntime.jsx("option", { value: producto.id, children: `${producto?.nombre} (${producto?.tipo_de_moneda?.codigo})` || `Producto ${producto.id}` }, producto.id))
-        ]
+        placeholder: "Seleccione un Producto sss",
+        required,
+        disabled,
+        onChange: (selectedId) => handleChange(selectedId)
       }
     ),
     selectedProducto && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
@@ -112,7 +116,7 @@ const SelectCustomize = (props, ref) => {
         {
           className: "d-none",
           type: "number",
-          name: `total-base-${index}`,
+          name: `total-base-${index$1}`,
           value: precio,
           readOnly: true,
           disabled: true
@@ -124,7 +128,7 @@ const SelectCustomize = (props, ref) => {
         {
           className: "d-none",
           type: "number",
-          name: `total-compra-${index}`,
+          name: `total-compra-${index$1}`,
           value: precioCompra,
           readOnly: true,
           disabled: true

@@ -404,6 +404,27 @@ export default {
       options: {},
     });
 
+    app.customFields.register({
+      name: 'generic_searchable_select',
+      pluginId: PLUGIN_ID,
+      type: 'string',
+      intlLabel: {
+        id: 'generic_searchable_select_label',
+        defaultMessage: 'label',
+      },
+      intlDescription: {
+        id: 'generic_searchable_select_description',
+        defaultMessage: 'Componente: desplegable genérico',
+      },
+      components: {
+        Input: async () =>
+          import('./components/GenericSearchableSelect').then((module) => ({
+            default: module.GenericSearchableSelect,
+          })),
+      },
+      options: {},
+    });
+
     app.registerPlugin({
       id: PLUGIN_ID,
       initializer: Initializer,

@@ -1,5 +1,5 @@
-import { parse } from 'path';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { GenericSearchableSelect } from '../GenericSearchableSelect';
 
 const SelectCustomize = (props: any, ref: any) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
@@ -20,9 +20,9 @@ const SelectCustomize = (props: any, ref: any) => {
     if (!localId) {
       let urlSplit = window.location.href.split('/');
       let documentId = urlSplit[urlSplit.length - 1];
-      let api = "ventas";
-      if(pathname.includes("api::cuenta-corriente.cuenta-corriente")) {
-        api = "cuenta-corrientes"
+      let api = 'ventas';
+      if (pathname.includes('api::cuenta-corriente.cuenta-corriente')) {
+        api = 'cuenta-corrientes';
       }
       fetch(`/api/${api}?populate=*&filters[documentId][$eq]=${documentId}`)
         .then((res) => res.json())
@@ -40,7 +40,9 @@ const SelectCustomize = (props: any, ref: any) => {
   }, []);
 
   const filtrarLocalesPorLocal = (localId: any) => {
-    fetch(`/api/productos?populate=*&filters[locales][id][$eq]=${localId}&sort=nombre:desc&pagination[pageSize]=1000`)
+    fetch(
+      `/api/productos?populate=*&filters[locales][id][$eq]=${localId}&sort=nombre:desc&pagination[pageSize]=1000`
+    )
       .then((res) => res.json())
       .then((data) => {
         if (!data?.data) return;
@@ -61,7 +63,7 @@ const SelectCustomize = (props: any, ref: any) => {
       .catch((err) => {
         console.error('Error al cargar tipo de venta', err);
       });
-  }
+  };
   const handleChange = (selectedId: string) => {
     const selectedProductoChange = productos.find((p) => p.id === parseInt(selectedId));
     setSelectedProducto(selectedProductoChange);
@@ -70,13 +72,13 @@ const SelectCustomize = (props: any, ref: any) => {
       `input[name="Productos.${index}.cantidad"]`
     );
     const cantidad = cantidadHTML?.value;
-    
+
     onChange({
       target: { name, type: attribute.type, value: selectedId },
     });
 
     if (selectedProductoChange) {
-      let precioSelected = tipoDeVenta?.nombre?.toLowerCase().includes("mayorista")
+      let precioSelected = tipoDeVenta?.nombre?.toLowerCase().includes('mayorista')
         ? selectedProductoChange.precio_mayorista
         : selectedProductoChange.precio;
 
@@ -85,7 +87,9 @@ const SelectCustomize = (props: any, ref: any) => {
 
       setPrecioCompra(selectedProductoChange.precio_compra);
 
-      const totalGanancia = (precioSelected * parseInt(cantidad || '0')) - (selectedProductoChange.precio_compra * parseInt(cantidad || '0'));
+      const totalGanancia =
+        precioSelected * parseInt(cantidad || '0') -
+        selectedProductoChange.precio_compra * parseInt(cantidad || '0');
 
       onChange({
         target: {
@@ -105,16 +109,22 @@ const SelectCustomize = (props: any, ref: any) => {
     }
   };
 
+  const opcionesProductos = productos.map((producto) => ({
+    id: producto.id,
+    label: `${producto.nombre} (${producto.tipo_de_moneda?.codigo})`,
+  }));
+
   useEffect(() => {
     if (value && productos.length > 0) {
       handleChange(value);
     }
-    console.log(productos)
+    console.log(productos);
+
   }, [value, productos]);
 
   return (
     <>
-      <label className="label-customize" htmlFor={name}>
+      {/*<label className="label-customize" htmlFor={name}>
         Producto
       </label>
       <select
@@ -131,12 +141,22 @@ const SelectCustomize = (props: any, ref: any) => {
             {`${producto?.nombre} (${producto?.tipo_de_moneda?.codigo})` || `Producto ${producto.id}`}
           </option>
         ))}
-      </select>
+      </select> */}
+      <GenericSearchableSelect
+        name={name}
+        label="Producto"
+        options={opcionesProductos}
+        value={value}
+        placeholder={'Seleccione un Producto sss'}
+        required={required}
+        disabled={disabled}
+        onChange={(selectedId) => handleChange(selectedId)}
+      />
 
       {selectedProducto && (
         <>
           <label className="label-customize p-1">
-            {tipoDeVenta?.nombre?.toLowerCase().includes("mayorista")
+            {tipoDeVenta?.nombre?.toLowerCase().includes('mayorista')
               ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)`
               : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)`}
           </label>

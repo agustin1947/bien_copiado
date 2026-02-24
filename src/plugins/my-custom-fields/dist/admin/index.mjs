@@ -38,7 +38,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-B6vu_EwZ.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-r-5J_Pd3.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -382,6 +382,25 @@ const index = {
       components: {
         Input: async () => import("../_chunks/index-f0ta06Xz.mjs").then((module) => ({
           default: module.PagosParciales
+        }))
+      },
+      options: {}
+    });
+    app.customFields.register({
+      name: "generic_searchable_select",
+      pluginId: PLUGIN_ID,
+      type: "string",
+      intlLabel: {
+        id: "generic_searchable_select_label",
+        defaultMessage: "label"
+      },
+      intlDescription: {
+        id: "generic_searchable_select_description",
+        defaultMessage: "Componente: desplegable genérico"
+      },
+      components: {
+        Input: async () => import("../_chunks/index-D7Ev0-O1.mjs").then((module) => ({
+          default: module.GenericSearchableSelect
         }))
       },
       options: {}

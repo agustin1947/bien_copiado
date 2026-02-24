@@ -39,7 +39,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-BVxc6tk3.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-BU54UvsB.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -383,6 +383,25 @@ const index = {
       components: {
         Input: async () => Promise.resolve().then(() => require("../_chunks/index-BC26WbRw.js")).then((module2) => ({
           default: module2.PagosParciales
+        }))
+      },
+      options: {}
+    });
+    app.customFields.register({
+      name: "generic_searchable_select",
+      pluginId: PLUGIN_ID,
+      type: "string",
+      intlLabel: {
+        id: "generic_searchable_select_label",
+        defaultMessage: "label"
+      },
+      intlDescription: {
+        id: "generic_searchable_select_description",
+        defaultMessage: "Componente: desplegable genérico"
+      },
+      components: {
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CigGbG3F.js")).then((module2) => ({
+          default: module2.GenericSearchableSelect
         }))
       },
       options: {}
