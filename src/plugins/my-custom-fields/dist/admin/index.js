@@ -39,7 +39,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-BU54UvsB.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-D1mvm8Cg.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -286,7 +286,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-UvdGOwVv.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CUXZNluD.js")).then((module2) => ({
           default: module2.InputNumberVentaGananciaItem
         }))
       },
@@ -362,7 +362,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-B1ZEX7J6.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DmxAYdHi.js")).then((module2) => ({
           default: module2.SalesDetectChangesInItems
         }))
       },
@@ -381,7 +381,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-BC26WbRw.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DYunx6Lk.js")).then((module2) => ({
           default: module2.PagosParciales
         }))
       },
@@ -400,7 +400,7 @@ const index = {
         defaultMessage: "Componente: desplegable genérico"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CigGbG3F.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CHp85dIw.js")).then((module2) => ({
           default: module2.GenericSearchableSelect
         }))
       },

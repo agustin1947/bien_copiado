@@ -38,7 +38,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-r-5J_Pd3.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-DfXVTMQv.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -285,7 +285,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-Dv3XSPyM.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-DkoQaWbd.mjs").then((module) => ({
           default: module.InputNumberVentaGananciaItem
         }))
       },
@@ -361,7 +361,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-XRBlZpTw.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-kX-ZHzQg.mjs").then((module) => ({
           default: module.SalesDetectChangesInItems
         }))
       },
@@ -380,7 +380,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-f0ta06Xz.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-BbwVlTMq.mjs").then((module) => ({
           default: module.PagosParciales
         }))
       },
@@ -399,7 +399,7 @@ const index = {
         defaultMessage: "Componente: desplegable genérico"
       },
       components: {
-        Input: async () => import("../_chunks/index-D7Ev0-O1.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-Dh8nYZ8z.mjs").then((module) => ({
           default: module.GenericSearchableSelect
         }))
       },

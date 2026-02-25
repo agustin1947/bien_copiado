@@ -64,8 +64,8 @@ const SelectCustomize = (props: any, ref: any) => {
         console.error('Error al cargar tipo de venta', err);
       });
   };
-  const handleChange = (selectedId: string) => {
-    const selectedProductoChange = productos.find((p) => p.id === parseInt(selectedId));
+  const handleChange = (selectedId: number) => {
+    const selectedProductoChange = productos.find((p) => p.id === selectedId);
     setSelectedProducto(selectedProductoChange);
 
     const cantidadHTML: HTMLInputElement | null = document.querySelector(
@@ -73,9 +73,9 @@ const SelectCustomize = (props: any, ref: any) => {
     );
     const cantidad = cantidadHTML?.value;
 
-    onChange({
+    /*onChange({
       target: { name, type: attribute.type, value: selectedId },
-    });
+    });*/
 
     if (selectedProductoChange) {
       let precioSelected = tipoDeVenta?.nombre?.toLowerCase().includes('mayorista')
@@ -118,39 +118,23 @@ const SelectCustomize = (props: any, ref: any) => {
     if (value && productos.length > 0) {
       handleChange(value);
     }
-    console.log(productos);
-
   }, [value, productos]);
 
   return (
     <>
-      {/*<label className="label-customize" htmlFor={name}>
-        Producto
-      </label>
-      <select
-        name={name}
-        disabled={disabled}
-        required={required}
-        value={value}
-        onChange={(e) => handleChange(e.target.value)}
-        className="input-customize"
-      >
-        <option value="">Seleccione un producto</option>
-        {productos.map((producto: any) => (
-          <option key={producto.id} value={producto.id}>
-            {`${producto?.nombre} (${producto?.tipo_de_moneda?.codigo})` || `Producto ${producto.id}`}
-          </option>
-        ))}
-      </select> */}
       <GenericSearchableSelect
         name={name}
         label="Producto"
         options={opcionesProductos}
         value={value}
-        placeholder={'Seleccione un Producto sss'}
+        placeholder={'Seleccione un Producto'}
         required={required}
         disabled={disabled}
-        onChange={(selectedId) => handleChange(selectedId)}
+        type={attribute.type}
+        onChange={onChange} // 🔥 ahora pasa directo el onChange del form
+        onOptionSelect={(selectedId) => {
+          handleChange(selectedId); // 🔥 solo lógica extra
+        }}
       />
 
       {selectedProducto && (
