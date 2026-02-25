@@ -79,6 +79,7 @@ export default {
         where: { id: result.id },
         data: {
           numero_de_orden: result.id,
+          __internal_update: true,
         },
       });
     }
@@ -119,13 +120,13 @@ export default {
           });
         }
       }
-
       await strapi.entityService.update(
         "api::cuenta-corriente.cuenta-corriente",
         ccId,
         {
           data: {
             Productos: productosActualizados,
+            __internal_update: true,
           },
         },
       );
@@ -177,10 +178,10 @@ export default {
   },
   async afterUpdate(event) {
     const ccId = event.result.id;
-
     if (event.params?.data?.__internal_update) {
       return;
     }
+    
     const result = await syncProducts({
       uid: "api::cuenta-corriente.cuenta-corriente",
       entityId: ccId,
