@@ -20,7 +20,6 @@ const PagosParciales = (props: any, ref: any) => {
       fetch(`/api/${api}?populate=*&filters[documentId][$eq]=${documentId}&sort[id]=desc`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data)
           if (!data?.data) {
             console.error('No hay pagos parciales');
             return;
