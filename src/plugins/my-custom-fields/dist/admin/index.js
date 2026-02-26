@@ -39,7 +39,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-C7IVcXVc.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-y6NKEeDG.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -400,7 +400,7 @@ const index = {
         defaultMessage: "Componente: desplegable genérico"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CIkUc_0q.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CYq97mxp.js")).then((module2) => ({
           default: module2.GenericSearchableSelect
         }))
       },

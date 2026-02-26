@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import arrow from './img/arrow.svg';
 
 interface SelectOption {
   id: number;
@@ -56,25 +57,29 @@ const GenericSearchableSelect = ({
   const selectedOption = options.find((option) => option.id === value);
 
   return (
-    <div ref={containerRef}>
-      {label && (
-        <label htmlFor={name} className="label-customize">
-          {label}
-        </label>
-      )}
+    <div ref={containerRef} className="generic_searchable_select">
+      {label && <div className="label-customize">{label}</div>}
       <div>
-        <div onClick={() => setIsOpen((prev) => !prev)}>
+        <div
+          className="generic_searchable_select__select input-customize"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
           {selectedOption ? selectedOption.label : placeholder}
+          <span>
+            <img src={arrow} alt="arrow" className={`${isOpen ? 'arrow arrow_up' : 'arrow'}`} />
+          </span>
         </div>
         {isOpen && (
-          <ul>
+          <ul className="generic_searchable_select__ul">
             <li>
-              <input
-                type="text"
-                name="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+                <input
+                  type="text"
+                  name="search"
+                  value={search}
+                  className="input-customize"
+                  placeholder='Buscar...'
+                  onChange={(e) => setSearch(e.target.value)}
+                />
             </li>
             {filteredOptions.length > 0 &&
               filteredOptions
@@ -83,6 +88,7 @@ const GenericSearchableSelect = ({
                   <li
                     key={option.id}
                     value={option.id}
+                    className="generic_searchable_select__li"
                     onClick={() => {
                       setIsOpen(false);
 
