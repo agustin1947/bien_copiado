@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "categoria_de_productos",
+  "info": {
+    "singularName": "categoria-de-producto",
+    "pluralName": "categoria-de-productos",
+    "displayName": "Categoría de producto"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "descripcion": {
+      "type": "text"
+    }
+  }
+}

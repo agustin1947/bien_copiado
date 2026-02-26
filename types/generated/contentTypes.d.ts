@@ -410,6 +410,38 @@ export interface ApiCajaDiariaCajaDiaria extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCategoriaDeProductoCategoriaDeProducto
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'categoria_de_productos';
+  info: {
+    displayName: 'Categor\u00EDa de producto';
+    pluralName: 'categoria-de-productos';
+    singularName: 'categoria-de-producto';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descripcion: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::categoria-de-producto.categoria-de-producto'
+    > &
+      Schema.Attribute.Private;
+    nombre: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
   collectionName: 'clientes';
   info: {
@@ -1618,6 +1650,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::caja-diaria.caja-diaria': ApiCajaDiariaCajaDiaria;
+      'api::categoria-de-producto.categoria-de-producto': ApiCategoriaDeProductoCategoriaDeProducto;
       'api::cliente.cliente': ApiClienteCliente;
       'api::cuenta-corriente.cuenta-corriente': ApiCuentaCorrienteCuentaCorriente;
       'api::estado-de-service.estado-de-service': ApiEstadoDeServiceEstadoDeService;
