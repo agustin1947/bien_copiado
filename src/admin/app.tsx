@@ -31,7 +31,10 @@ function insertarBotonesLocales(contentType: string) {
   const btns = document.createElement("div");
   btns.id = "locales-buttons-gastos";
 
-  if (contentType === "api::venta.venta" || contentType === "api::cuenta-corriente.cuenta-corriente") {
+  if (
+    contentType === "api::venta.venta" ||
+    contentType === "api::cuenta-corriente.cuenta-corriente"
+  ) {
     fetch("/api/locals")
       .then((res) => res.json())
       .then((data) => {
@@ -443,17 +446,29 @@ export default {
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.fecha_de_ingreso":
           "Fecha de ingreso",
 
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.id":"ID",  
-        "content-manager.components.cuenta-corriente.cuenta-corriente-items.ganancia_por_item" : "Ganancia",
-        "content-manager.components.cuenta-corriente.cuenta-corriente-items.total": "Total",
-        "content-manager.components.cuenta-corriente.cuenta-corriente-items.cantidad": "Cantidad",
-        "content-manager.components.cuenta-corriente.cuenta-corriente-items.productoItem": "Producto item",
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.sales_detect_changes_in_items": "Detectar cambios en items",
-        "content-manager.components.cuenta-corriente.cuenta-corriente-items.idProductoOriginal": "ID producto original",
-        "content-manager.components.cuenta-corriente.cuenta-corriente-items.cantidadOriginal": "Cantidad Original",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.id":
+          "ID",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.ganancia_por_item":
+          "Ganancia",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.total":
+          "Total",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.cantidad":
+          "Cantidad",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.productoItem":
+          "Producto item",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.sales_detect_changes_in_items":
+          "Detectar cambios en items",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.idProductoOriginal":
+          "ID producto original",
+        "content-manager.components.cuenta-corriente.cuenta-corriente-items.cantidadOriginal":
+          "Cantidad Original",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.pagos_parciales":
+          "Pagos Parciales",
 
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.total": "Total",
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.tipo_de_moneda": "Tipo de moneda",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.total":
+          "Total",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.tipo_de_moneda":
+          "Tipo de moneda",
 
         "content-manager.plugin.name": "Gestor de contenidos",
         "app.utils.drag": "Drag",
@@ -496,7 +511,7 @@ export default {
         ingreso: "Ingresos",
         Cliente: "Cliente",
         "Cuenta Corriente": "Cuenta Corriente",
-        "cuenta-corriente": "Cuenta Corriente"
+        "cuenta-corriente": "Cuenta Corriente",
       },
     },
     theme: {
@@ -644,7 +659,61 @@ export default {
         background-color: #f5f5f5;
         color: #333;
         border-color: #ddd;
+      } 
+
+      /* Componente GenericSearchableSelect */
+      .generic_searchable_select {
+        cursor: pointer;
+        position: relative;
       }  
+      .generic_searchable_select__select {
+          position: relative;
+          width: 100%; 
+      }
+      .generic_searchable_select__ul {
+        border: 1px solid #dcdce4;
+        border-radius:4px;
+        margin-top:5px;
+        position: absolute;
+        top: 60px;
+        width:100%;
+        background-color:#FFF;
+        z-index:10;
+      }
+      .generic_searchable_select__ul li {
+        padding:10px;
+      }
+      .generic_searchable_select__li {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        outline: none;
+        box-shadow: none;
+        transition-property: border-color, box-shadow, fill;
+        transition-duration: 0.2s;
+        font-size:1.4rem;
+        width: 100%;
+        border-top:1px solid #dcdce4;
+      }  
+      .generic_searchable_select__li:hover {
+        background-color:#FFEBEE;
+      }
+      .generic_searchable_select__select span {
+          position: absolute;
+          right: 10px;
+          top: 10px;
+      }
+      .arrow {
+          display: inline-block;
+          transition: transform 0.3s ease;
+      }
+      .arrow_up {
+          transform: rotate(180deg)
+      }
+      /* End Componente GenericSearchableSelect */
+      
       @media (max-width: 992px) { 
         #main-content {
           margin: 0 20px !important;
