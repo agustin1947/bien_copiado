@@ -14,8 +14,8 @@ export default async function seedCategoriaDeProducto(strapi) {
       ],
     });
 
-    strapi.log.info("5️⃣ ✔ Categoría de productos creadas");
+    strapi.log.info("7️⃣ ✔ Categoría de productos creadas");
   }else{
-    strapi.log.info("5️⃣ ❌ Categoría de producto: la tabla ya fue cargada.");
+    strapi.log.info("7️⃣ ❌ Categoría de producto: la tabla ya fue cargada.");
   }
 }
