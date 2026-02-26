@@ -6,6 +6,8 @@ import seedTipoDeMoneda from '../seeds/seed-tipo-de-moneda';
 import seedLocales from '../seeds/seed-locales';
 import seedFormaDePago from '../seeds/seed-forma-de-pago';
 import seedEstadoDeService from '../seeds/seed-estado-service';
+import seedCategoriaDeProducto from '../seeds/seed-categoria-de-producto';
+
 import { Server } from "socket.io";
 
 export default {
@@ -93,6 +95,11 @@ export default {
        */
       await seedPdfTemplates(strapi)
       
+      /**
+       * 7️⃣ CATEGORÍA DE PRODUCTO
+       * */
+      await seedCategoriaDeProducto(strapi)
+
     } catch (error) {
       strapi.log.error("❌ Error ejecutando seeds iniciales", error);
     }
