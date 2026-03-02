@@ -21,6 +21,10 @@
     },
     "telefono": {
       "type": "biginteger"
+    },
+    "nombre_completo": {
+      "type": "string",
+      "required": true
     }
   }
 }

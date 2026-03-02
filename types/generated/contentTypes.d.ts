@@ -432,6 +432,7 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    nombre_completo: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     telefono: Schema.Attribute.BigInteger;
     updatedAt: Schema.Attribute.DateTime;
