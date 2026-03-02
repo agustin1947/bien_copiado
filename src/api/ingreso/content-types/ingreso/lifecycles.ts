@@ -42,12 +42,23 @@ export default {
     }
 
     // en caso que se complete número de orden de un servicio técnico.
-    if (ctxBody.n_orden_st && !ctxBody.n_orden_cc) {
-      const diff = await validateEntryAgainstOrder(ctxBody, "api::service.service");
+    if (ctxBody.n_orden_st || ctxBody.n_orden_cc) {
+      let apiEntity = "api::service.service";
+      if (ctxBody.n_orden_cc) {
+        apiEntity = "api::cuenta-corriente.cuenta-corriente";
+      }
+      const diff = await validateEntryAgainstOrder(ctxBody, apiEntity);
+
       if (diff.error) {
         throw new errors.ApplicationError(diff.message);
       }
     }
+    /*if (ctxBody.n_orden_st && !ctxBody.n_orden_cc) {
+      const diff = await validateEntryAgainstOrder(ctxBody, "api::service.service");
+      if (diff.error) {
+        throw new errors.ApplicationError(diff.message);
+      }
+    }*/
   },
   async afterCreate(event) {},
   async beforeUpdate(event) {
@@ -125,12 +136,28 @@ export default {
       );
     }
 
-    if (ctxBody.n_orden_st && !ctxBody.n_orden_cc) {
-      const diff = await validateEntryAgainstOrder(ctxBody, "api::service.service", ingresoId);
+    if (ctxBody.n_orden_st || ctxBody.n_orden_cc) {
+      let apiEntity = "api::service.service";
+      if (ctxBody.n_orden_cc) {
+        apiEntity = "api::cuenta-corriente.cuenta-corriente";
+      }
+      const diff = await validateEntryAgainstOrder(ctxBody, apiEntity);
+
       if (diff.error) {
         throw new errors.ApplicationError(diff.message);
       }
     }
+
+    /*if (ctxBody.n_orden_st && !ctxBody.n_orden_cc) {
+      const diff = await validateEntryAgainstOrder(
+        ctxBody,
+        "api::service.service",
+        ingresoId,
+      );
+      if (diff.error) {
+        throw new errors.ApplicationError(diff.message);
+      }
+    }*/
   },
   async afterUpdate(event) {},
 };
@@ -145,7 +172,7 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     where: { id: n_orden },
     populate: true,
   });
-  
+
   if (!orden) {
     return {
       error: true,
@@ -162,11 +189,14 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     return {
       error: true,
       message: `${name}: El número de orden ingresado tiene un tipo de moneda diferente al seleccionado en el ingreso.`,
-    };  
+    };
   }
 
   // validar si tienen el mismo local
-  if (ctxBody.local.connect[0] && orden.local?.id !== ctxBody.local.connect[0].id) {
+  if (
+    ctxBody.local.connect[0] &&
+    orden.local?.id !== ctxBody.local.connect[0].id
+  ) {
     return {
       error: true,
       message: `${name}: El número de orden ingresado tiene un local diferente al seleccionado en el ingreso.`,
@@ -188,13 +218,13 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     .findMany({
       where: whereClause,
     });
-    
+
   const pagosParciales = ingresosRelacionados.reduce((total, ingreso) => {
     return total + parseFloat(ingreso.total);
   }, 0);
 
   const diferencia = parseFloat(orden.total) - pagosParciales;
-
+  
   if (diferencia === 0) {
     return {
       error: true,
