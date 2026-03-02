@@ -421,7 +421,6 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    apellido: Schema.Attribute.String & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -431,7 +430,6 @@ export interface ApiClienteCliente extends Struct.CollectionTypeSchema {
       'api::cliente.cliente'
     > &
       Schema.Attribute.Private;
-    nombre: Schema.Attribute.String & Schema.Attribute.Required;
     nombre_completo: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     telefono: Schema.Attribute.BigInteger;

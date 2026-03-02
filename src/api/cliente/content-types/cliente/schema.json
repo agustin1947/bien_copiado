@@ -11,14 +11,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "nombre": {
-      "type": "string",
-      "required": true
-    },
-    "apellido": {
-      "type": "string",
-      "required": true
-    },
     "telefono": {
       "type": "biginteger"
     },
