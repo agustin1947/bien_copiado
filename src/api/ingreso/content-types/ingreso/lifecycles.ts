@@ -53,6 +53,7 @@ export default {
         throw new errors.ApplicationError(diff.message);
       }
     }
+
     /*if (ctxBody.n_orden_st && !ctxBody.n_orden_cc) {
       const diff = await validateEntryAgainstOrder(ctxBody, "api::service.service");
       if (diff.error) {
@@ -141,7 +142,7 @@ export default {
       if (ctxBody.n_orden_cc) {
         apiEntity = "api::cuenta-corriente.cuenta-corriente";
       }
-      const diff = await validateEntryAgainstOrder(ctxBody, apiEntity);
+      const diff = await validateEntryAgainstOrder(ctxBody, apiEntity, ingresoId);
 
       if (diff.error) {
         throw new errors.ApplicationError(diff.message);
@@ -180,6 +181,16 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     };
   }
 
+  console.log("TIPO DE MONEDA: ", orden.tipo_de_moneda?.id);
+  console.log("ctxBody: ", ctxBody.tipo_de_moneda);
+  if(api === "api::cuenta-corriente.cuenta-corriente" && ctxBody.tipo_de_moneda.connect[0] && orden.tipo_de_moneda?.id !== ctxBody.tipo_de_moneda.connect[0].id){
+    console.log("TIPO DE MONEDA ENVIADO: ", ctxBody.tipo_de_moneda.connect[0].id);
+    return {
+      error: true,
+      message: `${name}: El número de orden ingresado tiene un tipo de moneda diferente al seleccionado en el ingreso.`,
+    };
+  }
+
   // los service siempre son en pesos
   if (
     api === "api::service.service" &&
@@ -188,9 +199,11 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
   ) {
     return {
       error: true,
-      message: `${name}: El número de orden ingresado tiene un tipo de moneda diferente al seleccionado en el ingreso.`,
+      message: `Los servicios técnicos deben tener como tipo de moneda "Peso argentino"`,
     };
   }
+
+
 
   // validar si tienen el mismo local
   if (
@@ -202,7 +215,8 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
       message: `${name}: El número de orden ingresado tiene un local diferente al seleccionado en el ingreso.`,
     };
   }
-
+  console.log("ingresoId", ingresoId)
+  console.log("ctxBody", ctxBody)
   const n_orden_ingresos_relacionados =
     api === "api::service.service"
       ? { n_orden_st: ctxBody.n_orden_st }
@@ -218,11 +232,11 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     .findMany({
       where: whereClause,
     });
-
+  console.log("ingresosRelacionados: ", ingresosRelacionados)
   const pagosParciales = ingresosRelacionados.reduce((total, ingreso) => {
     return total + parseFloat(ingreso.total);
   }, 0);
-
+  
   const diferencia = parseFloat(orden.total) - pagosParciales;
   
   if (diferencia === 0) {
