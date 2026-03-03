@@ -58,7 +58,7 @@ export default {
       where: { id: serviceId },
       populate: ["estado_de_service"],
     });
-
+    
     if (data.local.connect.length === 0 && data.local.disconnect.length > 0) {
       throw new errors.ApplicationError(`Debe seleccionar un local.`);
     }
@@ -104,7 +104,7 @@ export default {
         );
       }
 
-      if (serviceData?.estado_de_service?.id !== 4) {
+      if (data?.estado_de_service?.connect[0]?.id !== 4) {
         throw new errors.ApplicationError(
           `No se puede cargar una fecha de entrega, sin actualizar el estado a "Entregado"`,
         );

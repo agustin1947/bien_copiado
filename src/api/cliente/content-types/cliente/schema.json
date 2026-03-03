@@ -11,16 +11,12 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "nombre": {
-      "type": "string",
-      "required": true
-    },
-    "apellido": {
-      "type": "string",
-      "required": true
-    },
     "telefono": {
       "type": "biginteger"
+    },
+    "nombre_completo": {
+      "type": "string",
+      "required": true
     }
   }
 }
