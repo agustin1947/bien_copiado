@@ -1,25 +1,28 @@
 import { useState, useEffect } from 'react';
 import { GenericSearchableSelect } from '../GenericSearchableSelect';
+import { CategoryProductSelect } from '../CategoryProductSelect';
 
 const SelectCustomize = (props: any, ref: any) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
 
   const queryParams = new URLSearchParams(window.location.search);
-  const [productos, setProductos] = useState<any[]>([]);
   const [selectedProducto, setSelectedProducto] = useState<any>(null);
   const [precio, setPrecio] = useState<number>(0);
   const [precioCompra, setPrecioCompra] = useState<number>(0);
   const [tipoDeVenta, setTipoDeVenta] = useState<any>(null);
-  const localId = queryParams.get('localId');
   const tipoDeVentaId = queryParams.get('tipoDeVentaId');
   const nameSplit = name.split('.');
   const index = parseInt(nameSplit[1]);
   const pathname = window.location.pathname;
 
+  const [localId, setLocalId] = useState<string | null>(null);
+
   useEffect(() => {
-    if (!localId) {
+    let urlLocalId = queryParams.get('localId');
+    if (!urlLocalId) {
       let urlSplit = window.location.href.split('/');
       let documentId = urlSplit[urlSplit.length - 1];
+
       let api = 'ventas';
       if (pathname.includes('api::cuenta-corriente.cuenta-corriente')) {
         api = 'cuenta-corrientes';
@@ -28,112 +31,78 @@ const SelectCustomize = (props: any, ref: any) => {
         .then((res) => res.json())
         .then((data) => {
           if (!data?.data) return;
-          filtrarLocalesPorLocal(data.data[0].local.id);
+          setLocalId(data.data[0].local.id);
         })
         .catch((err) => {
           console.error('Error al cargar productos', err);
         });
     } else {
-      filtrarLocalesPorLocal(localId);
+      setLocalId(urlLocalId);
     }
-    getTipoDeVenta(tipoDeVentaId);
   }, []);
 
-  const filtrarLocalesPorLocal = (localId: any) => {
-    fetch(
-      `/api/productos?populate=*&filters[locales][id][$eq]=${localId}&sort=nombre:desc&pagination[pageSize]=1000`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data?.data) return;
-        setProductos(data.data);
-      })
-      .catch((err) => {
-        console.error('Error al cargar productos', err);
-      });
-  };
+  useEffect(() => {
+    if (!tipoDeVentaId) return;
 
-  const getTipoDeVenta = (tipoDeVentaId: any) => {
     fetch(`/api/tipo-de-ventas?populate=*&filters[id][$eq]=${tipoDeVentaId}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data?.data) return;
         setTipoDeVenta(data.data[0]);
       })
-      .catch((err) => {
-        console.error('Error al cargar tipo de venta', err);
-      });
-  };
-  const handleChange = (selectedId: number) => {
-    const selectedProductoChange = productos.find((p) => p.id === selectedId);
-    setSelectedProducto(selectedProductoChange);
+      .catch((err) => console.error('Error al cargar tipo de venta', err));
+  }, [tipoDeVentaId]);
+
+  const handleProductLogic = (producto: any) => {
+    if (!producto) return;
+    setSelectedProducto(producto);
 
     const cantidadHTML: HTMLInputElement | null = document.querySelector(
       `input[name="Productos.${index}.cantidad"]`
     );
-    const cantidad = cantidadHTML?.value;
 
-    /*onChange({
-      target: { name, type: attribute.type, value: selectedId },
-    });*/
+    const cantidad = parseInt(cantidadHTML?.value || '0');
 
-    if (selectedProductoChange) {
-      let precioSelected = tipoDeVenta?.nombre?.toLowerCase().includes('mayorista')
-        ? selectedProductoChange.precio_mayorista
-        : selectedProductoChange.precio;
+    const esMayorista = tipoDeVenta?.nombre?.toLowerCase().includes('mayorista');
 
-      setPrecio(precioSelected);
-      const stock = selectedProductoChange.stock;
+    const precioSeleccionado = esMayorista ? producto.precio_mayorista : producto.precio;
 
-      setPrecioCompra(selectedProductoChange.precio_compra);
+    setPrecio(precioSeleccionado);
+    setPrecioCompra(producto.precio_compra);
 
-      const totalGanancia =
-        precioSelected * parseInt(cantidad || '0') -
-        selectedProductoChange.precio_compra * parseInt(cantidad || '0');
+    const total = cantidad > 0 ? precioSeleccionado * cantidad : 0;
+    const ganancia = precioSeleccionado * cantidad - producto.precio_compra * cantidad;
 
-      onChange({
-        target: {
-          name: `Productos.${index}.total`,
-          type: 'number',
-          value: parseInt(cantidad || '0') > 0 ? precioSelected * parseInt(cantidad || '0') : 0,
-        },
-      });
+    onChange({
+      target: {
+        name: `Productos.${index}.total`,
+        type: 'number',
+        value: total,
+      },
+    });
 
-      onChange({
-        target: {
-          name: `Productos.${index}.ganancia_por_item`,
-          type: 'number',
-          value: totalGanancia,
-        },
-      });
-    }
+    onChange({
+      target: {
+        name: `Productos.${index}.ganancia_por_item`,
+        type: 'number',
+        value: ganancia,
+      },
+    });
   };
-
-  const opcionesProductos = productos.map((producto) => ({
-    id: producto.id,
-    label: `${producto.nombre} (${producto.tipo_de_moneda?.codigo})`,
-  }));
-
-  useEffect(() => {
-    if (value && productos.length > 0) {
-      handleChange(value);
-    }
-  }, [value, productos]);
 
   return (
     <>
-      <GenericSearchableSelect
+      <CategoryProductSelect
+        localId={localId}
         name={name}
-        label="Producto"
-        options={opcionesProductos}
-        value={value}
-        placeholder={'Seleccione un Producto'}
+        productValue={value}
         required={required}
         disabled={disabled}
-        type={attribute.type}
-        onChange={onChange} // 🔥 ahora pasa directo el onChange del form
-        onOptionSelect={(selectedId) => {
-          handleChange(selectedId); // 🔥 solo lógica extra
+        onProductChange={(e: any, productoCompleto?: any) => {
+          onChange(e);
+          if (productoCompleto) {
+            handleProductLogic(productoCompleto);
+          }
         }}
       />
 
