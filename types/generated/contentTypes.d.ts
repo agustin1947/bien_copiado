@@ -760,6 +760,10 @@ export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    categoria_de_producto: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::categoria-de-producto.categoria-de-producto'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
