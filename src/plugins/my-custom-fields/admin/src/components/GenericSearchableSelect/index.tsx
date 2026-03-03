@@ -4,6 +4,7 @@ import arrow from './img/arrow.svg';
 interface SelectOption {
   id: number;
   label: string;
+  data: any
 }
 
 interface GenericSelectProps {
