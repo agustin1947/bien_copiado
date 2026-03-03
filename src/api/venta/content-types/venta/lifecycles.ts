@@ -6,7 +6,7 @@ export default {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
-
+    console.log("ctxBody: ", ctxBody)
     if (
       !ctxBody.tipo_de_moneda ||
       ctxBody.tipo_de_moneda.length === 0 ||
@@ -134,9 +134,9 @@ export default {
 
     const ventaOriginal = await strapi.entityService.findOne(
       "api::venta.venta",
-      ventaId
+      ventaId,
     );
-    
+
     const fechaIngreso = ventaOriginal["fecha_de_ingreso"];
     const hoy = new Date();
     const hoyStr = hoy.toISOString().split("T")[0];
@@ -218,7 +218,7 @@ export default {
 
         continue;
       }
-      
+
       if (id !== idProductoOriginal) {
         throw new errors.ApplicationError(`No puede cambiar de producto.`);
       }
@@ -253,8 +253,10 @@ export default {
         },
       });
 
-      if(cantidad !== 0){ // Si la cantidad es igual a 0 el producto sera eliminado de la venta.
-        productosActualizados.push({// ❗❗ producto.id es el id del componente en el que se grabo el producto.
+      if (cantidad !== 0) {
+        // Si la cantidad es igual a 0 el producto sera eliminado de la venta.
+        productosActualizados.push({
+          // ❗❗ producto.id es el id del componente en el que se grabo el producto.
           id: producto.id,
           __component: "productos.productos",
           productoItem: id,
@@ -265,7 +267,7 @@ export default {
         });
       }
     }
-    
+
     await strapi.entityService.update("api::venta.venta", ventaId, {
       data: {
         Productos: productosActualizados,
@@ -282,7 +284,7 @@ export default {
         populate: {
           Productos: true,
         },
-      }
+      },
     );
 
     if (!venta || !venta["Productos"]?.length) return;
@@ -295,7 +297,7 @@ export default {
 
       const productoDb = await strapi.entityService.findOne(
         "api::producto.producto",
-        productoId
+        productoId,
       );
 
       if (!productoDb) continue;
@@ -306,5 +308,5 @@ export default {
         },
       });
     }
-  }
+  },
 };
