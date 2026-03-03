@@ -425,6 +425,27 @@ export default {
       options: {},
     });
 
+    app.customFields.register({
+      name: 'category_product_select',
+      pluginId: PLUGIN_ID,
+      type: 'string',
+      intlLabel: {
+        id: 'category_product_select_label',
+        defaultMessage: 'label',
+      },
+      intlDescription: {
+        id: 'category_product_select_description',
+        defaultMessage: 'Componente: desplegable de categorías de productos',
+      },
+      components: {
+        Input: async () =>
+          import('./components/CategoryProductSelect').then((module) => ({
+            default: module.CategoryProductSelect,
+          })),
+      },
+      options: {},
+    });
+
     app.registerPlugin({
       id: PLUGIN_ID,
       initializer: Initializer,
