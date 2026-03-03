@@ -535,11 +535,11 @@ export default {
     bloquearBotones();
     const style = document.createElement("style");
     style.innerHTML = `
-      nav ol li ol li:nth-child(10),
-      nav ol li ol li:nth-child(16),
+      nav ol li ol li:nth-child(11),
+      nav ol li ol li:nth-child(17),
       nav ul li:nth-child(n+3),
       nav:not([aria-label="Pagination"]) ol li span {
-          display: none !important;
+        display: none !important;
       }
      .hidden-delete {
       display: none;
