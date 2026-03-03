@@ -41,6 +41,11 @@
     "stock": {
       "type": "integer",
       "default": 0
+    },
+    "categoria_de_producto": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::categoria-de-producto.categoria-de-producto"
     }
   }
 }
