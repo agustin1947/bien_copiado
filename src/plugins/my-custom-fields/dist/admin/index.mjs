@@ -38,7 +38,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-CmlQQGvk.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-DXFwRJIY.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -401,6 +401,25 @@ const index = {
       components: {
         Input: async () => import("../_chunks/index-CYh1K5KN.mjs").then((module) => ({
           default: module.GenericSearchableSelect
+        }))
+      },
+      options: {}
+    });
+    app.customFields.register({
+      name: "category_product_select",
+      pluginId: PLUGIN_ID,
+      type: "string",
+      intlLabel: {
+        id: "category_product_select_label",
+        defaultMessage: "label"
+      },
+      intlDescription: {
+        id: "category_product_select_description",
+        defaultMessage: "Componente: desplegable de categorías de productos"
+      },
+      components: {
+        Input: async () => import("../_chunks/index-DRBVCu8N.mjs").then((module) => ({
+          default: module.CategoryProductSelect
         }))
       },
       options: {}

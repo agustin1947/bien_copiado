@@ -1,21 +1,21 @@
 import { jsxs, Fragment, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { GenericSearchableSelect } from "./index-CYh1K5KN.mjs";
+import { CategoryProductSelect } from "./index-DRBVCu8N.mjs";
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
-  const [productos, setProductos] = useState([]);
   const [selectedProducto, setSelectedProducto] = useState(null);
   const [precio, setPrecio] = useState(0);
   const [precioCompra, setPrecioCompra] = useState(0);
   const [tipoDeVenta, setTipoDeVenta] = useState(null);
-  const localId = queryParams.get("localId");
   const tipoDeVentaId = queryParams.get("tipoDeVentaId");
   const nameSplit = name.split(".");
   const index = parseInt(nameSplit[1]);
   const pathname = window.location.pathname;
+  const [localId, setLocalId] = useState(null);
   useEffect(() => {
-    if (!localId) {
+    let urlLocalId = queryParams.get("localId");
+    if (!urlLocalId) {
       let urlSplit = window.location.href.split("/");
       let documentId = urlSplit[urlSplit.length - 1];
       let api = "ventas";
@@ -24,86 +24,63 @@ const SelectCustomize = (props, ref) => {
       }
       fetch(`/api/${api}?populate=*&filters[documentId][$eq]=${documentId}`).then((res) => res.json()).then((data) => {
         if (!data?.data) return;
-        filtrarLocalesPorLocal(data.data[0].local.id);
+        setLocalId(data.data[0].local.id);
       }).catch((err) => {
         console.error("Error al cargar productos", err);
       });
     } else {
-      filtrarLocalesPorLocal(localId);
+      setLocalId(urlLocalId);
     }
-    getTipoDeVenta(tipoDeVentaId);
   }, []);
-  const filtrarLocalesPorLocal = (localId2) => {
-    fetch(
-      `/api/productos?populate=*&filters[locales][id][$eq]=${localId2}&sort=nombre:desc&pagination[pageSize]=1000`
-    ).then((res) => res.json()).then((data) => {
-      if (!data?.data) return;
-      setProductos(data.data);
-    }).catch((err) => {
-      console.error("Error al cargar productos", err);
-    });
-  };
-  const getTipoDeVenta = (tipoDeVentaId2) => {
-    fetch(`/api/tipo-de-ventas?populate=*&filters[id][$eq]=${tipoDeVentaId2}`).then((res) => res.json()).then((data) => {
+  useEffect(() => {
+    if (!tipoDeVentaId) return;
+    fetch(`/api/tipo-de-ventas?populate=*&filters[id][$eq]=${tipoDeVentaId}`).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
       setTipoDeVenta(data.data[0]);
-    }).catch((err) => {
-      console.error("Error al cargar tipo de venta", err);
-    });
-  };
-  const handleChange = (selectedId) => {
-    const selectedProductoChange = productos.find((p) => p.id === selectedId);
-    setSelectedProducto(selectedProductoChange);
+    }).catch((err) => console.error("Error al cargar tipo de venta", err));
+  }, [tipoDeVentaId]);
+  const handleProductLogic = (producto) => {
+    if (!producto) return;
+    setSelectedProducto(producto);
     const cantidadHTML = document.querySelector(
       `input[name="Productos.${index}.cantidad"]`
     );
-    const cantidad = cantidadHTML?.value;
-    if (selectedProductoChange) {
-      let precioSelected = tipoDeVenta?.nombre?.toLowerCase().includes("mayorista") ? selectedProductoChange.precio_mayorista : selectedProductoChange.precio;
-      setPrecio(precioSelected);
-      selectedProductoChange.stock;
-      setPrecioCompra(selectedProductoChange.precio_compra);
-      const totalGanancia = precioSelected * parseInt(cantidad || "0") - selectedProductoChange.precio_compra * parseInt(cantidad || "0");
-      onChange({
-        target: {
-          name: `Productos.${index}.total`,
-          type: "number",
-          value: parseInt(cantidad || "0") > 0 ? precioSelected * parseInt(cantidad || "0") : 0
-        }
-      });
-      onChange({
-        target: {
-          name: `Productos.${index}.ganancia_por_item`,
-          type: "number",
-          value: totalGanancia
-        }
-      });
-    }
+    const cantidad = parseInt(cantidadHTML?.value || "0");
+    const esMayorista = tipoDeVenta?.nombre?.toLowerCase().includes("mayorista");
+    const precioSeleccionado = esMayorista ? producto.precio_mayorista : producto.precio;
+    setPrecio(precioSeleccionado);
+    setPrecioCompra(producto.precio_compra);
+    const total = cantidad > 0 ? precioSeleccionado * cantidad : 0;
+    const ganancia = precioSeleccionado * cantidad - producto.precio_compra * cantidad;
+    onChange({
+      target: {
+        name: `Productos.${index}.total`,
+        type: "number",
+        value: total
+      }
+    });
+    onChange({
+      target: {
+        name: `Productos.${index}.ganancia_por_item`,
+        type: "number",
+        value: ganancia
+      }
+    });
   };
-  const opcionesProductos = productos.map((producto) => ({
-    id: producto.id,
-    label: `${producto.nombre} (${producto.tipo_de_moneda?.codigo})`
-  }));
-  useEffect(() => {
-    if (value && productos.length > 0) {
-      handleChange(value);
-    }
-  }, [value, productos]);
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     /* @__PURE__ */ jsx(
-      GenericSearchableSelect,
+      CategoryProductSelect,
       {
+        localId,
         name,
-        label: "Producto",
-        options: opcionesProductos,
-        value,
-        placeholder: "Seleccione un Producto",
+        productValue: value,
         required,
         disabled,
-        type: attribute.type,
-        onChange,
-        onOptionSelect: (selectedId) => {
-          handleChange(selectedId);
+        onProductChange: (e, productoCompleto) => {
+          onChange(e);
+          if (productoCompleto) {
+            handleProductLogic(productoCompleto);
+          }
         }
       }
     ),
