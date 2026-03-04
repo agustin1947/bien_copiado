@@ -547,6 +547,10 @@ export default {
       visibility: hidden;
       pointer-events: none;
      }
+      /* bloque para evitar que se corten los select genericos */
+      [data-state='open']{
+        overflow: unset !important;
+      }
       #main-content div:first-child div:first-child img ~ div{
         display: none !important;
       }
@@ -680,6 +684,8 @@ export default {
         width:100%;
         background-color:#FFF;
         z-index:10;
+        max-height:185px;
+        overflow-x: hidden
       }
       .generic_searchable_select__ul li {
         padding:10px;
