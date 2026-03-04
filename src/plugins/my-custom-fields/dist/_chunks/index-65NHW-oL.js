@@ -64,6 +64,7 @@ const CategoryProductSelect = ({
         placeholder: "Seleccione una categoría",
         onChange: (e) => {
           setSelectedCategoria(e.target.value);
+          onProductChange({ target: { name, type: "number", value: void 0 } }, void 0);
         }
       }
     ),

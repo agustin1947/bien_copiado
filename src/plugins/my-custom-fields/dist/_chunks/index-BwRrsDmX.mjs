@@ -1,21 +1,19 @@
-"use strict";
-Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-const jsxRuntime = require("react/jsx-runtime");
-const react = require("react");
-const index = require("./index-CnxzGUO0.js");
+import { jsxs, Fragment, jsx } from "react/jsx-runtime";
+import { useState, useEffect } from "react";
+import { CategoryProductSelect } from "./index-CWdr9SJz.mjs";
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
-  const [selectedProducto, setSelectedProducto] = react.useState(null);
-  const [precio, setPrecio] = react.useState(0);
-  const [precioCompra, setPrecioCompra] = react.useState(0);
-  const [tipoDeVenta, setTipoDeVenta] = react.useState(null);
+  const [selectedProducto, setSelectedProducto] = useState(null);
+  const [precio, setPrecio] = useState(0);
+  const [precioCompra, setPrecioCompra] = useState(0);
+  const [tipoDeVenta, setTipoDeVenta] = useState(null);
   const tipoDeVentaId = queryParams.get("tipoDeVentaId");
   const nameSplit = name.split(".");
-  const index$1 = parseInt(nameSplit[1]);
+  const index = parseInt(nameSplit[1]);
   const pathname = window.location.pathname;
-  const [localId, setLocalId] = react.useState(null);
-  react.useEffect(() => {
+  const [localId, setLocalId] = useState(null);
+  useEffect(() => {
     let urlLocalId = queryParams.get("localId");
     if (!urlLocalId) {
       let urlSplit = window.location.href.split("/");
@@ -34,7 +32,7 @@ const SelectCustomize = (props, ref) => {
       setLocalId(urlLocalId);
     }
   }, []);
-  react.useEffect(() => {
+  useEffect(() => {
     if (!tipoDeVentaId) return;
     fetch(`/api/tipo-de-ventas?populate=*&filters[id][$eq]=${tipoDeVentaId}`).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
@@ -42,10 +40,27 @@ const SelectCustomize = (props, ref) => {
     }).catch((err) => console.error("Error al cargar tipo de venta", err));
   }, [tipoDeVentaId]);
   const handleProductLogic = (producto) => {
-    if (!producto) return;
+    if (!producto) {
+      setSelectedProducto(null);
+      onChange({
+        target: {
+          name: `Productos.${index}.total`,
+          type: "number",
+          value: 0
+        }
+      });
+      onChange({
+        target: {
+          name: `Productos.${index}.ganancia_por_item`,
+          type: "number",
+          value: 0
+        }
+      });
+      return;
+    }
     setSelectedProducto(producto);
     const cantidadHTML = document.querySelector(
-      `input[name="Productos.${index$1}.cantidad"]`
+      `input[name="Productos.${index}.cantidad"]`
     );
     const cantidad = parseInt(cantidadHTML?.value || "0");
     const esMayorista = tipoDeVenta?.nombre?.toLowerCase().includes("mayorista");
@@ -56,22 +71,22 @@ const SelectCustomize = (props, ref) => {
     const ganancia = precioSeleccionado * cantidad - producto.precio_compra * cantidad;
     onChange({
       target: {
-        name: `Productos.${index$1}.total`,
+        name: `Productos.${index}.total`,
         type: "number",
         value: total
       }
     });
     onChange({
       target: {
-        name: `Productos.${index$1}.ganancia_por_item`,
+        name: `Productos.${index}.ganancia_por_item`,
         type: "number",
         value: ganancia
       }
     });
   };
-  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntime.jsx(
-      index.CategoryProductSelect,
+  return /* @__PURE__ */ jsxs(Fragment, { children: [
+    /* @__PURE__ */ jsx(
+      CategoryProductSelect,
       {
         localId,
         name,
@@ -80,32 +95,30 @@ const SelectCustomize = (props, ref) => {
         disabled,
         onProductChange: (e, productoCompleto) => {
           onChange(e);
-          if (productoCompleto) {
-            handleProductLogic(productoCompleto);
-          }
+          handleProductLogic(productoCompleto);
         }
       }
     ),
-    selectedProducto && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize p-1", children: tipoDeVenta?.nombre?.toLowerCase().includes("mayorista") ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` }),
-      /* @__PURE__ */ jsxRuntime.jsx(
+    selectedProducto && /* @__PURE__ */ jsxs(Fragment, { children: [
+      /* @__PURE__ */ jsx("label", { className: "label-customize p-1", children: tipoDeVenta?.nombre?.toLowerCase().includes("mayorista") ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` }),
+      /* @__PURE__ */ jsx(
         "input",
         {
           className: "d-none",
           type: "number",
-          name: `total-base-${index$1}`,
+          name: `total-base-${index}`,
           value: precio,
           readOnly: true,
           disabled: true
         }
       ),
-      /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize p-1", children: `Precio de compra: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)` }),
-      /* @__PURE__ */ jsxRuntime.jsx(
+      /* @__PURE__ */ jsx("label", { className: "label-customize p-1", children: `Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)` }),
+      /* @__PURE__ */ jsx(
         "input",
         {
           className: "d-none",
           type: "number",
-          name: `total-compra-${index$1}`,
+          name: `total-compra-${index}`,
           value: precioCompra,
           readOnly: true,
           disabled: true
@@ -114,4 +127,6 @@ const SelectCustomize = (props, ref) => {
     ] })
   ] });
 };
-exports.SelectCustomize = SelectCustomize;
+export {
+  SelectCustomize
+};

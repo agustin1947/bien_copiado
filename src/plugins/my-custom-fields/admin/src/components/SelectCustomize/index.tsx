@@ -54,7 +54,26 @@ const SelectCustomize = (props: any, ref: any) => {
   }, [tipoDeVentaId]);
 
   const handleProductLogic = (producto: any) => {
-    if (!producto) return;
+    if (!producto) {
+      setSelectedProducto(null);
+      onChange({
+        target: {
+          name: `Productos.${index}.total`,
+          type: 'number',
+          value: 0,
+        },
+      });
+
+      onChange({
+        target: {
+          name: `Productos.${index}.ganancia_por_item`,
+          type: 'number',
+          value: 0,
+        },
+      });
+
+      return;
+    }
     setSelectedProducto(producto);
 
     const cantidadHTML: HTMLInputElement | null = document.querySelector(
@@ -100,9 +119,10 @@ const SelectCustomize = (props: any, ref: any) => {
         disabled={disabled}
         onProductChange={(e: any, productoCompleto?: any) => {
           onChange(e);
-          if (productoCompleto) {
+          handleProductLogic(productoCompleto);
+          /*if (productoCompleto) {
             handleProductLogic(productoCompleto);
-          }
+          }*/
         }}
       />
 
@@ -122,7 +142,7 @@ const SelectCustomize = (props: any, ref: any) => {
             disabled
           />
 
-          <label className="label-customize p-1">{`Precio de compra: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)`}</label>
+          <label className="label-customize p-1">{`Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)`}</label>
 
           <input
             className="d-none"
