@@ -38,7 +38,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-5ZYCziZ1.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-CQUPLJ9Y.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -418,7 +418,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => import("../_chunks/index-CPu3zhCB.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-CHq1Smdc.mjs").then((module) => ({
           default: module.CategoryProductSelect
         }))
       },
