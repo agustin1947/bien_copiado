@@ -512,6 +512,7 @@ export default {
         Cliente: "Cliente",
         "Cuenta Corriente": "Cuenta Corriente",
         "cuenta-corriente": "Cuenta Corriente",
+        "Categoría de producto": "Categoría de producto"
       },
     },
     theme: {
