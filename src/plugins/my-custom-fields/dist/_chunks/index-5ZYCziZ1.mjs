@@ -1,6 +1,6 @@
 import { jsxs, Fragment, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { CategoryProductSelect } from "./index-CWdr9SJz.mjs";
+import { CategoryProductSelect } from "./index-CPu3zhCB.mjs";
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
@@ -40,6 +40,7 @@ const SelectCustomize = (props, ref) => {
     }).catch((err) => console.error("Error al cargar tipo de venta", err));
   }, [tipoDeVentaId]);
   const handleProductLogic = (producto) => {
+    console.log("Selected Product: ", producto);
     if (!producto) {
       setSelectedProducto(null);
       onChange({

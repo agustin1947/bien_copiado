@@ -2,7 +2,7 @@
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const jsxRuntime = require("react/jsx-runtime");
 const react = require("react");
-const index = require("./index-65NHW-oL.js");
+const index = require("./index-BOYhhzdj.js");
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
@@ -42,6 +42,7 @@ const SelectCustomize = (props, ref) => {
     }).catch((err) => console.error("Error al cargar tipo de venta", err));
   }, [tipoDeVentaId]);
   const handleProductLogic = (producto) => {
+    console.log("Selected Product: ", producto);
     if (!producto) {
       setSelectedProducto(null);
       onChange({

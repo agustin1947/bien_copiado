@@ -19,14 +19,17 @@ const CategoryProductSelect = ({
     }).catch(console.error);
   }, []);
   useEffect(() => {
+    console.log("productValue: ", productValue);
     if (!productValue) return;
     fetch(`/api/productos?populate=*&filters[id][$eq]=${productValue}`).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
       const producto = data.data[0];
       const categoriaId = producto.categoria_de_producto?.id;
+      console.log("Producto seleccionado: ", producto);
       if (categoriaId) {
         setSelectedCategoria(categoriaId);
       }
+      onProductChange({ target: { name, type: "number", value: productValue } }, producto);
     }).catch(console.error);
   }, [productValue]);
   useEffect(() => {

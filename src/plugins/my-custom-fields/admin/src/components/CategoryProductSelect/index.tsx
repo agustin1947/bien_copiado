@@ -46,6 +46,8 @@ const CategoryProductSelect = ({
         if (categoriaId) {
           setSelectedCategoria(categoriaId);
         }
+        onProductChange({ target: { name, type: 'number', value: productValue } }, producto);
+
       })
       .catch(console.error);
   }, [productValue]);
