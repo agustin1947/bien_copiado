@@ -31,7 +31,7 @@ const InputPrecioPorUnidadGastosItem = (props, ref) => {
           name,
           disabled,
           required,
-          value,
+          value: value ?? 0,
           min: "0",
           type: "number",
           className: "input-customize",

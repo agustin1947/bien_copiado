@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { GenericSearchableSelect } from '../GenericSearchableSelect';
 
 const SelectCustomizeGasto = (props: any, ref: any) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
@@ -8,28 +9,30 @@ const SelectCustomizeGasto = (props: any, ref: any) => {
   const localId = queryParams.get('localId');
   const nameSplit = name.split('.');
   const index = parseInt(nameSplit[1]);
-  
+
   useEffect(() => {
     if (!localId) {
       let urlSplit = window.location.href.split('/');
       let documentId = urlSplit[urlSplit.length - 1];
-      console.log(documentId)
+      
       fetch(`/api/gastos?populate=*&filters[documentId][$eq]=${documentId}`)
         .then((res) => res.json())
         .then((data) => {
           if (!data?.data) return;
-          filtrarLocalesPorLocal(data.data[0].local.id)
+          filtrarLocalesPorLocal(data.data[0].local.id);
         })
         .catch((err) => {
           console.error('Error al cargar productos', err);
         });
     } else {
-      filtrarLocalesPorLocal(localId)
+      filtrarLocalesPorLocal(localId);
     }
   }, []);
 
   const filtrarLocalesPorLocal = (localId: any) => {
-    fetch(`/api/productos?populate=*&filters[locales][id][$eq]=${localId}&sort=nombre:desc&pagination[pageSize]=1000`)
+    fetch(
+      `/api/productos?populate=*&filters[locales][id][$eq]=${localId}&sort=nombre:desc&pagination[pageSize]=1000`
+    )
       .then((res) => res.json())
       .then((data) => {
         if (!data?.data) return;
@@ -40,34 +43,32 @@ const SelectCustomizeGasto = (props: any, ref: any) => {
       });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (e: any) => {
     const selectedId = e.target.value;
-    console.log(selectedId)
     onChange({
       target: { name, type: attribute.type, value: selectedId },
     });
   };
 
+  const opcionesProductos = productos.map((p) => ({
+    id: p.id,
+    label: `${p.nombre} (${p.tipo_de_moneda?.codigo})`,
+    data: p,
+  }));
+
   return (
     <>
-      <label className="label-customize" htmlFor={name}>
-        Producto
-      </label>
-      <select
+      {/* SELECT PRODUCTO */}
+      <GenericSearchableSelect
         name={name}
-        disabled={disabled}
+        label="Producto"
+        options={opcionesProductos}
+        value={value ?? ""}
+        placeholder="Seleccione un producto"
         required={required}
-        value={value}
+        disabled={disabled}
         onChange={handleChange}
-        className="input-customize"
-      >
-        <option value="">Seleccione un producto</option>
-        {productos.map((producto: any) => (
-          <option key={producto.id} value={producto.id}>
-            {`${producto?.nombre} (${producto?.tipo_de_moneda?.codigo})` || `Producto ${producto.id}`}
-          </option>
-        ))}
-      </select>
+      />
     </>
   );
 };

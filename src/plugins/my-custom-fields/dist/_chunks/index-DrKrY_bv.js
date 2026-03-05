@@ -1,10 +1,13 @@
-import { jsxs, Fragment, jsx } from "react/jsx-runtime";
+"use strict";
+Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+const jsxRuntime = require("react/jsx-runtime");
 const InputCantidadGastosItem = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const nameSplit = name.split(".");
   const index = parseInt(nameSplit[1]);
   const handleChange = (e) => {
     const cantidad = parseInt(e.target.value, 10) || 0;
+    console.log("handleChange: ", e);
     onChange({
       target: { name, type: attribute.type, value: cantidad }
     });
@@ -21,15 +24,15 @@ const InputCantidadGastosItem = (props, ref) => {
       }
     });
   };
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("label", { className: "label-customize", children: "Cantidad" }),
-    /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize", children: "Cantidad" }),
+    /* @__PURE__ */ jsxRuntime.jsx(
       "input",
       {
         name,
         disabled,
         required,
-        value,
+        value: value ?? 0,
         min: "0",
         type: "number",
         className: "input-customize",
@@ -38,6 +41,4 @@ const InputCantidadGastosItem = (props, ref) => {
     )
   ] });
 };
-export {
-  InputCantidadGastosItem
-};
+exports.InputCantidadGastosItem = InputCantidadGastosItem;

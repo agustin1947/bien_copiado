@@ -1,5 +1,6 @@
-import { jsxs, Fragment, jsx } from "react/jsx-runtime";
+import { jsx, Fragment } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
+import { GenericSearchableSelect } from "./index-CYh1K5KN.mjs";
 const SelectCustomizeGasto = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
@@ -11,7 +12,6 @@ const SelectCustomizeGasto = (props, ref) => {
     if (!localId) {
       let urlSplit = window.location.href.split("/");
       let documentId = urlSplit[urlSplit.length - 1];
-      console.log(documentId);
       fetch(`/api/gastos?populate=*&filters[documentId][$eq]=${documentId}`).then((res) => res.json()).then((data) => {
         if (!data?.data) return;
         filtrarLocalesPorLocal(data.data[0].local.id);
@@ -23,7 +23,9 @@ const SelectCustomizeGasto = (props, ref) => {
     }
   }, []);
   const filtrarLocalesPorLocal = (localId2) => {
-    fetch(`/api/productos?populate=*&filters[locales][id][$eq]=${localId2}&sort=nombre:desc&pagination[pageSize]=1000`).then((res) => res.json()).then((data) => {
+    fetch(
+      `/api/productos?populate=*&filters[locales][id][$eq]=${localId2}&sort=nombre:desc&pagination[pageSize]=1000`
+    ).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
       setProductos(data.data);
     }).catch((err) => {
@@ -32,29 +34,28 @@ const SelectCustomizeGasto = (props, ref) => {
   };
   const handleChange = (e) => {
     const selectedId = e.target.value;
-    console.log(selectedId);
     onChange({
       target: { name, type: attribute.type, value: selectedId }
     });
   };
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("label", { className: "label-customize", htmlFor: name, children: "Producto" }),
-    /* @__PURE__ */ jsxs(
-      "select",
-      {
-        name,
-        disabled,
-        required,
-        value,
-        onChange: handleChange,
-        className: "input-customize",
-        children: [
-          /* @__PURE__ */ jsx("option", { value: "", children: "Seleccione un producto" }),
-          productos.map((producto) => /* @__PURE__ */ jsx("option", { value: producto.id, children: `${producto?.nombre} (${producto?.tipo_de_moneda?.codigo})` || `Producto ${producto.id}` }, producto.id))
-        ]
-      }
-    )
-  ] });
+  const opcionesProductos = productos.map((p) => ({
+    id: p.id,
+    label: `${p.nombre} (${p.tipo_de_moneda?.codigo})`,
+    data: p
+  }));
+  return /* @__PURE__ */ jsx(Fragment, { children: /* @__PURE__ */ jsx(
+    GenericSearchableSelect,
+    {
+      name,
+      label: "Producto",
+      options: opcionesProductos,
+      value: value ?? "",
+      placeholder: "Seleccione un producto",
+      required,
+      disabled,
+      onChange: handleChange
+    }
+  ) });
 };
 export {
   SelectCustomizeGasto

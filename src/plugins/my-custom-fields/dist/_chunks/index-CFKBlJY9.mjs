@@ -2,6 +2,7 @@ import { jsxs, Fragment, jsx } from "react/jsx-runtime";
 import { useEffect } from "react";
 const InputTotalGastosItem = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
+  console.log("InputTotalGastosItem:", value);
   useEffect(() => {
     const totals = document.querySelectorAll(".input_total_item_gastos_product");
     let total = 0;
@@ -29,7 +30,7 @@ const InputTotalGastosItem = (props, ref) => {
           name,
           disabled: true,
           required,
-          value,
+          value: value ?? 0,
           min: "0",
           type: "number",
           className: "input-customize input_total_item_gastos_product"

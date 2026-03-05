@@ -153,7 +153,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-D7jHeDo1.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-Bi-dVfaR.js")).then((module2) => ({
           default: module2.InputTotalGastosItem
         }))
       },
@@ -172,7 +172,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-D2QOg1rA.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DrKrY_bv.js")).then((module2) => ({
           default: module2.InputCantidadGastosItem
         }))
       },
@@ -191,7 +191,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-Zj4LEd4x.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-D6LRObuF.js")).then((module2) => ({
           default: module2.InputPrecioPorUnidadGastosItem
         }))
       },
@@ -210,7 +210,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DaBJAo9T.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-Bb0IO-3-.js")).then((module2) => ({
           default: module2.InputTotalGastos
         }))
       },
@@ -229,7 +229,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-UPiuDHcn.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-BPHXW7ca.js")).then((module2) => ({
           default: module2.SelectCustomizeGasto
         }))
       },

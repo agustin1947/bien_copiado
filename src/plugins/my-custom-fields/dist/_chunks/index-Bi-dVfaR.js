@@ -4,6 +4,7 @@ const jsxRuntime = require("react/jsx-runtime");
 const react = require("react");
 const InputTotalGastosItem = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
+  console.log("InputTotalGastosItem:", value);
   react.useEffect(() => {
     const totals = document.querySelectorAll(".input_total_item_gastos_product");
     let total = 0;
@@ -31,7 +32,7 @@ const InputTotalGastosItem = (props, ref) => {
           name,
           disabled: true,
           required,
-          value,
+          value: value ?? 0,
           min: "0",
           type: "number",
           className: "input-customize input_total_item_gastos_product"

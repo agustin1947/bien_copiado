@@ -11,7 +11,7 @@ const InputTotalGastos = (props, ref) => {
           name,
           disabled: true,
           required,
-          value,
+          value: value ?? "",
           min: "0",
           type: "number",
           className: "input-customize"

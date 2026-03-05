@@ -152,7 +152,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-DeYxMX8r.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-CFKBlJY9.mjs").then((module) => ({
           default: module.InputTotalGastosItem
         }))
       },
@@ -171,7 +171,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-BPg5BWA0.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-DSDdZ-ei.mjs").then((module) => ({
           default: module.InputCantidadGastosItem
         }))
       },
@@ -190,7 +190,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-Cr7eYv15.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-STt4ZQqs.mjs").then((module) => ({
           default: module.InputPrecioPorUnidadGastosItem
         }))
       },
@@ -209,7 +209,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-DiBboY0S.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-B6_K87qI.mjs").then((module) => ({
           default: module.InputTotalGastos
         }))
       },
@@ -228,7 +228,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-BrgACd3_.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-CwsixZaP.mjs").then((module) => ({
           default: module.SelectCustomizeGasto
         }))
       },

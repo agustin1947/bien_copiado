@@ -4,8 +4,9 @@ const InputCantidadGastosItem = (props: any, ref: any) => {
   const nameSplit = name.split('.');
   const index = parseInt(nameSplit[1]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     const cantidad = parseInt(e.target.value, 10) || 0;
+    
     onChange({
       target: { name, type: attribute.type, value: cantidad },
     });
@@ -33,7 +34,7 @@ const InputCantidadGastosItem = (props: any, ref: any) => {
         name={name}
         disabled={disabled}
         required={required}
-        value={value}
+        value={value ?? 0}
         min="0"
         type="number"
         className="input-customize"
