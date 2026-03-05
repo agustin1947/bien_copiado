@@ -1,4 +1,4 @@
-import { jsxs, Fragment, jsx } from "react/jsx-runtime";
+import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
 import { GenericSearchableSelect } from "./index-CYh1K5KN.mjs";
 const CategoryProductSelect = ({
@@ -52,7 +52,7 @@ const CategoryProductSelect = ({
     label: `${p.nombre} (${p.tipo_de_moneda?.codigo})`,
     data: p
   }));
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
+  return /* @__PURE__ */ jsxs("div", { className: "category_product_select", children: [
     /* @__PURE__ */ jsx(
       GenericSearchableSelect,
       {

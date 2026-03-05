@@ -83,7 +83,7 @@ const CategoryProductSelect = ({
   }));
 
   return (
-    <>
+    <div className='category_product_select'>
       {/* SELECT CATEGORIA */}
       <GenericSearchableSelect
         name="categoria"
@@ -118,7 +118,7 @@ const CategoryProductSelect = ({
           );
         }}
       />
-    </>
+    </div>
   );
 };
 

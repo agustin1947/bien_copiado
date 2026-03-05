@@ -110,51 +110,50 @@ const SelectCustomize = (props: any, ref: any) => {
   };
 
   return (
-    <>
-      <CategoryProductSelect
-        localId={localId}
-        name={name}
-        productValue={value}
-        required={required}
-        disabled={disabled}
-        onProductChange={(e: any, productoCompleto?: any) => {
-          onChange(e);
-          handleProductLogic(productoCompleto);
-          /*if (productoCompleto) {
+    <div className='select_customize'>
+        <CategoryProductSelect
+          localId={localId}
+          name={name}
+          productValue={value}
+          required={required}
+          disabled={disabled}
+          onProductChange={(e: any, productoCompleto?: any) => {
+            onChange(e);
             handleProductLogic(productoCompleto);
-          }*/
-        }}
-      />
-
+          }}
+        />
       {selectedProducto && (
-        <>
-          <label className="label-customize p-1">
-            {tipoDeVenta?.nombre?.toLowerCase().includes('mayorista')
-              ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)`
-              : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)`}
-          </label>
-          <input
-            className="d-none"
-            type="number"
-            name={`total-base-${index}`}
-            value={precio}
-            readOnly
-            disabled
-          />
+        <div className='select_customize__description'>
+          <div>
+            <label className="label-customize p-1">
+              {tipoDeVenta?.nombre?.toLowerCase().includes('mayorista')
+                ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)`
+                : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)`}
+            </label>
+            <input
+              className="d-none"
+              type="number"
+              name={`total-base-${index}`}
+              value={precio}
+              readOnly
+              disabled
+            />
+          </div>
+          <div>
+            <label className="label-customize p-1">{`Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)`}</label>
 
-          <label className="label-customize p-1">{`Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)`}</label>
-
-          <input
-            className="d-none"
-            type="number"
-            name={`total-compra-${index}`}
-            value={precioCompra}
-            readOnly
-            disabled
-          />
-        </>
+            <input
+              className="d-none"
+              type="number"
+              name={`total-compra-${index}`}
+              value={precioCompra}
+              readOnly
+              disabled
+            />
+          </div>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

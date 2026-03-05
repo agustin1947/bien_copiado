@@ -722,6 +722,23 @@ export default {
       }
       /* End Componente GenericSearchableSelect */
       
+      /** CategoryProductSelect */
+      .category_product_select {
+        display: inline-flex;
+        gap: 10px;
+        width: 100%;
+      }
+      .category_product_select .generic_searchable_select {
+        width: 50%;
+      }
+      /** end category_product_select*/
+      
+      /** SelectCustomize */
+      .select_customize__description {
+        margin: 10px 0;
+      }
+      /** end SelectCustomize */
+
       @media (max-width: 992px) { 
         #main-content {
           margin: 0 20px !important;

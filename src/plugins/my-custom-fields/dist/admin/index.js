@@ -39,7 +39,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CBc7BKnp.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-C-oPAMEW.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -153,7 +153,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-Bi-dVfaR.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CiElwRqv.js")).then((module2) => ({
           default: module2.InputTotalGastosItem
         }))
       },
@@ -172,7 +172,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-DrKrY_bv.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-Bs1vA-VX.js")).then((module2) => ({
           default: module2.InputCantidadGastosItem
         }))
       },
@@ -419,7 +419,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-D68GwoSe.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-CWccnM6r.js")).then((module2) => ({
           default: module2.CategoryProductSelect
         }))
       },

@@ -38,7 +38,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-CQUPLJ9Y.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-Zgo6lpeT.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -152,7 +152,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-CFKBlJY9.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-DUwP-3EA.mjs").then((module) => ({
           default: module.InputTotalGastosItem
         }))
       },
@@ -171,7 +171,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("../_chunks/index-DSDdZ-ei.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-Yuz0ID84.mjs").then((module) => ({
           default: module.InputCantidadGastosItem
         }))
       },
@@ -418,7 +418,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => import("../_chunks/index-CHq1Smdc.mjs").then((module) => ({
+        Input: async () => import("../_chunks/index-Bc3_YoG7.mjs").then((module) => ({
           default: module.CategoryProductSelect
         }))
       },

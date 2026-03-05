@@ -2,7 +2,7 @@
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const jsxRuntime = require("react/jsx-runtime");
 const react = require("react");
-const index = require("./index-D68GwoSe.js");
+const index = require("./index-CWccnM6r.js");
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
@@ -86,7 +86,7 @@ const SelectCustomize = (props, ref) => {
       }
     });
   };
-  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "select_customize", children: [
     /* @__PURE__ */ jsxRuntime.jsx(
       index.CategoryProductSelect,
       {
@@ -101,31 +101,35 @@ const SelectCustomize = (props, ref) => {
         }
       }
     ),
-    selectedProducto && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize p-1", children: tipoDeVenta?.nombre?.toLowerCase().includes("mayorista") ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` }),
-      /* @__PURE__ */ jsxRuntime.jsx(
-        "input",
-        {
-          className: "d-none",
-          type: "number",
-          name: `total-base-${index$1}`,
-          value: precio,
-          readOnly: true,
-          disabled: true
-        }
-      ),
-      /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize p-1", children: `Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)` }),
-      /* @__PURE__ */ jsxRuntime.jsx(
-        "input",
-        {
-          className: "d-none",
-          type: "number",
-          name: `total-compra-${index$1}`,
-          value: precioCompra,
-          readOnly: true,
-          disabled: true
-        }
-      )
+    selectedProducto && /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "select_customize__description", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize p-1", children: tipoDeVenta?.nombre?.toLowerCase().includes("mayorista") ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` }),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "input",
+          {
+            className: "d-none",
+            type: "number",
+            name: `total-base-${index$1}`,
+            value: precio,
+            readOnly: true,
+            disabled: true
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize p-1", children: `Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)` }),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "input",
+          {
+            className: "d-none",
+            type: "number",
+            name: `total-compra-${index$1}`,
+            value: precioCompra,
+            readOnly: true,
+            disabled: true
+          }
+        )
+      ] })
     ] })
   ] });
 };

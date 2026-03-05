@@ -54,7 +54,7 @@ const CategoryProductSelect = ({
     label: `${p.nombre} (${p.tipo_de_moneda?.codigo})`,
     data: p
   }));
-  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "category_product_select", children: [
     /* @__PURE__ */ jsxRuntime.jsx(
       index.GenericSearchableSelect,
       {
