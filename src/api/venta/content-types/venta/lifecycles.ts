@@ -48,8 +48,12 @@ export default {
     ) {
       throw new errors.ApplicationError(`Debe seleccionar un "Forma de pago"`);
     }
-
+    
     for (const producto of ctxBody.Productos) {
+      console.log(producto)
+      if(!producto.productoItem) {
+        throw new errors.ApplicationError(`Debe seleccionar un producto en cada item.`);
+      }
       const cantidad = producto.cantidad;
       const id = parseInt(producto.productoItem);
 
@@ -68,7 +72,11 @@ export default {
 
       const stock = productoDb.stock;
       const nombreProducto = productoDb.nombre;
-      if (cantidad > stock || cantidad == 0) {
+      if(cantidad === 0){
+        throw new errors.ApplicationError(`La cantidad del producto ${nombreProducto} no puede ser 0.`)
+      }
+
+      if (cantidad > stock) {
         throw new errors.ApplicationError(
           `La cantidad supera el stock, usted dispone de ${stock} unidades de ${nombreProducto}`,
         );
