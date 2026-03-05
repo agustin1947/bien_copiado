@@ -6,7 +6,7 @@ export default {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
-    console.log("ctxBody: ", ctxBody)
+    
     if (
       !ctxBody.tipo_de_moneda ||
       ctxBody.tipo_de_moneda.length === 0 ||
@@ -50,7 +50,7 @@ export default {
     }
     
     for (const producto of ctxBody.Productos) {
-      console.log(producto)
+      
       if(!producto.productoItem) {
         throw new errors.ApplicationError(`Debe seleccionar un producto en cada item.`);
       }
