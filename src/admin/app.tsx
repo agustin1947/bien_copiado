@@ -333,6 +333,7 @@ export default {
         "content-manager.components.gastos.gastos-items.cantidad": "Cantidad",
         "content-manager.components.gastos.gastos-items.nombre_producto_nuevo":
           "Nombre producto nuevo",
+        "content-manager.components.gastos.gastos-items.producto":"Gastos item producto",
 
         "content-manager.content-types.api::gasto-diario.gasto-diario.fecha_de_ingreso":
           "Fecha de ingreso",
