@@ -4,6 +4,13 @@ export default {
   async beforeCreate(event) {
     const { data } = event.params;
     const name = data.nombre?.trim();
+    
+    if (!data.categoria_de_producto) {
+      event.params.data.categoria_de_producto = {
+        connect: [{ id: 1 }],
+      };
+    }
+
     if (!data.tipo_de_moneda || data.tipo_de_moneda.connect.length === 0) {
       throw new errors.ApplicationError(`Debe seleccionar una moneda`);
     }
@@ -26,7 +33,7 @@ export default {
 
     if (productoDbName) {
       throw new errors.ApplicationError(
-        `Ya existe un producto con el nombre ${name}`
+        `Ya existe un producto con el nombre ${name}`,
       );
     }
   },
@@ -40,7 +47,9 @@ export default {
         .url.startsWith("/content-manager/collection-types/api::venta.venta") &&
       !strapi.requestContext
         .get()
-        .url.startsWith("/content-manager/collection-types/api::cuenta-corriente.cuenta-corriente")
+        .url.startsWith(
+          "/content-manager/collection-types/api::cuenta-corriente.cuenta-corriente",
+        )
     ) {
       const { data } = event.params;
       const productoDb = await strapi.db
@@ -64,7 +73,7 @@ export default {
           productoDb.tipo_de_moneda.id !== data.tipo_de_moneda.connect[0].id
         ) {
           throw new errors.ApplicationError(
-            `No se puede cambiar la moneda de un producto ya creado: ${productoDb.nombre}`
+            `No se puede cambiar la moneda de un producto ya creado: ${productoDb.nombre}`,
           );
         }
       }
@@ -83,7 +92,7 @@ export default {
           productoDb.locales.id !== data.locales.connect[0].id
         ) {
           throw new errors.ApplicationError(
-            `No se puede cambiar el local de un producto ya creado: ${productoDb.nombre}`
+            `No se puede cambiar el local de un producto ya creado: ${productoDb.nombre}`,
           );
         }
       }
