@@ -24,6 +24,28 @@ export interface CuentaCorrienteCuentaCorrienteItems
   };
 }
 
+export interface FormasDePagoFormasDePago extends Struct.ComponentSchema {
+  collectionName: 'components_formas_de_pago_formas_de_pagos';
+  info: {
+    displayName: 'Formas de pago';
+    icon: 'plus';
+  };
+  attributes: {
+    forma_de_pago: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::forma-de-pago.forma-de-pago'
+    >;
+    total: Schema.Attribute.Decimal &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+  };
+}
+
 export interface GastosGastosItems extends Struct.ComponentSchema {
   collectionName: 'components_gastos_gastos_items';
   info: {
@@ -72,6 +94,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'cuenta-corriente.cuenta-corriente-items': CuentaCorrienteCuentaCorrienteItems;
+      'formas-de-pago.formas-de-pago': FormasDePagoFormasDePago;
       'gastos.gastos-items': GastosGastosItems;
       'productos.productos': ProductosProductos;
     }

@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_formas_de_pago_formas_de_pagos",
+  "info": {
+    "displayName": "Formas de pago",
+    "icon": "plus"
+  },
+  "options": {},
+  "attributes": {
+    "forma_de_pago": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::forma-de-pago.forma-de-pago"
+    },
+    "total": {
+      "type": "decimal",
+      "default": 0,
+      "min": 0
+    }
+  },
+  "config": {}
+}
