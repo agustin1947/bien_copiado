@@ -54,11 +54,6 @@
       "relation": "oneToOne",
       "target": "api::tipo-de-moneda.tipo-de-moneda"
     },
-    "forma_de_pago": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::forma-de-pago.forma-de-pago"
-    },
     "fecha_de_ingreso": {
       "type": "date",
       "required": true
@@ -79,9 +74,16 @@
       "customField": "plugin::my-custom-fields.input-total-venta-ganancia",
       "default": 0
     },
-    "sales_detect_changes_in_items": {  
+    "sales_detect_changes_in_items": {
       "type": "string",
       "customField": "plugin::my-custom-fields.sales-detect-changes-in-items"
+    },
+    "formas_de_pago": {
+      "type": "dynamiczone",
+      "components": [
+        "formas-de-pago.formas-de-pago"
+      ],
+      "required": true
     }
   }
 }
