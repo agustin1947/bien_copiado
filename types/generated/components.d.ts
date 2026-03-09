@@ -36,6 +36,7 @@ export interface FormasDePagoFormasDePago extends Struct.ComponentSchema {
       'api::forma-de-pago.forma-de-pago'
     >;
     total: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
         {
           min: 0;

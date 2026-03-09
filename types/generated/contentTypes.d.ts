@@ -1049,10 +1049,10 @@ export interface ApiVentaVenta extends Struct.CollectionTypeSchema {
     dni: Schema.Attribute.BigInteger;
     email: Schema.Attribute.Email;
     fecha_de_ingreso: Schema.Attribute.Date & Schema.Attribute.Required;
-    forma_de_pago: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::forma-de-pago.forma-de-pago'
-    >;
+    formas_de_pago: Schema.Attribute.DynamicZone<
+      ['formas-de-pago.formas-de-pago']
+    > &
+      Schema.Attribute.Required;
     local: Schema.Attribute.Relation<'oneToOne', 'api::local.local'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::venta.venta'> &
