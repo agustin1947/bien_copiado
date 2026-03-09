@@ -1,12 +1,13 @@
 import { errors } from "@strapi/utils";
 const { ApplicationError } = errors;
 import { factories } from "@strapi/strapi";
+import { validatePaymentMethodWithTotal } from "../../../../utils/validatePaymentMethodWithTotal";
 
 export default {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
-    
+
     if (
       !ctxBody.tipo_de_moneda ||
       ctxBody.tipo_de_moneda.length === 0 ||
@@ -41,18 +42,23 @@ export default {
       connect: [{ id: tipoDeVentaId }],
     };
 
-    if (
-      !ctxBody.forma_de_pago ||
-      ctxBody.forma_de_pago.length === 0 ||
-      ctxBody.forma_de_pago.connect.length === 0
-    ) {
-      throw new errors.ApplicationError(`Debe seleccionar un "Forma de pago"`);
+    if (!ctxBody.formas_de_pago || ctxBody.formas_de_pago.length === 0) {
+      throw new errors.ApplicationError(`Debe seleccionar una "Forma de pago"`);
     }
-    
+
+    const validatePayment = await validatePaymentMethodWithTotal(
+      ctxBody.formas_de_pago,
+      ctxBody.total,
+    );
+    if (validatePayment.error) {
+      throw new errors.ApplicationError(`${validatePayment.message}`);
+    }
+
     for (const producto of ctxBody.Productos) {
-      
-      if(!producto.productoItem) {
-        throw new errors.ApplicationError(`Debe seleccionar un producto en cada item.`);
+      if (!producto.productoItem) {
+        throw new errors.ApplicationError(
+          `Debe seleccionar un producto en cada item.`,
+        );
       }
       const cantidad = producto.cantidad;
       const id = parseInt(producto.productoItem);
@@ -72,8 +78,10 @@ export default {
 
       const stock = productoDb.stock;
       const nombreProducto = productoDb.nombre;
-      if(cantidad === 0){
-        throw new errors.ApplicationError(`La cantidad del producto ${nombreProducto} no puede ser 0.`)
+      if (cantidad === 0) {
+        throw new errors.ApplicationError(
+          `La cantidad del producto ${nombreProducto} no puede ser 0.`,
+        );
       }
 
       if (cantidad > stock) {
