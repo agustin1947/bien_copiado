@@ -183,6 +183,14 @@ export default {
         );
       }
     }
+
+    const validatePayment = await validatePaymentMethodWithTotal(
+      ctxBody.formas_de_pago,
+      ctxBody.total,
+    );
+    if (validatePayment.error) {
+      throw new errors.ApplicationError(`${validatePayment.message}`);
+    }
   },
   async afterUpdate(event) {
     const ventaId = event.result.id;

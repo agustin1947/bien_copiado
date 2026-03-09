@@ -8,14 +8,16 @@ export const validatePaymentMethodWithTotal = async (items, total) => {
   let totalPaymentMethod = 0;
   for (const item of items) {
     if (
-      !item.forma_de_pago ||
-      (item.forma_de_pago.connect && item.forma_de_pago.connect.length === 0)
+      (!item.forma_de_pago) ||
+      (!item.forma_de_pago.disconnect && item.forma_de_pago.connect && item.forma_de_pago.connect.length === 0) ||
+      (item.forma_de_pago.disconnect && item.forma_de_pago.disconnect.length > 0 && item.forma_de_pago.connect.length === 0)
     ) {
       return {
         error: true,
         message: `Debe seleccionar una forma de pago para cada item.`,
       };
     }
+
     totalPaymentMethod += Number(item.total || 0);
   }
 
