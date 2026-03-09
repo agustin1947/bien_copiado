@@ -5,6 +5,7 @@ export const validatePaymentMethodWithTotal = async (items, total) => {
       message: `Debe seleccionar una forma de pago`,
     };
   }
+  
   let totalPaymentMethod = 0;
   for (const item of items) {
     if (
@@ -16,6 +17,13 @@ export const validatePaymentMethodWithTotal = async (items, total) => {
         error: true,
         message: `Debe seleccionar una forma de pago para cada item.`,
       };
+    }
+    
+    if(!item.total || item.total === 0 || item.total < 0 ) {
+        return {
+            error: true,
+            message: `El total del item debe ser mayor a cero.`
+        }
     }
 
     totalPaymentMethod += Number(item.total || 0);

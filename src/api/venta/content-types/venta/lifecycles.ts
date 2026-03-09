@@ -183,7 +183,7 @@ export default {
         );
       }
     }
-
+    
     const validatePayment = await validatePaymentMethodWithTotal(
       ctxBody.formas_de_pago,
       ctxBody.total,
