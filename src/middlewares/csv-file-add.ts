@@ -329,6 +329,27 @@ export default () => {
       return total;
     };
 
+    const normalizarEntradas = (entradas) => {
+      const resultado = [];
+
+      for (const item of entradas) {
+
+        if (item.formas_de_pago && item.formas_de_pago.length > 0) {
+          for (const pago of item.formas_de_pago) {
+            resultado.push({
+              ...item,
+              total: pago.total,
+              forma_de_pago: pago.forma_de_pago
+            });
+          }
+        } else {
+          resultado.push(item);
+        }
+      }
+
+      return resultado;
+    };
+
     const calcularTotales = (merged) => {
       // Objeto base de totales
       const totales = {
@@ -549,28 +570,23 @@ export default () => {
             id: localId,  // <--- acá filtrás por ID
           }
         },
-        populate: true,
-      });
-      
-      /*const serviceHoy = await strapi.db
-        .query("api::service.service")
-        .findMany({
-          where: {
-            fecha_de_ingreso: {
-              $gte: startOfDay,
-              $lte: endOfDay,
-            },
-            local: {
-              id: localId,  // <--- acá filtrás por ID
-            },
-            estado_de_service: {
-              id: 4, // 👈 SOLO estado con ID = 4
-            },
+        populate: {
+          local:true,
+          tipo_de_venta: true,
+          tipo_de_moneda: true,
+          Productos:{
+            populate: true
           },
-          populate: true,
-        });
-      console.log(serviceHoy)*/
-      
+          formas_de_pago:{
+            populate: true
+          },
+          createdBy: true,
+          updatedBy: true  
+        },
+      });
+
+      const ventasNormalizadas = normalizarEntradas(ventasHoy);
+ 
       const ingresosHoy = await strapi.db
         .query("api::ingreso.ingreso")
         .findMany({
@@ -580,13 +596,13 @@ export default () => {
               $lte: endOfDay,
             },
             local: {
-              id: localId,  // <--- acá filtrás por ID
+              id: localId,
             }
           },
           populate: ["local", "tipo_de_moneda", "forma_de_pago"],
         });
-      console.log("INGRESOS HOY", ingresosHoy)
-      const entradasMerged = [...ventasHoy, ...ingresosHoy];
+      
+      const entradasMerged = [...ventasNormalizadas, ...ingresosHoy];
       const entradasTotales = calcularTotales(entradasMerged);
 
       /** BLOQUE DE SALIDA */
