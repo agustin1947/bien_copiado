@@ -1,5 +1,7 @@
-import { jsx, jsxs } from "react/jsx-runtime";
-import { useState, useEffect } from "react";
+"use strict";
+Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+const jsxRuntime = require("react/jsx-runtime");
+const react = require("react");
 const PACKET_TYPES = /* @__PURE__ */ Object.create(null);
 PACKET_TYPES["open"] = "0";
 PACKET_TYPES["close"] = "1";
@@ -3303,15 +3305,15 @@ Object.assign(lookup, {
 });
 const VerCajaDiaria = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value: value2 } = props;
-  const [caja, setCaja] = useState([]);
-  const [entradas, setEntradas] = useState([]);
-  const [salidas, setSalidas] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [tbodyHtml, setTbodyHtml] = useState("");
+  const [caja, setCaja] = react.useState([]);
+  const [entradas, setEntradas] = react.useState([]);
+  const [salidas, setSalidas] = react.useState([]);
+  const [loading, setLoading] = react.useState(true);
+  const [tbodyHtml, setTbodyHtml] = react.useState("");
   let urlSplit = window.location.href.split("/");
   let documentId = urlSplit[urlSplit.length - 1];
   if (!documentId || documentId === "create") return;
-  useEffect(() => {
+  react.useEffect(() => {
     const socket = lookup("/", {
       transports: ["websocket"]
       // recomendado
@@ -3324,7 +3326,7 @@ const VerCajaDiaria = (props, ref) => {
       socket.disconnect();
     };
   }, []);
-  useEffect(() => {
+  react.useEffect(() => {
     setLoading(true);
     fetch(`/api/caja-diarias?populate=*&filters[documentId][$eq]=${documentId}`).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
@@ -3333,14 +3335,10 @@ const VerCajaDiaria = (props, ref) => {
       console.error("Error al cargar productos", err);
     });
   }, [documentId]);
-  useEffect(() => {
+  react.useEffect(() => {
     if (!caja || caja.length === 0) return;
     const [year, month, day] = caja.fecha_de_ingreso.split("-");
-    const created = new Date(
-      Number(year),
-      Number(month) - 1,
-      Number(day)
-    );
+    const created = new Date(Number(year), Number(month) - 1, Number(day));
     const startOfDay = new Date(created);
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(created);
@@ -3350,8 +3348,9 @@ const VerCajaDiaria = (props, ref) => {
     const baseFechaIngreso = `&filters[local][id][$eq]=${localId}&filters[fecha_de_ingreso][$gte]=${startOfDay.toISOString()}&filters[fecha_de_ingreso][$lte]=${endOfDay.toISOString()}`;
     setLoading(true);
     Promise.all([
-      fetch(`/api/ventas?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json()),
-      //fetch(`/api/services?populate=*&${baseFechaIngreso}&filters[estado_de_service][id][$eq]=4`).then(r => r.json()),
+      fetch(
+        `/api/ventas?populate[tipo_de_moneda][populate]=*&populate[tipo_de_venta]=*&populate=Productos&populate[formas_de_pago][populate]=*&${baseFechaIngreso}&sort=id:desc`
+      ).then((r) => r.json()),
       fetch(`/api/ingresos?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json()),
       fetch(`/api/gastos?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json()),
       fetch(`/api/gasto-diarios?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json())
@@ -3360,7 +3359,8 @@ const VerCajaDiaria = (props, ref) => {
       const services = servicesRes?.data || [];
       const gastos = gastosRes?.data || [];
       const gastosDiarios = gastosDiariosRes?.data || [];
-      const entradasMerged = [...ventas, ...services];
+      const ventasNormalizadas = normalizarEntradas(ventas);
+      const entradasMerged = [...ventasNormalizadas, ...services];
       const salidasMerged = [...gastos, ...gastosDiarios];
       setEntradas(entradasMerged);
       setSalidas(salidasMerged);
@@ -3370,7 +3370,9 @@ const VerCajaDiaria = (props, ref) => {
   }, [caja]);
   const getProductoById = async (id) => {
     try {
-      const res = await fetch(`/api/productos?populate=*&filters[id][$eq]=${id}&sort=nombre:desc&pagination[pageSize]=1000`);
+      const res = await fetch(
+        `/api/productos?populate=*&filters[id][$eq]=${id}&sort=nombre:desc&pagination[pageSize]=1000`
+      );
       const data = await res.json();
       return data?.data[0] || null;
     } catch (err) {
@@ -3430,28 +3432,43 @@ const VerCajaDiaria = (props, ref) => {
     }
     return table;
   };
-  if (loading) return /* @__PURE__ */ jsx("p", { children: "Cargando..." });
-  if (!caja) return /* @__PURE__ */ jsx("p", { children: "No se encontró caja diaria." });
-  return /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("table", { className: "table w-100", children: [
-    /* @__PURE__ */ jsxs("thead", { children: [
-      /* @__PURE__ */ jsxs("tr", { children: [
-        /* @__PURE__ */ jsx("th", { colSpan: 4, children: "Entradas" }),
-        /* @__PURE__ */ jsx("th", { colSpan: 4, children: "Salidas" })
+  const normalizarEntradas = (entradas2) => {
+    const resultado = [];
+    for (const item of entradas2) {
+      if (item.formas_de_pago && item.formas_de_pago.length > 0) {
+        for (const pago of item.formas_de_pago) {
+          resultado.push({
+            ...item,
+            total: pago.total,
+            forma_de_pago: pago.forma_de_pago
+          });
+        }
+      } else {
+        resultado.push(item);
+      }
+    }
+    return resultado;
+  };
+  if (loading) return /* @__PURE__ */ jsxRuntime.jsx("p", { children: "Cargando..." });
+  if (!caja) return /* @__PURE__ */ jsxRuntime.jsx("p", { children: "No se encontró caja diaria." });
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { children: /* @__PURE__ */ jsxRuntime.jsxs("table", { className: "table w-100", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("thead", { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("th", { colSpan: 4, children: "Entradas" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { colSpan: 4, children: "Salidas" })
       ] }),
-      /* @__PURE__ */ jsxs("tr", { children: [
-        /* @__PURE__ */ jsx("th", { scope: "col", children: "Concepto" }),
-        /* @__PURE__ */ jsx("th", { scope: "col", children: "Total" }),
-        /* @__PURE__ */ jsx("th", { scope: "col", children: "Moneda" }),
-        /* @__PURE__ */ jsx("th", { scope: "col", children: "Forma de pago" }),
-        /* @__PURE__ */ jsx("th", { scope: "col", children: "Concepto" }),
-        /* @__PURE__ */ jsx("th", { scope: "col", children: "Total" }),
-        /* @__PURE__ */ jsx("th", { scope: "col", children: "Moneda" }),
-        /* @__PURE__ */ jsx("th", { scope: "col", children: "Forma de pago" })
+      /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Concepto" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Total" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Moneda" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Forma de pago" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Concepto" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Total" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Moneda" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { scope: "col", children: "Forma de pago" })
       ] })
     ] }),
-    /* @__PURE__ */ jsx("tbody", { dangerouslySetInnerHTML: { __html: tbodyHtml } })
+    /* @__PURE__ */ jsxRuntime.jsx("tbody", { dangerouslySetInnerHTML: { __html: tbodyHtml } })
   ] }) });
 };
-export {
-  VerCajaDiaria
-};
+exports.VerCajaDiaria = VerCajaDiaria;

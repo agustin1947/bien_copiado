@@ -9,24 +9,24 @@ const VerCajaDiaria = (props: any, ref: any) => {
   //const [gastos, setGastos] = useState<[]>([]);
   //const [gastosDiarios, setGastosDiarios] = useState<[]>([]);
   const [entradas, setEntradas] = useState<any[]>([]);
-  const [salidas, setSalidas] = useState<any[]>([]);  
+  const [salidas, setSalidas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tbodyHtml, setTbodyHtml] = useState("");
+  const [tbodyHtml, setTbodyHtml] = useState('');
 
   let urlSplit = window.location.href.split('/');
   let documentId = urlSplit[urlSplit.length - 1];
 
   if (!documentId || documentId === 'create') return;
-  
+
   useEffect(() => {
     // Conectar al WebSocket del backend
-    const socket = io("/", {
-      transports: ["websocket"], // recomendado
+    const socket = io('/', {
+      transports: ['websocket'], // recomendado
     });
 
     // escuchar evento emitido desde el lifecycle
-    socket.on("refresh", (msg:any) => {
-      console.log("🔄 Evento refresh recibido:", msg);
+    socket.on('refresh', (msg: any) => {
+      console.log('🔄 Evento refresh recibido:', msg);
       window.location.reload();
     });
 
@@ -46,22 +46,18 @@ const VerCajaDiaria = (props: any, ref: any) => {
       })
       .catch((err) => {
         console.error('Error al cargar productos', err);
-      })
-      /*.finally(() => {
+      });
+    /*.finally(() => {
         setLoading(false);
       });*/
   }, [documentId]);
 
   useEffect(() => {
     if (!caja || caja.length === 0) return;
-    const [year, month, day] = caja.fecha_de_ingreso.split("-");
+    const [year, month, day] = caja.fecha_de_ingreso.split('-');
 
-    const created = new Date(
-      Number(year),
-      Number(month) - 1,
-      Number(day)
-    );
-    
+    const created = new Date(Number(year), Number(month) - 1, Number(day));
+
     const startOfDay = new Date(created);
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(created);
@@ -74,19 +70,22 @@ const VerCajaDiaria = (props: any, ref: any) => {
     setLoading(true);
 
     Promise.all([
-      fetch(`/api/ventas?populate=*&${baseFechaIngreso}&sort=id:desc`).then(r => r.json()),
-      //fetch(`/api/services?populate=*&${baseFechaIngreso}&filters[estado_de_service][id][$eq]=4`).then(r => r.json()),
-      fetch(`/api/ingresos?populate=*&${baseFechaIngreso}&sort=id:desc`).then(r => r.json()),
-      fetch(`/api/gastos?populate=*&${baseFechaIngreso}&sort=id:desc`).then(r => r.json()),
-      fetch(`/api/gasto-diarios?populate=*&${baseFechaIngreso}&sort=id:desc`).then(r => r.json()),
+      fetch(
+        `/api/ventas?populate[tipo_de_moneda][populate]=*&populate[tipo_de_venta]=*&populate=Productos&populate[formas_de_pago][populate]=*&${baseFechaIngreso}&sort=id:desc`
+      ).then((r) => r.json()),
+      fetch(`/api/ingresos?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json()),
+      fetch(`/api/gastos?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json()),
+      fetch(`/api/gasto-diarios?populate=*&${baseFechaIngreso}&sort=id:desc`).then((r) => r.json()),
     ])
-      .then(async([ventasRes, servicesRes, gastosRes, gastosDiariosRes]) => {
+      .then(async ([ventasRes, servicesRes, gastosRes, gastosDiariosRes]) => {
         const ventas = ventasRes?.data || [];
         const services = servicesRes?.data || [];
         const gastos = gastosRes?.data || [];
         const gastosDiarios = gastosDiariosRes?.data || [];
 
-        const entradasMerged = [...ventas, ...services];
+        const ventasNormalizadas = normalizarEntradas(ventas);
+
+        const entradasMerged = [...ventasNormalizadas, ...services];
         const salidasMerged = [...gastos, ...gastosDiarios];
 
         setEntradas(entradasMerged);
@@ -95,32 +94,33 @@ const VerCajaDiaria = (props: any, ref: any) => {
         const html = await crearTablaEntradasSalidas(entradasMerged, salidasMerged);
         setTbodyHtml(html);
       })
-      .catch(err => console.error("Error cargando datos", err))
+      .catch((err) => console.error('Error cargando datos', err))
       .finally(() => setLoading(false));
-
   }, [caja]);
 
   const getProductoById = async (id: number) => {
     try {
-      const res = await fetch(`/api/productos?populate=*&filters[id][$eq]=${id}&sort=nombre:desc&pagination[pageSize]=1000`);
+      const res = await fetch(
+        `/api/productos?populate=*&filters[id][$eq]=${id}&sort=nombre:desc&pagination[pageSize]=1000`
+      );
       const data = await res.json();
       return data?.data[0] || null;
     } catch (err) {
-      console.error("Error al cargar producto", err);
+      console.error('Error al cargar producto', err);
       return null;
     }
   };
 
   const crearTablaEntradasSalidas = async (entradas: any, salidas: any) => {
-    let table = "";
+    let table = '';
     const maxLength = Math.max(entradas.length, salidas.length);
-    
-    if(maxLength === 0 ){
+
+    if (maxLength === 0) {
       return "<tr><td colspan='8'>No hay datos registrados</td></tr>";
     }
     for (let i = 0; i < maxLength; i++) {
-      const entrada = entradas[i];              
-      let entradaProductos = "";
+      const entrada = entradas[i];
+      let entradaProductos = '';
       if (entrada && entrada.Productos) {
         for (const producto of entrada.Productos) {
           const id = producto.productoItem;
@@ -132,7 +132,7 @@ const VerCajaDiaria = (props: any, ref: any) => {
       }
 
       const salida = salidas[i];
-      let salidaProductos = "";
+      let salidaProductos = '';
       if (salida && salida.Gastos) {
         for (const producto of salida.Gastos) {
           let nombreProducto = producto.nombre_producto_nuevo;
@@ -141,90 +141,97 @@ const VerCajaDiaria = (props: any, ref: any) => {
             if (productoDb) {
               nombreProducto = productoDb.nombre;
             } else {
-              nombreProducto = "Producto desconocido";
+              nombreProducto = 'Producto desconocido';
             }
           }
           salidaProductos += `<div>- ${nombreProducto} (x${producto.cantidad || 1})</div>`;
         }
       }
 
-      const idEntrada = entrada ? entrada.id || "" : "";
+      const idEntrada = entrada ? entrada.id || '' : '';
       const tipoEntrada = entrada
-        ?  ("n_orden_st" in entrada || "n_orden_cc" in entrada
-            ? "Ingreso"
-            : "Venta")
-        : "";
+        ? 'n_orden_st' in entrada || 'n_orden_cc' in entrada
+          ? 'Ingreso'
+          : 'Venta'
+        : '';
       const conceptoTextoEntrada = entrada
-        ? ("n_orden_st" in entrada || "n_orden_cc" in entrada
-            ? `${entrada.titulo || ""}`
-            : `${entradaProductos}`)
-        : "";
+        ? 'n_orden_st' in entrada || 'n_orden_cc' in entrada
+          ? `${entrada.titulo || ''}`
+          : `${entradaProductos}`
+        : '';
 
       const conceptoEntrada = idEntrada
-        ? `(#${idEntrada}) ${tipoEntrada} ${conceptoTextoEntrada !== "" ? ": " + conceptoTextoEntrada : ""}`
+        ? `(#${idEntrada}) ${tipoEntrada} ${conceptoTextoEntrada !== '' ? ': ' + conceptoTextoEntrada : ''}`
         : ``;
 
-      const totalEntrada = entrada ? entrada.total || 0 : "";
-      const monedaEntrada = entrada
-        ? entrada.tipo_de_moneda?.codigo || "ARS"
-        : "";
-      const formaEntrada = entrada
-        ? entrada.forma_de_pago?.nombre || "Efectivo"
-        : "";
+      const totalEntrada = entrada ? entrada.total || 0 : '';
+      const monedaEntrada = entrada ? entrada.tipo_de_moneda?.codigo || 'ARS' : '';
+      const formaEntrada = entrada ? entrada.forma_de_pago?.nombre || 'Efectivo' : '';
 
       // Datos de salida
-      const idSalida = salida ? salida.id || "" : "";
-      const tipoSalida = salida
-        ? salida.proveedor
-          ? "Gasto"
-          : "Gasto Diario"
-        : "";
-      const conceptoTextoSalida = salida
-        ? salida.descripcion || salidaProductos
-        : "";
+      const idSalida = salida ? salida.id || '' : '';
+      const tipoSalida = salida ? (salida.proveedor ? 'Gasto' : 'Gasto Diario') : '';
+      const conceptoTextoSalida = salida ? salida.descripcion || salidaProductos : '';
 
       const conceptoSalida = idSalida
-        ? `(#${idSalida}) ${tipoSalida} ${conceptoTextoSalida !== "" ? ": " + conceptoTextoSalida : ""}`
+        ? `(#${idSalida}) ${tipoSalida} ${conceptoTextoSalida !== '' ? ': ' + conceptoTextoSalida : ''}`
         : ``;
 
-      const totalSalida = salida ? salida.total || 0 : "";
-      const monedaSalida = salida
-        ? salida.tipo_de_moneda?.codigo || "ARS"
-        : "";
-      const formaSalida = salida
-        ? salida.forma_de_pago?.nombre || "Efectivo"
-        : "";
+      const totalSalida = salida ? salida.total || 0 : '';
+      const monedaSalida = salida ? salida.tipo_de_moneda?.codigo || 'ARS' : '';
+      const formaSalida = salida ? salida.forma_de_pago?.nombre || 'Efectivo' : '';
 
       table += `<tr><td>${conceptoEntrada}</td><td>${totalEntrada}</td><td>${monedaEntrada}</td><td>${formaEntrada}</td><td>${conceptoSalida}</td><td>${totalSalida}</td><td>${monedaSalida}</td><td>${formaSalida}</td></tr>`;
-
     }
     return table;
-  }
-  
+  };
+
+  const normalizarEntradas = (entradas: any) => {
+    const resultado = [];
+
+    for (const item of entradas) {
+      if (item.formas_de_pago && item.formas_de_pago.length > 0) {
+        for (const pago of item.formas_de_pago) {
+          resultado.push({
+            ...item,
+            total: pago.total,
+            forma_de_pago: pago.forma_de_pago,
+          });
+        }
+      } else {
+        resultado.push(item);
+      }
+    }
+
+    return resultado;
+  };
+
   if (loading) return <p>Cargando...</p>;
   if (!caja) return <p>No se encontró caja diaria.</p>;
 
-  return <div>
-    <table className="table w-100">
-      <thead>
-        <tr>
-          <th colSpan={4}>Entradas</th>
-          <th colSpan={4}>Salidas</th>
-        </tr>
-        <tr>
-          <th scope="col">Concepto</th>
-          <th scope="col">Total</th>
-          <th scope="col">Moneda</th>
-          <th scope="col">Forma de pago</th>
-          <th scope="col">Concepto</th>
-          <th scope="col">Total</th>
-          <th scope="col">Moneda</th>
-          <th scope="col">Forma de pago</th>
-        </tr>
-      </thead>
-      <tbody dangerouslySetInnerHTML={{ __html: tbodyHtml }} />
-    </table>
-  </div>;
+  return (
+    <div>
+      <table className="table w-100">
+        <thead>
+          <tr>
+            <th colSpan={4}>Entradas</th>
+            <th colSpan={4}>Salidas</th>
+          </tr>
+          <tr>
+            <th scope="col">Concepto</th>
+            <th scope="col">Total</th>
+            <th scope="col">Moneda</th>
+            <th scope="col">Forma de pago</th>
+            <th scope="col">Concepto</th>
+            <th scope="col">Total</th>
+            <th scope="col">Moneda</th>
+            <th scope="col">Forma de pago</th>
+          </tr>
+        </thead>
+        <tbody dangerouslySetInnerHTML={{ __html: tbodyHtml }} />
+      </table>
+    </div>
+  );
 };
 
 export { VerCajaDiaria };

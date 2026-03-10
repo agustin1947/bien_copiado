@@ -343,7 +343,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("../_chunks/index-D5sisxLw.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("../_chunks/index-B2cJ_fD9.js")).then((module2) => ({
           default: module2.VerCajaDiaria
         }))
       },
