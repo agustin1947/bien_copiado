@@ -21,14 +21,6 @@ export default {
         `Debe seleccionar un estado para el servicio técnico.`,
       );
     }
-
-    if (
-      !data.forma_de_pago ||
-      data.forma_de_pago.length === 0 ||
-      data.forma_de_pago.connect.length === 0
-    ) {
-      throw new errors.ApplicationError(`Debe seleccionar una forma de pago.`);
-    }
   },
   async afterCreate(event) {
     const { result } = event;
@@ -73,25 +65,6 @@ export default {
     ) {
       throw new errors.ApplicationError(`Debe seleccionar un estado.`);
     }
-    if (
-      data.forma_de_pago.connect.length === 0 &&
-      data.forma_de_pago.disconnect.length > 0
-    ) {
-      throw new errors.ApplicationError(`Debe seleccionar una forma de pago.`);
-    }
-    if (
-      data.forma_de_pago.connect.length > 0 &&
-      data.forma_de_pago.disconnect.length > 0
-    ) {
-      if (
-        data.forma_de_pago.connect[0].id !== data.forma_de_pago.disconnect[0].id
-      ) {
-        throw new errors.ApplicationError(
-          `No se puede editar la forma de pago.`,
-        );
-      }
-    }
-
     if (!data.numero_de_orden) {
       event.params.data.numero_de_orden = where.id;
     }

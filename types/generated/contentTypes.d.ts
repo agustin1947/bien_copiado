@@ -865,10 +865,6 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
     >;
     fecha_de_entrega: Schema.Attribute.Date;
     fecha_de_ingreso: Schema.Attribute.Date & Schema.Attribute.Required;
-    forma_de_pago: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::forma-de-pago.forma-de-pago'
-    >;
     ganancia: Schema.Attribute.Decimal &
       Schema.Attribute.CustomField<'plugin::my-custom-fields.input-service-total-ganancia'> &
       Schema.Attribute.DefaultTo<0>;
