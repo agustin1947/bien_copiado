@@ -41,11 +41,6 @@
         "mainField": "nombre"
       }
     },
-    "forma_de_pago": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::forma-de-pago.forma-de-pago"
-    },
     "total": {
       "type": "decimal",
       "customField": "plugin::my-custom-fields.input-total-generico",
