@@ -739,6 +739,14 @@ export default {
       }
       /** end SelectCustomize */
 
+      .container {
+        padding: 56px;
+      }
+      .title_h1 {
+          font-weight: 600;
+          font-size: 3.2rem;
+          line-height: 1.25;
+      }
       @media (max-width: 992px) { 
         #main-content {
           margin: 0 20px !important;
