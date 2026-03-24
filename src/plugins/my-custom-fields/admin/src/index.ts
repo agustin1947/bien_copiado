@@ -2,6 +2,7 @@ import { getTranslation } from './utils/getTranslation';
 import { PLUGIN_ID } from './pluginId';
 import { Initializer } from './components/Initializer';
 import { PluginIcon } from './components/PluginIcon';
+import ReporteCaja from './pages/ReporteCaja';
 
 export default {
   register(app: any) {
@@ -256,7 +257,7 @@ export default {
       },
       options: {},
     });
-    
+
     app.customFields.register({
       name: 'title-section',
       pluginId: PLUGIN_ID,
@@ -277,7 +278,7 @@ export default {
       },
       options: {},
     });
-    
+
     app.customFields.register({
       name: 'input-number-venta-ganancia-item',
       pluginId: PLUGIN_ID,
@@ -298,7 +299,7 @@ export default {
       },
       options: {},
     });
-    
+
     app.customFields.register({
       name: 'input-total-venta-ganancia',
       pluginId: PLUGIN_ID,
@@ -444,6 +445,17 @@ export default {
           })),
       },
       options: {},
+    });
+
+    app.addMenuLink({
+      to: `/plugins/${PLUGIN_ID}/reporte-caja`,
+      icon: () => '📊',
+      intlLabel: {
+        id: `${PLUGIN_ID}.plugin.name`,
+        defaultMessage: 'Reportes',
+      },
+      Component: async () => ReporteCaja,
+      permissions: [],
     });
 
     app.registerPlugin({
