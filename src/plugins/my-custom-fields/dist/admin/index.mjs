@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { jsxs, jsx } from "react/jsx-runtime";
 const __variableDynamicImportRuntimeHelper = (glob, path, segs) => {
   const v = glob[path];
   if (v) {
@@ -22,6 +23,12 @@ const Initializer = ({ setPlugin }) => {
     ref.current(PLUGIN_ID);
   }, []);
   return null;
+};
+const ReporteCaja = () => {
+  return /* @__PURE__ */ jsxs("div", { className: "container", children: [
+    /* @__PURE__ */ jsx("div", { className: "title_h1", children: "Reporte Caja" }),
+    /* @__PURE__ */ jsx("div", {})
+  ] });
 };
 const index = {
   register(app) {
@@ -423,6 +430,16 @@ const index = {
         }))
       },
       options: {}
+    });
+    app.addMenuLink({
+      to: `/plugins/${PLUGIN_ID}/reporte-caja`,
+      icon: () => "📊",
+      intlLabel: {
+        id: `${PLUGIN_ID}.plugin.name`,
+        defaultMessage: "Reportes"
+      },
+      Component: async () => ReporteCaja,
+      permissions: []
     });
     app.registerPlugin({
       id: PLUGIN_ID,
