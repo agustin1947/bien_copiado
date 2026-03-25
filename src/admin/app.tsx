@@ -333,7 +333,8 @@ export default {
         "content-manager.components.gastos.gastos-items.cantidad": "Cantidad",
         "content-manager.components.gastos.gastos-items.nombre_producto_nuevo":
           "Nombre producto nuevo",
-        "content-manager.components.gastos.gastos-items.producto":"Gastos item producto",
+        "content-manager.components.gastos.gastos-items.producto":
+          "Gastos item producto",
 
         "content-manager.content-types.api::gasto-diario.gasto-diario.fecha_de_ingreso":
           "Fecha de ingreso",
@@ -471,6 +472,8 @@ export default {
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.tipo_de_moneda":
           "Tipo de moneda",
 
+        "my-custom-fields.plugin.name": "Nombre",
+
         "content-manager.plugin.name": "Gestor de contenidos",
         "app.utils.drag": "Drag",
         "productos.productos": "Productos",
@@ -513,7 +516,7 @@ export default {
         Cliente: "Cliente",
         "Cuenta Corriente": "Cuenta Corriente",
         "cuenta-corriente": "Cuenta Corriente",
-        "Categoría de producto": "Categoría de producto"
+        "Categoría de producto": "Categoría de producto",
       },
     },
     theme: {
