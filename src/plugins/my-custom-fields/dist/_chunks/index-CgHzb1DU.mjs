@@ -136,7 +136,7 @@ const FiltersByYearAndMonth = () => {
     const fetchYears = async () => {
       try {
         setLoading(true);
-        const res = await fetch("/api/reporte/years");
+        const res = await fetch("/api/reportes/years");
         const data = await res.json();
         setYearsOptions(data);
         const currentYear = (/* @__PURE__ */ new Date()).getFullYear();
@@ -210,7 +210,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-B8I8osnA.mjs").then((module) => ({
+        Input: async () => import("./index-f8ZGKaW_.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -400,7 +400,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-vWDnzmpe.mjs").then((module) => ({
+        Input: async () => import("./index-DAnRi2Zi.mjs").then((module) => ({
           default: module.SelectCustomizeGasto
         }))
       },
@@ -590,7 +590,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => import("./index-DgggBfmC.mjs").then((module) => ({
+        Input: async () => import("./index-DV2yK91C.mjs").then((module) => ({
           default: module.CategoryProductSelect
         }))
       },

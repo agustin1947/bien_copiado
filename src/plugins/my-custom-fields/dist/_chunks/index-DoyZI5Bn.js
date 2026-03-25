@@ -137,7 +137,7 @@ const FiltersByYearAndMonth = () => {
     const fetchYears = async () => {
       try {
         setLoading(true);
-        const res = await fetch("/api/reporte/years");
+        const res = await fetch("/api/reportes/years");
         const data = await res.json();
         setYearsOptions(data);
         const currentYear = (/* @__PURE__ */ new Date()).getFullYear();
@@ -211,7 +211,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-CioaeKRU.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-DkkJXkTl.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -401,7 +401,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-JeVp9ia3.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-D6ME4oqv.js")).then((module2) => ({
           default: module2.SelectCustomizeGasto
         }))
       },
@@ -591,7 +591,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-CvnJqoVA.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-BSRb-NEo.js")).then((module2) => ({
           default: module2.CategoryProductSelect
         }))
       },
