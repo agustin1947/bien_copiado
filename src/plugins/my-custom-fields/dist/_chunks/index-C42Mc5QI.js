@@ -139,8 +139,16 @@ const FiltersByYearAndMonth = () => {
         setLoading(true);
         const res = await fetch("/api/reporte/years");
         const data = await res.json();
-        console.log(data);
         setYearsOptions(data);
+        const currentYear = (/* @__PURE__ */ new Date()).getFullYear();
+        const yearExists = data.find((y) => y.data === currentYear);
+        if (yearExists) {
+          setYear(currentYear);
+        } else if (data.length > 0) {
+          setYear(data[data.length - 1].data);
+        }
+        const currentMonth = (/* @__PURE__ */ new Date()).getMonth() + 1;
+        setMonth(currentMonth);
       } catch (error) {
         console.error("Error cargando años", error);
       } finally {
@@ -159,10 +167,9 @@ const FiltersByYearAndMonth = () => {
         value: year ?? "",
         disabled: loading,
         required: true,
-        placeholder: "Seleccionar año",
+        placeholder: "Seleccionar Año",
         onChange: (option) => {
-          console.log(option.target.value);
-          setYear(option?.target?.value || null);
+          setYear(Number(option?.target.value) || null);
         }
       }
     ),
@@ -175,10 +182,9 @@ const FiltersByYearAndMonth = () => {
         value: month ?? "",
         disabled: !year,
         required: true,
-        placeholder: "Seleccionar mes",
+        placeholder: "Seleccionar Mes",
         onChange: (option) => {
-          console.log(option.target.value);
-          setMonth(option?.target?.value || null);
+          setMonth(Number(option?.target.value) || null);
         }
       }
     )
@@ -205,7 +211,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-CfP9VV89.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-Bb6lZQB9.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -395,7 +401,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-DuTYzy0S.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-CfpI-F87.js")).then((module2) => ({
           default: module2.SelectCustomizeGasto
         }))
       },
@@ -585,7 +591,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-Bn_MJ63t.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-Bc4D_FyD.js")).then((module2) => ({
           default: module2.CategoryProductSelect
         }))
       },

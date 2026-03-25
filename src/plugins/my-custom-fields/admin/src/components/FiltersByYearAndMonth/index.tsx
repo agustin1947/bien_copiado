@@ -29,8 +29,20 @@ const FiltersByYearAndMonth = () => {
 
         const res = await fetch('/api/reporte/years');
         const data = await res.json();
-        console.log(data);
+
         setYearsOptions(data);
+
+        const currentYear = new Date().getFullYear();
+        const yearExists = data.find((y: any) => y.data === currentYear);
+        if (yearExists) {
+          setYear(currentYear);
+        } else if (data.length > 0) {
+          setYear(data[data.length - 1].data);
+        }
+        
+        const currentMonth = new Date().getMonth() + 1;
+        setMonth(currentMonth);
+
       } catch (error) {
         console.error('Error cargando años', error);
       } finally {
@@ -50,10 +62,9 @@ const FiltersByYearAndMonth = () => {
         value={year ?? ''}
         disabled={loading}
         required={true}
-        placeholder="Seleccionar año"
+        placeholder="Seleccionar Año"
         onChange={(option: any) => {
-          console.log(option.target.value);
-          setYear(option?.target?.value || null);
+          setYear(Number(option?.target.value) || null);
         }}
       />
 
@@ -64,10 +75,9 @@ const FiltersByYearAndMonth = () => {
         value={month ?? ''}
         disabled={!year}
         required={true}
-        placeholder="Seleccionar mes"
+        placeholder="Seleccionar Mes"
         onChange={(option: any) => {
-          console.log(option.target.value);
-          setMonth(option?.target?.value || null);
+          setMonth(Number(option?.target.value) || null);
         }}
       />
     </div>
