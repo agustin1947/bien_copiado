@@ -39,10 +39,9 @@ const FiltersByYearAndMonth = () => {
         } else if (data.length > 0) {
           setYear(data[data.length - 1].data);
         }
-        
+
         const currentMonth = new Date().getMonth() + 1;
         setMonth(currentMonth);
-
       } catch (error) {
         console.error('Error cargando años', error);
       } finally {
@@ -54,32 +53,35 @@ const FiltersByYearAndMonth = () => {
   }, []);
 
   return (
-    <div>
-      <GenericSearchableSelect
-        name="year"
-        label="Año"
-        options={yearsOptions}
-        value={year ?? ''}
-        disabled={loading}
-        required={true}
-        placeholder="Seleccionar Año"
-        onChange={(option: any) => {
-          setYear(Number(option?.target.value) || null);
-        }}
-      />
-
-      <GenericSearchableSelect
-        name="month"
-        label="Mes"
-        options={MONTHS}
-        value={month ?? ''}
-        disabled={!year}
-        required={true}
-        placeholder="Seleccionar Mes"
-        onChange={(option: any) => {
-          setMonth(Number(option?.target.value) || null);
-        }}
-      />
+    <div className="filters">
+      <div className='filters_filter'>
+        <GenericSearchableSelect
+          name="year"
+          label="Año"
+          options={yearsOptions}
+          value={year ?? ''}
+          disabled={loading}
+          required={true}
+          placeholder="Seleccionar Año"
+          onChange={(option: any) => {
+            setYear(Number(option?.target.value) || null);
+          }}
+        />
+      </div>
+      <div className='filters_filter'>
+        <GenericSearchableSelect
+          name="month"
+          label="Mes"
+          options={MONTHS}
+          value={month ?? ''}
+          disabled={!year}
+          required={true}
+          placeholder="Seleccionar Mes"
+          onChange={(option: any) => {
+            setMonth(Number(option?.target.value) || null);
+          }}
+        />
+      </div>
     </div>
   );
 };

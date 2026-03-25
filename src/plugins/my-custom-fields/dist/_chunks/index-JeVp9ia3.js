@@ -2,7 +2,7 @@
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const jsxRuntime = require("react/jsx-runtime");
 const react = require("react");
-const index = require("./index-C42Mc5QI.js");
+const index = require("./index-BjIIJO1y.js");
 const SelectCustomizeGasto = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);

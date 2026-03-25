@@ -156,8 +156,8 @@ const FiltersByYearAndMonth = () => {
     };
     fetchYears();
   }, []);
-  return /* @__PURE__ */ jsxs("div", { children: [
-    /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxs("div", { className: "filters", children: [
+    /* @__PURE__ */ jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsx(
       GenericSearchableSelect,
       {
         name: "year",
@@ -171,8 +171,8 @@ const FiltersByYearAndMonth = () => {
           setYear(Number(option?.target.value) || null);
         }
       }
-    ),
-    /* @__PURE__ */ jsx(
+    ) }),
+    /* @__PURE__ */ jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsx(
       GenericSearchableSelect,
       {
         name: "month",
@@ -186,7 +186,7 @@ const FiltersByYearAndMonth = () => {
           setMonth(Number(option?.target.value) || null);
         }
       }
-    )
+    ) })
   ] });
 };
 const ReporteCaja = () => {
@@ -210,7 +210,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-DnPR1C1y.mjs").then((module) => ({
+        Input: async () => import("./index-B8I8osnA.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -400,7 +400,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-Bn0zNkyq.mjs").then((module) => ({
+        Input: async () => import("./index-vWDnzmpe.mjs").then((module) => ({
           default: module.SelectCustomizeGasto
         }))
       },
@@ -590,7 +590,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => import("./index-CCKWwttK.mjs").then((module) => ({
+        Input: async () => import("./index-DgggBfmC.mjs").then((module) => ({
           default: module.CategoryProductSelect
         }))
       },

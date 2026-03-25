@@ -157,8 +157,8 @@ const FiltersByYearAndMonth = () => {
     };
     fetchYears();
   }, []);
-  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
-    /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "filters", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsxRuntime.jsx(
       GenericSearchableSelect,
       {
         name: "year",
@@ -172,8 +172,8 @@ const FiltersByYearAndMonth = () => {
           setYear(Number(option?.target.value) || null);
         }
       }
-    ),
-    /* @__PURE__ */ jsxRuntime.jsx(
+    ) }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsxRuntime.jsx(
       GenericSearchableSelect,
       {
         name: "month",
@@ -187,7 +187,7 @@ const FiltersByYearAndMonth = () => {
           setMonth(Number(option?.target.value) || null);
         }
       }
-    )
+    ) })
   ] });
 };
 const ReporteCaja = () => {
@@ -211,7 +211,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-Bb6lZQB9.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-CioaeKRU.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -401,7 +401,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-CfpI-F87.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-JeVp9ia3.js")).then((module2) => ({
           default: module2.SelectCustomizeGasto
         }))
       },
@@ -591,7 +591,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-Bc4D_FyD.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-CvnJqoVA.js")).then((module2) => ({
           default: module2.CategoryProductSelect
         }))
       },
