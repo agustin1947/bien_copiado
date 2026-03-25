@@ -2,11 +2,19 @@ export default {
   routes: [
     {
       method: 'GET',
-      path: '/reporte/years',
+      path: '/reportes/years',
       handler: 'reporte.getYears',
       config: {
         auth: false,
       },
+    },
+    {
+      method: "GET",
+      path: "/reportes/caja-mensual",
+      handler: "reporte.cajaMensual",
+      config: {
+        auth: false,
+      }
     },
   ],
 };
