@@ -114,6 +114,105 @@ const index$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   __proto__: null,
   GenericSearchableSelect
 }, Symbol.toStringTag, { value: "Module" }));
+const MonthlyPaymentTotals = ({ resumen }) => {
+  if (!resumen) return null;
+  const { entradas, salidas } = resumen;
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx("h3", { children: "Totales por medio de pago" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("table", { children: [
+      /* @__PURE__ */ jsxRuntime.jsx("thead", { children: /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Medio" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas USD" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas USD" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntime.jsxs("tbody", { children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "Efectivo" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresEfectivo })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "Transferencia" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosTransferencia }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosTransferencia }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresTransferencia }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresTransferencia })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "Débito" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosTarjetaDeDebito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosTarjetaDeDebito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresTarjetaDeDebito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresTarjetaDeDebito })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "Crédito" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosTarjetaDeCredito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosTarjetaDeCredito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresTarjetaDeCredito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresTarjetaDeCredito })
+        ] })
+      ] })
+    ] })
+  ] });
+};
+const DailySummaryTable = ({ data }) => {
+  if (!data || data.length === 0) return /* @__PURE__ */ jsxRuntime.jsx("p", { children: "No hay datos" });
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx("h3", { children: "Resumen diario" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("table", { children: [
+      /* @__PURE__ */ jsxRuntime.jsx("thead", { children: /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Fecha" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Ingresos ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Egresos ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Ingresos USD" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Egresos USD" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntime.jsx("tbody", { children: data.map((day) => /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.fecha }),
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.ingresosARS }),
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.egresosARS }),
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.ingresosUSD }),
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.egresosUSD })
+      ] }, day.fecha)) })
+    ] })
+  ] });
+};
+const CashSummary = ({ resumen }) => {
+  if (!resumen) return null;
+  const { entradas, salidas } = resumen;
+  const saldoARS = entradas.totalEnPesosEfectivo - salidas.totalEnPesosEfectivo;
+  const saldoUSD = entradas.totalEnDolaresEfectivo - salidas.totalEnDolaresEfectivo;
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+    /* @__PURE__ */ jsxRuntime.jsx("h3", { children: "Resumen Caja (Efectivo)" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("table", { children: [
+      /* @__PURE__ */ jsxRuntime.jsx("thead", { children: /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Moneda" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Saldo" })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntime.jsxs("tbody", { children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "ARS" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: saldoARS })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "USD" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: saldoUSD })
+        ] })
+      ] })
+    ] })
+  ] });
+};
 const MONTHS = [
   { id: 1, label: "Enero", data: 1 },
   { id: 2, label: "Febrero", data: 2 },
@@ -133,6 +232,7 @@ const FiltersByYearAndMonth = () => {
   const [month, setMonth] = react.useState(null);
   const [yearsOptions, setYearsOptions] = react.useState([]);
   const [loading, setLoading] = react.useState(false);
+  const [reportData, setReportData] = react.useState(null);
   react.useEffect(() => {
     const fetchYears = async () => {
       try {
@@ -157,37 +257,50 @@ const FiltersByYearAndMonth = () => {
     };
     fetchYears();
   }, []);
-  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "filters", children: [
-    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsxRuntime.jsx(
-      GenericSearchableSelect,
-      {
-        name: "year",
-        label: "Año",
-        options: yearsOptions,
-        value: year ?? "",
-        disabled: loading,
-        required: true,
-        placeholder: "Seleccionar Año",
-        onChange: (option) => {
-          setYear(Number(option?.target.value) || null);
+  react.useEffect(() => {
+    fetch(`/api/reportes/caja-mensual?year=${year}&month=${month}&local=1`).then((res) => res.json()).then((data) => {
+      console.log(data);
+      setReportData(data);
+    });
+  }, [year, month]);
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "filters", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsxRuntime.jsx(
+        GenericSearchableSelect,
+        {
+          name: "year",
+          label: "Año",
+          options: yearsOptions,
+          value: year ?? "",
+          disabled: loading,
+          required: true,
+          placeholder: "Seleccionar Año",
+          onChange: (option) => {
+            setYear(Number(option?.target.value) || null);
+          }
         }
-      }
-    ) }),
-    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsxRuntime.jsx(
-      GenericSearchableSelect,
-      {
-        name: "month",
-        label: "Mes",
-        options: MONTHS,
-        value: month ?? "",
-        disabled: !year,
-        required: true,
-        placeholder: "Seleccionar Mes",
-        onChange: (option) => {
-          setMonth(Number(option?.target.value) || null);
+      ) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsxRuntime.jsx(
+        GenericSearchableSelect,
+        {
+          name: "month",
+          label: "Mes",
+          options: MONTHS,
+          value: month ?? "",
+          disabled: !year,
+          required: true,
+          placeholder: "Seleccionar Mes",
+          onChange: (option) => {
+            setMonth(Number(option?.target.value) || null);
+          }
         }
-      }
-    ) })
+      ) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { children: reportData && /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntime.jsx(MonthlyPaymentTotals, { resumen: reportData.resumen }),
+      /* @__PURE__ */ jsxRuntime.jsx(DailySummaryTable, { data: reportData.porDia }),
+      /* @__PURE__ */ jsxRuntime.jsx(CashSummary, { resumen: reportData.resumen })
+    ] }) })
   ] });
 };
 const ReporteCaja = () => {
@@ -211,7 +324,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-DkkJXkTl.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-BgMg2Ggb.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -401,7 +514,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-D6ME4oqv.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-1SkqwllF.js")).then((module2) => ({
           default: module2.SelectCustomizeGasto
         }))
       },
@@ -591,7 +704,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-BSRb-NEo.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-BBkh_Ruw.js")).then((module2) => ({
           default: module2.CategoryProductSelect
         }))
       },

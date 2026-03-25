@@ -1,6 +1,6 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { CategoryProductSelect } from "./index-DV2yK91C.mjs";
+import { CategoryProductSelect } from "./index-B94m-tuz.mjs";
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);

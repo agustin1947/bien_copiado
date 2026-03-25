@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useMemo } from "react";
-import { jsxs, jsx } from "react/jsx-runtime";
+import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 const __variableDynamicImportRuntimeHelper = (glob, path, segs) => {
   const v = glob[path];
   if (v) {
@@ -113,6 +113,105 @@ const index$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   __proto__: null,
   GenericSearchableSelect
 }, Symbol.toStringTag, { value: "Module" }));
+const MonthlyPaymentTotals = ({ resumen }) => {
+  if (!resumen) return null;
+  const { entradas, salidas } = resumen;
+  return /* @__PURE__ */ jsxs("div", { children: [
+    /* @__PURE__ */ jsx("h3", { children: "Totales por medio de pago" }),
+    /* @__PURE__ */ jsxs("table", { children: [
+      /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
+        /* @__PURE__ */ jsx("th", { children: "Medio" }),
+        /* @__PURE__ */ jsx("th", { children: "Entradas ARS" }),
+        /* @__PURE__ */ jsx("th", { children: "Salidas ARS" }),
+        /* @__PURE__ */ jsx("th", { children: "Entradas USD" }),
+        /* @__PURE__ */ jsx("th", { children: "Salidas USD" })
+      ] }) }),
+      /* @__PURE__ */ jsxs("tbody", { children: [
+        /* @__PURE__ */ jsxs("tr", { children: [
+          /* @__PURE__ */ jsx("td", { children: "Efectivo" }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresEfectivo }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresEfectivo })
+        ] }),
+        /* @__PURE__ */ jsxs("tr", { children: [
+          /* @__PURE__ */ jsx("td", { children: "Transferencia" }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosTransferencia }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosTransferencia }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresTransferencia }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresTransferencia })
+        ] }),
+        /* @__PURE__ */ jsxs("tr", { children: [
+          /* @__PURE__ */ jsx("td", { children: "Débito" }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosTarjetaDeDebito }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosTarjetaDeDebito }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresTarjetaDeDebito }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresTarjetaDeDebito })
+        ] }),
+        /* @__PURE__ */ jsxs("tr", { children: [
+          /* @__PURE__ */ jsx("td", { children: "Crédito" }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosTarjetaDeCredito }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosTarjetaDeCredito }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresTarjetaDeCredito }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresTarjetaDeCredito })
+        ] })
+      ] })
+    ] })
+  ] });
+};
+const DailySummaryTable = ({ data }) => {
+  if (!data || data.length === 0) return /* @__PURE__ */ jsx("p", { children: "No hay datos" });
+  return /* @__PURE__ */ jsxs("div", { children: [
+    /* @__PURE__ */ jsx("h3", { children: "Resumen diario" }),
+    /* @__PURE__ */ jsxs("table", { children: [
+      /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
+        /* @__PURE__ */ jsx("th", { children: "Fecha" }),
+        /* @__PURE__ */ jsx("th", { children: "Ingresos ARS" }),
+        /* @__PURE__ */ jsx("th", { children: "Egresos ARS" }),
+        /* @__PURE__ */ jsx("th", { children: "Ingresos USD" }),
+        /* @__PURE__ */ jsx("th", { children: "Egresos USD" })
+      ] }) }),
+      /* @__PURE__ */ jsx("tbody", { children: data.map((day) => /* @__PURE__ */ jsxs("tr", { children: [
+        /* @__PURE__ */ jsx("td", { children: day.fecha }),
+        /* @__PURE__ */ jsx("td", { children: day.ingresosARS }),
+        /* @__PURE__ */ jsx("td", { children: day.egresosARS }),
+        /* @__PURE__ */ jsx("td", { children: day.ingresosUSD }),
+        /* @__PURE__ */ jsx("td", { children: day.egresosUSD })
+      ] }, day.fecha)) })
+    ] })
+  ] });
+};
+const CashSummary = ({ resumen }) => {
+  if (!resumen) return null;
+  const { entradas, salidas } = resumen;
+  const saldoARS = entradas.totalEnPesosEfectivo - salidas.totalEnPesosEfectivo;
+  const saldoUSD = entradas.totalEnDolaresEfectivo - salidas.totalEnDolaresEfectivo;
+  return /* @__PURE__ */ jsxs("div", { children: [
+    /* @__PURE__ */ jsx("h3", { children: "Resumen Caja (Efectivo)" }),
+    /* @__PURE__ */ jsxs("table", { children: [
+      /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
+        /* @__PURE__ */ jsx("th", { children: "Moneda" }),
+        /* @__PURE__ */ jsx("th", { children: "Entradas" }),
+        /* @__PURE__ */ jsx("th", { children: "Salidas" }),
+        /* @__PURE__ */ jsx("th", { children: "Saldo" })
+      ] }) }),
+      /* @__PURE__ */ jsxs("tbody", { children: [
+        /* @__PURE__ */ jsxs("tr", { children: [
+          /* @__PURE__ */ jsx("td", { children: "ARS" }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsx("td", { children: saldoARS })
+        ] }),
+        /* @__PURE__ */ jsxs("tr", { children: [
+          /* @__PURE__ */ jsx("td", { children: "USD" }),
+          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresEfectivo }),
+          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresEfectivo }),
+          /* @__PURE__ */ jsx("td", { children: saldoUSD })
+        ] })
+      ] })
+    ] })
+  ] });
+};
 const MONTHS = [
   { id: 1, label: "Enero", data: 1 },
   { id: 2, label: "Febrero", data: 2 },
@@ -132,6 +231,7 @@ const FiltersByYearAndMonth = () => {
   const [month, setMonth] = useState(null);
   const [yearsOptions, setYearsOptions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [reportData, setReportData] = useState(null);
   useEffect(() => {
     const fetchYears = async () => {
       try {
@@ -156,37 +256,50 @@ const FiltersByYearAndMonth = () => {
     };
     fetchYears();
   }, []);
-  return /* @__PURE__ */ jsxs("div", { className: "filters", children: [
-    /* @__PURE__ */ jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsx(
-      GenericSearchableSelect,
-      {
-        name: "year",
-        label: "Año",
-        options: yearsOptions,
-        value: year ?? "",
-        disabled: loading,
-        required: true,
-        placeholder: "Seleccionar Año",
-        onChange: (option) => {
-          setYear(Number(option?.target.value) || null);
+  useEffect(() => {
+    fetch(`/api/reportes/caja-mensual?year=${year}&month=${month}&local=1`).then((res) => res.json()).then((data) => {
+      console.log(data);
+      setReportData(data);
+    });
+  }, [year, month]);
+  return /* @__PURE__ */ jsxs(Fragment, { children: [
+    /* @__PURE__ */ jsxs("div", { className: "filters", children: [
+      /* @__PURE__ */ jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsx(
+        GenericSearchableSelect,
+        {
+          name: "year",
+          label: "Año",
+          options: yearsOptions,
+          value: year ?? "",
+          disabled: loading,
+          required: true,
+          placeholder: "Seleccionar Año",
+          onChange: (option) => {
+            setYear(Number(option?.target.value) || null);
+          }
         }
-      }
-    ) }),
-    /* @__PURE__ */ jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsx(
-      GenericSearchableSelect,
-      {
-        name: "month",
-        label: "Mes",
-        options: MONTHS,
-        value: month ?? "",
-        disabled: !year,
-        required: true,
-        placeholder: "Seleccionar Mes",
-        onChange: (option) => {
-          setMonth(Number(option?.target.value) || null);
+      ) }),
+      /* @__PURE__ */ jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsx(
+        GenericSearchableSelect,
+        {
+          name: "month",
+          label: "Mes",
+          options: MONTHS,
+          value: month ?? "",
+          disabled: !year,
+          required: true,
+          placeholder: "Seleccionar Mes",
+          onChange: (option) => {
+            setMonth(Number(option?.target.value) || null);
+          }
         }
-      }
-    ) })
+      ) })
+    ] }),
+    /* @__PURE__ */ jsx("div", { children: reportData && /* @__PURE__ */ jsxs(Fragment, { children: [
+      /* @__PURE__ */ jsx(MonthlyPaymentTotals, { resumen: reportData.resumen }),
+      /* @__PURE__ */ jsx(DailySummaryTable, { data: reportData.porDia }),
+      /* @__PURE__ */ jsx(CashSummary, { resumen: reportData.resumen })
+    ] }) })
   ] });
 };
 const ReporteCaja = () => {
@@ -210,7 +323,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-f8ZGKaW_.mjs").then((module) => ({
+        Input: async () => import("./index-CaJnAMvv.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -400,7 +513,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-DAnRi2Zi.mjs").then((module) => ({
+        Input: async () => import("./index-FaiK1fZW.mjs").then((module) => ({
           default: module.SelectCustomizeGasto
         }))
       },
@@ -590,7 +703,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => import("./index-DV2yK91C.mjs").then((module) => ({
+        Input: async () => import("./index-B94m-tuz.mjs").then((module) => ({
           default: module.CategoryProductSelect
         }))
       },
