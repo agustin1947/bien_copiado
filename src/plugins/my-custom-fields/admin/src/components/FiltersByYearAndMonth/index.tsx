@@ -27,7 +27,7 @@ const FiltersByYearAndMonth = () => {
       try {
         setLoading(true);
 
-        const res = await fetch('/api/reporte/years');
+        const res = await fetch('/api/reportes/years');
         const data = await res.json();
 
         setYearsOptions(data);
