@@ -27,10 +27,20 @@ export default {
       }));
 
       ctx.body = yearsFormatted;
-
     } catch (error) {
       console.error(error);
       ctx.throw(500, "Error obteniendo años");
     }
+  },
+  async cajaMensual(ctx) {
+    const { year, month, local } = ctx.query;
+
+    const data = await strapi.service("api::reporte.caja").getCajaMensual({
+      year: Number(year),
+      month: Number(month),
+      localId: Number(local),
+    });
+
+    ctx.body = data;
   },
 };
