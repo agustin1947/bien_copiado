@@ -8,10 +8,10 @@ const MonthlyPaymentTotals = ({ resumen }: Props) => {
   const { entradas, salidas } = resumen;
 
   return (
-    <div>
-      <h3>Totales por medio de pago</h3>
+    <>
+      <h3 className="title_h3">Totales por medio de pago</h3>
 
-      <table>
+      <table className="table w-100">
         <thead>
           <tr>
             <th>Medio</th>
@@ -55,7 +55,7 @@ const MonthlyPaymentTotals = ({ resumen }: Props) => {
           </tr>
         </tbody>
       </table>
-    </div>
+    </>
   );
 };
 

@@ -14,10 +14,10 @@ const CashSummary = ({ resumen }: Props) => {
     entradas.totalEnDolaresEfectivo - salidas.totalEnDolaresEfectivo;
 
   return (
-    <div>
-      <h3>Resumen Caja (Efectivo)</h3>
+    <>
+      <h3 className="title_h3">Resumen Caja (Efectivo)</h3>
 
-      <table>
+      <table className="table w-100">
         <thead>
           <tr>
             <th>Moneda</th>
@@ -42,7 +42,7 @@ const CashSummary = ({ resumen }: Props) => {
           </tr>
         </tbody>
       </table>
-    </div>
+    </>
   );
 };
 

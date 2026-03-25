@@ -540,13 +540,13 @@ export default {
     bloquearBotones();
     const style = document.createElement("style");
     style.innerHTML = `
-      nav ol li ol li:nth-child(11),
+    nav ol li ol li:nth-child(11),
       nav ol li ol li:nth-child(17),
       nav ul li:nth-child(n+3),
       nav:not([aria-label="Pagination"]) ol li span {
         display: none !important;
-      }
-     .hidden-delete {
+    }
+    .hidden-delete {
       display: none;
       visibility: hidden;
       pointer-events: none;
@@ -745,6 +745,7 @@ export default {
       .filters {
         display: flex;
         gap:10px;
+        padding-bottom:20px;
       }
       .filters_filter {
         width: 50%;
@@ -756,11 +757,38 @@ export default {
         padding: 56px;
       }
       .title_h1 {
-          font-weight: 600;
-          font-size: 3.2rem;
-          line-height: 1.25;
+        font-weight: 600;
+        font-size: 3.2rem;
+        line-height: 1.25;
+        padding-bottom:20px;
       }
-      @media (max-width: 992px) { 
+      .title_h3 {
+        font-weight: 600;
+        font-size: 2.5rem;
+        line-height: 1;
+        padding-bottom:15px;
+      }
+
+      .reports {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      /* Cada tabla ocupa 50% (2 por fila) */
+      .reports_table {
+        flex: 1 1 calc(50% - 20px);
+      }
+
+      /* La tercera tabla ocupa toda la fila */
+      .reports_table:nth-child(3) {
+        flex: 1 1 100%;
+      }
+
+      @media (max-width: 992px) {
+        .reports_table {
+          flex: 1 1 100%;
+        } 
         #main-content {
           margin: 0 20px !important;
           padding:0;

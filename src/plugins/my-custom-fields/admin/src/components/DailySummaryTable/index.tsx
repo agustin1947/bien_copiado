@@ -6,10 +6,10 @@ const DailySummaryTable = ({ data }: Props) => {
   if (!data || data.length === 0) return <p>No hay datos</p>;
 
   return (
-    <div>
-      <h3>Resumen diario</h3>
+    <>
+      <h3 className="title_h3">Resumen diario</h3>
 
-      <table>
+      <table className="table w-100">
         <thead>
           <tr>
             <th>Fecha</th>
@@ -31,7 +31,7 @@ const DailySummaryTable = ({ data }: Props) => {
           ))}
         </tbody>
       </table>
-    </div>
+    </>
   );
 };
 

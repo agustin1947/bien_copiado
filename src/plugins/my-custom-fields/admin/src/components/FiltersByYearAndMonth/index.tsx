@@ -69,9 +69,9 @@ const FiltersByYearAndMonth = () => {
     <>
       <div className="filters">
         <div className="filters_filter">
+          <h3 className="title_h3">Año</h3>
           <GenericSearchableSelect
             name="year"
-            label="Año"
             options={yearsOptions}
             value={year ?? ''}
             disabled={loading}
@@ -83,9 +83,9 @@ const FiltersByYearAndMonth = () => {
           />
         </div>
         <div className="filters_filter">
+          <h3 className="title_h3">Mes</h3>
           <GenericSearchableSelect
             name="month"
-            label="Mes"
             options={MONTHS}
             value={month ?? ''}
             disabled={!year}
@@ -97,15 +97,20 @@ const FiltersByYearAndMonth = () => {
           />
         </div>
       </div>
-      <div>
-        {reportData && (
-          <>
+
+      {reportData && (
+        <div className="reports">
+          <div className="reports_table">
             <MonthlyPaymentTotals resumen={reportData.resumen} />
-            <DailySummaryTable data={reportData.porDia} />
+          </div>
+          <div className="reports_table">
             <CashSummary resumen={reportData.resumen} />
-          </>
-        )}
-      </div>
+          </div>
+          <div className="reports_table">
+            <DailySummaryTable data={reportData.porDia} />
+          </div>
+        </div>
+      )}
     </>
   );
 };
