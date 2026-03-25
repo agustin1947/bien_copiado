@@ -741,6 +741,16 @@ export default {
         margin: 10px 0;
       }
       /** end SelectCustomize */
+      /** FiltersByYearAndMonth */
+      .filters {
+        display: flex;
+        gap:10px;
+      }
+      .filters_filter {
+        width: 50%;
+      }
+
+      /** end FiltersByYearAndMonth */
 
       .container {
         padding: 56px;
