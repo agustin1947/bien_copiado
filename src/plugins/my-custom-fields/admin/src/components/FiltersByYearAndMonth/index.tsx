@@ -25,6 +25,8 @@ const FiltersByYearAndMonth = () => {
   const [yearsOptions, setYearsOptions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [reportData, setReportData] = useState<any>(null);
+  const [locals, setLocals] = useState<any[]>([]);
+  const [local, setLocal] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchYears = async () => {
@@ -53,17 +55,40 @@ const FiltersByYearAndMonth = () => {
       }
     };
 
+    const getLocals = async () => {
+      try {
+        setLoading(true);
+
+        const res = await fetch('/api/locals');
+        const data = await res.json();
+
+        const localesFormatted = data.data.map((local: any) => ({
+          id: local.id,
+          label: local.nombre,
+          data: local.id,
+        }));
+
+        setLocals(localesFormatted);
+
+      } catch (error) {
+        console.error('Error cargando Locales', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchYears();
+    getLocals();
+    
   }, []);
 
   useEffect(() => {
-    fetch(`/api/reportes/caja-mensual?year=${year}&month=${month}&local=1`)
+    fetch(`/api/reportes/caja-mensual?year=${year}&month=${month}&local=${local}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setReportData(data);
       });
-  }, [year, month]);
+  }, [year, month, local]);
 
   return (
     <>
@@ -93,6 +118,20 @@ const FiltersByYearAndMonth = () => {
             placeholder="Seleccionar Mes"
             onChange={(option: any) => {
               setMonth(Number(option?.target.value) || null);
+            }}
+          />
+        </div>
+        <div className="filters_filter">
+          <h3 className="title_h3">Local</h3>
+          <GenericSearchableSelect
+            name="locals"
+            options={locals}
+            value={local ?? ''}
+            disabled={!year}
+            required={true}
+            placeholder="Seleccionar Local"
+            onChange={(option: any) => {
+              setLocal(Number(option?.target.value) || null);
             }}
           />
         </div>
