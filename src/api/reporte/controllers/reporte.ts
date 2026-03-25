@@ -8,7 +8,7 @@ export default {
             fecha_de_ingreso: "asc",
           },
         });
-      
+
       const yearStarted = result
         ? new Date(result.fecha_de_ingreso).getFullYear()
         : new Date().getFullYear();
@@ -19,8 +19,15 @@ export default {
         { length: currentYear - yearStarted + 1 },
         (_, i) => yearStarted + i,
       );
-      
-      ctx.body = years;
+
+      const yearsFormatted = years.map((year, index) => ({
+        id: year,
+        label: String(year),
+        data: year,
+      }));
+
+      ctx.body = yearsFormatted;
+
     } catch (error) {
       console.error(error);
       ctx.throw(500, "Error obteniendo años");
