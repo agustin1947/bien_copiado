@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { GenericSearchableSelect } from '../GenericSearchableSelect';
+import { MonthlyPaymentTotals } from '../MonthlyPaymentTotals';
+import { DailySummaryTable } from '../DailySummaryTable';
+import { CashSummary } from '../CashSummary';
 
 const MONTHS = [
   { id: 1, label: 'Enero', data: 1 },
@@ -21,6 +24,7 @@ const FiltersByYearAndMonth = () => {
   const [month, setMonth] = useState<number | null>(null);
   const [yearsOptions, setYearsOptions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [reportData, setReportData] = useState<any>(null);
 
   useEffect(() => {
     const fetchYears = async () => {
@@ -52,37 +56,57 @@ const FiltersByYearAndMonth = () => {
     fetchYears();
   }, []);
 
+  useEffect(() => {
+    fetch(`/api/reportes/caja-mensual?year=${year}&month=${month}&local=1`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setReportData(data);
+      });
+  }, [year, month]);
+
   return (
-    <div className="filters">
-      <div className='filters_filter'>
-        <GenericSearchableSelect
-          name="year"
-          label="Año"
-          options={yearsOptions}
-          value={year ?? ''}
-          disabled={loading}
-          required={true}
-          placeholder="Seleccionar Año"
-          onChange={(option: any) => {
-            setYear(Number(option?.target.value) || null);
-          }}
-        />
+    <>
+      <div className="filters">
+        <div className="filters_filter">
+          <GenericSearchableSelect
+            name="year"
+            label="Año"
+            options={yearsOptions}
+            value={year ?? ''}
+            disabled={loading}
+            required={true}
+            placeholder="Seleccionar Año"
+            onChange={(option: any) => {
+              setYear(Number(option?.target.value) || null);
+            }}
+          />
+        </div>
+        <div className="filters_filter">
+          <GenericSearchableSelect
+            name="month"
+            label="Mes"
+            options={MONTHS}
+            value={month ?? ''}
+            disabled={!year}
+            required={true}
+            placeholder="Seleccionar Mes"
+            onChange={(option: any) => {
+              setMonth(Number(option?.target.value) || null);
+            }}
+          />
+        </div>
       </div>
-      <div className='filters_filter'>
-        <GenericSearchableSelect
-          name="month"
-          label="Mes"
-          options={MONTHS}
-          value={month ?? ''}
-          disabled={!year}
-          required={true}
-          placeholder="Seleccionar Mes"
-          onChange={(option: any) => {
-            setMonth(Number(option?.target.value) || null);
-          }}
-        />
+      <div>
+        {reportData && (
+          <>
+            <MonthlyPaymentTotals resumen={reportData.resumen} />
+            <DailySummaryTable data={reportData.porDia} />
+            <CashSummary resumen={reportData.resumen} />
+          </>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 
