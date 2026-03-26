@@ -22,7 +22,7 @@ const DailySummaryTable = ({ data }: Props) => {
         <tbody>
           {data.map((day) => (
             <tr key={day.fecha}>
-              <td>{day.fecha}</td>
+              <td>{new Date(day.fecha).toLocaleDateString("es-AR")}</td>
               <td>{day.ingresosARS}</td>
               <td>{day.egresosARS}</td>
               <td>{day.ingresosUSD}</td>
