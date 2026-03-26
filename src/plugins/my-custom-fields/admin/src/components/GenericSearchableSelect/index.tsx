@@ -4,14 +4,14 @@ import arrow from './img/arrow.svg';
 interface SelectOption {
   id: number;
   label: string;
-  data: any
+  data: any;
 }
 
 interface GenericSelectProps {
   name: string;
   label?: string;
   options: SelectOption[];
-  value?: string | number;
+  value?: string | number | null;
   disabled?: boolean;
   required?: boolean;
   placeholder?: string;
@@ -19,6 +19,7 @@ interface GenericSelectProps {
   onOptionSelect?: (selectedId: number, option: SelectOption) => void;
   type?: string;
   className?: string;
+  allowEmptyOption?: boolean;
 }
 
 const GenericSearchableSelect = ({
@@ -33,16 +34,23 @@ const GenericSearchableSelect = ({
   onOptionSelect,
   type,
   className = '',
+  allowEmptyOption = false,
 }: GenericSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const optionsWithEmpty = useMemo(() => {
+    if (!allowEmptyOption) return options;
+
+    return [{ id: 0, label: placeholder, data: null }, ...options];
+  }, [options, allowEmptyOption, placeholder]);
+
   const filteredOptions = useMemo(() => {
-    if (!search) return options;
+    if (!search) return optionsWithEmpty;
     console.log(search);
-    return options.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()));
-  }, [search, options]);
+    return optionsWithEmpty.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()));
+  }, [search, optionsWithEmpty]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -52,10 +60,11 @@ const GenericSearchableSelect = ({
     };
 
     document.addEventListener('mousedown', handleClickOutside);
+
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const selectedOption = options.find((option) => option.id === value);
+  const selectedOption = optionsWithEmpty.find((option) => option.id === value);
 
   return (
     <div ref={containerRef} className="generic_searchable_select">
@@ -73,15 +82,16 @@ const GenericSearchableSelect = ({
         {isOpen && (
           <ul className="generic_searchable_select__ul">
             <li>
-                <input
-                  type="text"
-                  name="search"
-                  value={search}
-                  className="input-customize"
-                  placeholder='Buscar...'
-                  onChange={(e) => setSearch(e.target.value)}
-                />
+              <input
+                type="text"
+                name="search"
+                value={search}
+                className="input-customize"
+                placeholder="Buscar..."
+                onChange={(e) => setSearch(e.target.value)}
+              />
             </li>
+
             {filteredOptions.length > 0 &&
               filteredOptions
                 .filter((option) => option.id !== value)
