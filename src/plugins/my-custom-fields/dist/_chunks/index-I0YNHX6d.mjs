@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-const jsxRuntime = require("react/jsx-runtime");
-const react = require("react");
-const index = require("./index-Cpi-GH5u.js");
+import { jsxs, jsx } from "react/jsx-runtime";
+import { useState, useEffect } from "react";
+import { G as GenericSearchableSelect } from "./index-DLySTrAI.mjs";
 const CategoryProductSelect = ({
   localId,
   productValue,
@@ -11,16 +9,16 @@ const CategoryProductSelect = ({
   disabled,
   required
 }) => {
-  const [categorias, setCategorias] = react.useState([]);
-  const [productos, setProductos] = react.useState([]);
-  const [selectedCategoria, setSelectedCategoria] = react.useState(null);
-  react.useEffect(() => {
+  const [categorias, setCategorias] = useState([]);
+  const [productos, setProductos] = useState([]);
+  const [selectedCategoria, setSelectedCategoria] = useState(null);
+  useEffect(() => {
     fetch(`/api/categoria-de-productos?pagination[pageSize]=1000`).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
       setCategorias(data.data);
     }).catch(console.error);
   }, []);
-  react.useEffect(() => {
+  useEffect(() => {
     if (!productValue) return;
     fetch(`/api/productos?populate=*&filters[id][$eq]=${productValue}`).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
@@ -32,7 +30,7 @@ const CategoryProductSelect = ({
       onProductChange({ target: { name, type: "number", value: productValue } }, producto);
     }).catch(console.error);
   }, [productValue]);
-  react.useEffect(() => {
+  useEffect(() => {
     if (!selectedCategoria || !localId) {
       setProductos([]);
       return;
@@ -54,9 +52,9 @@ const CategoryProductSelect = ({
     label: `${p.nombre} (${p.tipo_de_moneda?.codigo})`,
     data: p
   }));
-  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "category_product_select", children: [
-    /* @__PURE__ */ jsxRuntime.jsx(
-      index.GenericSearchableSelect,
+  return /* @__PURE__ */ jsxs("div", { className: "category_product_select", children: [
+    /* @__PURE__ */ jsx(
+      GenericSearchableSelect,
       {
         name: "categoria",
         label: "Categoría",
@@ -69,8 +67,8 @@ const CategoryProductSelect = ({
         }
       }
     ),
-    /* @__PURE__ */ jsxRuntime.jsx(
-      index.GenericSearchableSelect,
+    /* @__PURE__ */ jsx(
+      GenericSearchableSelect,
       {
         name,
         label: "Producto",
@@ -95,4 +93,6 @@ const CategoryProductSelect = ({
     )
   ] });
 };
-exports.CategoryProductSelect = CategoryProductSelect;
+export {
+  CategoryProductSelect
+};
