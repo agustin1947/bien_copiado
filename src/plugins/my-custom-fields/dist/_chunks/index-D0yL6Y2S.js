@@ -37,16 +37,21 @@ const GenericSearchableSelect = ({
   onChange,
   onOptionSelect,
   type,
-  className = ""
+  className = "",
+  allowEmptyOption = false
 }) => {
   const [isOpen, setIsOpen] = react.useState(false);
   const [search, setSearch] = react.useState("");
   const containerRef = react.useRef(null);
+  const optionsWithEmpty = react.useMemo(() => {
+    if (!allowEmptyOption) return options;
+    return [{ id: 0, label: placeholder, data: null }, ...options];
+  }, [options, allowEmptyOption, placeholder]);
   const filteredOptions = react.useMemo(() => {
-    if (!search) return options;
+    if (!search) return optionsWithEmpty;
     console.log(search);
-    return options.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()));
-  }, [search, options]);
+    return optionsWithEmpty.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()));
+  }, [search, optionsWithEmpty]);
   react.useEffect(() => {
     const handleClickOutside = (event) => {
       if (!containerRef.current?.contains(event.target)) {
@@ -56,7 +61,7 @@ const GenericSearchableSelect = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const selectedOption = options.find((option) => option.id === value);
+  const selectedOption = optionsWithEmpty.find((option) => option.id === value);
   return /* @__PURE__ */ jsxRuntime.jsxs("div", { ref: containerRef, className: "generic_searchable_select", children: [
     label && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "label-customize", children: label }),
     /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
@@ -331,7 +336,8 @@ const FiltersByYearAndMonth = () => {
             placeholder: "Seleccionar Local",
             onChange: (option) => {
               setLocal(Number(option?.target.value) || null);
-            }
+            },
+            allowEmptyOption: true
           }
         )
       ] })
@@ -364,7 +370,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-BFbtdct_.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-Dp1yuhzf.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -554,7 +560,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-NKumuAHb.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-GNYsQc-E.js")).then((module2) => ({
           default: module2.SelectCustomizeGasto
         }))
       },
@@ -744,7 +750,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-B_xjyiBF.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-DrkCAyUU.js")).then((module2) => ({
           default: module2.CategoryProductSelect
         }))
       },

@@ -36,16 +36,21 @@ const GenericSearchableSelect = ({
   onChange,
   onOptionSelect,
   type,
-  className = ""
+  className = "",
+  allowEmptyOption = false
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const containerRef = useRef(null);
+  const optionsWithEmpty = useMemo(() => {
+    if (!allowEmptyOption) return options;
+    return [{ id: 0, label: placeholder, data: null }, ...options];
+  }, [options, allowEmptyOption, placeholder]);
   const filteredOptions = useMemo(() => {
-    if (!search) return options;
+    if (!search) return optionsWithEmpty;
     console.log(search);
-    return options.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()));
-  }, [search, options]);
+    return optionsWithEmpty.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()));
+  }, [search, optionsWithEmpty]);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!containerRef.current?.contains(event.target)) {
@@ -55,7 +60,7 @@ const GenericSearchableSelect = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const selectedOption = options.find((option) => option.id === value);
+  const selectedOption = optionsWithEmpty.find((option) => option.id === value);
   return /* @__PURE__ */ jsxs("div", { ref: containerRef, className: "generic_searchable_select", children: [
     label && /* @__PURE__ */ jsx("div", { className: "label-customize", children: label }),
     /* @__PURE__ */ jsxs("div", { children: [
@@ -330,7 +335,8 @@ const FiltersByYearAndMonth = () => {
             placeholder: "Seleccionar Local",
             onChange: (option) => {
               setLocal(Number(option?.target.value) || null);
-            }
+            },
+            allowEmptyOption: true
           }
         )
       ] })
@@ -363,7 +369,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-DAHB-WU-.mjs").then((module) => ({
+        Input: async () => import("./index-qdlpK-hJ.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -553,7 +559,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-CoH2NPCk.mjs").then((module) => ({
+        Input: async () => import("./index-DaYNauny.mjs").then((module) => ({
           default: module.SelectCustomizeGasto
         }))
       },
@@ -743,7 +749,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => import("./index-DcuWxY3M.mjs").then((module) => ({
+        Input: async () => import("./index-C29zRwkj.mjs").then((module) => ({
           default: module.CategoryProductSelect
         }))
       },
