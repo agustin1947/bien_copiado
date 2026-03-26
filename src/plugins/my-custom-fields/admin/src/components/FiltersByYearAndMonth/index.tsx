@@ -69,7 +69,6 @@ const FiltersByYearAndMonth = () => {
         }));
 
         setLocals(localesFormatted);
-
       } catch (error) {
         console.error('Error cargando Locales', error);
       } finally {
@@ -79,15 +78,16 @@ const FiltersByYearAndMonth = () => {
 
     fetchYears();
     getLocals();
-
   }, []);
 
   useEffect(() => {
-    fetch(`/api/reportes/caja-mensual?year=${year}&month=${month}&local=${local}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setReportData(data);
-      });
+    if (year && month) {
+      fetch(`/api/reportes/caja-mensual?year=${year}&month=${month}&local=${local}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setReportData(data);
+        });
+    }
   }, [year, month, local]);
 
   return (
