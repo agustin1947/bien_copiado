@@ -288,6 +288,10 @@ const FiltersByYearAndMonth = () => {
       });
     }
   }, [year, month, local]);
+  const handleExport = () => {
+    const url = `/api/reportes/caja-mensual/export?year=${year}&month=${month}&local=${local}`;
+    window.open(url, "_blank");
+  };
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     /* @__PURE__ */ jsxs("div", { className: "filters", children: [
       /* @__PURE__ */ jsxs("div", { className: "filters_filter", children: [
@@ -343,6 +347,7 @@ const FiltersByYearAndMonth = () => {
         )
       ] })
     ] }),
+    /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("button", { className: "boton-local boton-local--download", onClick: handleExport, children: "Exportar CSV" }) }),
     reportData && /* @__PURE__ */ jsxs("div", { className: "reports", children: [
       /* @__PURE__ */ jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsx(MonthlyPaymentTotals, { resumen: reportData.resumen }) }),
       /* @__PURE__ */ jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsx(CashSummary, { resumen: reportData.resumen }) }),
@@ -371,7 +376,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-29Ihvoa8.mjs").then((module) => ({
+        Input: async () => import("./index-CT20jqtw.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -561,7 +566,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-DyG5eibK.mjs").then((module) => ({
+        Input: async () => import("./index-VvS3GDov.mjs").then((module) => ({
           default: module.SelectCustomizeGasto
         }))
       },
@@ -751,7 +756,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => import("./index-I0YNHX6d.mjs").then((module) => ({
+        Input: async () => import("./index-B76eOKH0.mjs").then((module) => ({
           default: module.CategoryProductSelect
         }))
       },

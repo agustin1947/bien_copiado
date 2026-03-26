@@ -289,6 +289,10 @@ const FiltersByYearAndMonth = () => {
       });
     }
   }, [year, month, local]);
+  const handleExport = () => {
+    const url = `/api/reportes/caja-mensual/export?year=${year}&month=${month}&local=${local}`;
+    window.open(url, "_blank");
+  };
   return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
     /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "filters", children: [
       /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "filters_filter", children: [
@@ -344,6 +348,7 @@ const FiltersByYearAndMonth = () => {
         )
       ] })
     ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { children: /* @__PURE__ */ jsxRuntime.jsx("button", { className: "boton-local boton-local--download", onClick: handleExport, children: "Exportar CSV" }) }),
     reportData && /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "reports", children: [
       /* @__PURE__ */ jsxRuntime.jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsxRuntime.jsx(MonthlyPaymentTotals, { resumen: reportData.resumen }) }),
       /* @__PURE__ */ jsxRuntime.jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsxRuntime.jsx(CashSummary, { resumen: reportData.resumen }) }),
@@ -372,7 +377,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-BSBuDzEO.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-qBjCDreJ.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -562,7 +567,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-BeK1lfyg.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-9Dh_1nBI.js")).then((module2) => ({
           default: module2.SelectCustomizeGasto
         }))
       },
@@ -752,7 +757,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-CsRYtlH1.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-q_3bvVSA.js")).then((module2) => ({
           default: module2.CategoryProductSelect
         }))
       },

@@ -1,19 +1,21 @@
-import { jsxs, jsx } from "react/jsx-runtime";
-import { useState, useEffect } from "react";
-import { CategoryProductSelect } from "./index-I0YNHX6d.mjs";
+"use strict";
+Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+const jsxRuntime = require("react/jsx-runtime");
+const react = require("react");
+const index = require("./index-q_3bvVSA.js");
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
-  const [selectedProducto, setSelectedProducto] = useState(null);
-  const [precio, setPrecio] = useState(0);
-  const [precioCompra, setPrecioCompra] = useState(0);
-  const [tipoDeVenta, setTipoDeVenta] = useState(null);
+  const [selectedProducto, setSelectedProducto] = react.useState(null);
+  const [precio, setPrecio] = react.useState(0);
+  const [precioCompra, setPrecioCompra] = react.useState(0);
+  const [tipoDeVenta, setTipoDeVenta] = react.useState(null);
   const tipoDeVentaId = queryParams.get("tipoDeVentaId");
   const nameSplit = name.split(".");
-  const index = parseInt(nameSplit[1]);
+  const index$1 = parseInt(nameSplit[1]);
   const pathname = window.location.pathname;
-  const [localId, setLocalId] = useState(null);
-  useEffect(() => {
+  const [localId, setLocalId] = react.useState(null);
+  react.useEffect(() => {
     let urlLocalId = queryParams.get("localId");
     if (!urlLocalId) {
       let urlSplit = window.location.href.split("/");
@@ -32,7 +34,7 @@ const SelectCustomize = (props, ref) => {
       setLocalId(urlLocalId);
     }
   }, []);
-  useEffect(() => {
+  react.useEffect(() => {
     if (!tipoDeVentaId) return;
     fetch(`/api/tipo-de-ventas?populate=*&filters[id][$eq]=${tipoDeVentaId}`).then((res) => res.json()).then((data) => {
       if (!data?.data) return;
@@ -44,14 +46,14 @@ const SelectCustomize = (props, ref) => {
       setSelectedProducto(null);
       onChange({
         target: {
-          name: `Productos.${index}.total`,
+          name: `Productos.${index$1}.total`,
           type: "number",
           value: 0
         }
       });
       onChange({
         target: {
-          name: `Productos.${index}.ganancia_por_item`,
+          name: `Productos.${index$1}.ganancia_por_item`,
           type: "number",
           value: 0
         }
@@ -60,7 +62,7 @@ const SelectCustomize = (props, ref) => {
     }
     setSelectedProducto(producto);
     const cantidadHTML = document.querySelector(
-      `input[name="Productos.${index}.cantidad"]`
+      `input[name="Productos.${index$1}.cantidad"]`
     );
     const cantidad = parseInt(cantidadHTML?.value || "0");
     const esMayorista = tipoDeVenta?.nombre?.toLowerCase().includes("mayorista");
@@ -71,22 +73,22 @@ const SelectCustomize = (props, ref) => {
     const ganancia = precioSeleccionado * cantidad - producto.precio_compra * cantidad;
     onChange({
       target: {
-        name: `Productos.${index}.total`,
+        name: `Productos.${index$1}.total`,
         type: "number",
         value: total
       }
     });
     onChange({
       target: {
-        name: `Productos.${index}.ganancia_por_item`,
+        name: `Productos.${index$1}.ganancia_por_item`,
         type: "number",
         value: ganancia
       }
     });
   };
-  return /* @__PURE__ */ jsxs("div", { className: "select_customize", children: [
-    /* @__PURE__ */ jsx(
-      CategoryProductSelect,
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "select_customize", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      index.CategoryProductSelect,
       {
         localId,
         name,
@@ -99,29 +101,29 @@ const SelectCustomize = (props, ref) => {
         }
       }
     ),
-    selectedProducto && /* @__PURE__ */ jsxs("div", { className: "select_customize__description", children: [
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx("label", { className: "label-customize p-1", children: tipoDeVenta?.nombre?.toLowerCase().includes("mayorista") ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` }),
-        /* @__PURE__ */ jsx(
+    selectedProducto && /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "select_customize__description", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize p-1", children: tipoDeVenta?.nombre?.toLowerCase().includes("mayorista") ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` }),
+        /* @__PURE__ */ jsxRuntime.jsx(
           "input",
           {
             className: "d-none",
             type: "number",
-            name: `total-base-${index}`,
+            name: `total-base-${index$1}`,
             value: precio,
             readOnly: true,
             disabled: true
           }
         )
       ] }),
-      /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx("label", { className: "label-customize p-1", children: `Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)` }),
-        /* @__PURE__ */ jsx(
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("label", { className: "label-customize p-1", children: `Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)` }),
+        /* @__PURE__ */ jsxRuntime.jsx(
           "input",
           {
             className: "d-none",
             type: "number",
-            name: `total-compra-${index}`,
+            name: `total-compra-${index$1}`,
             value: precioCompra,
             readOnly: true,
             disabled: true
@@ -131,6 +133,4 @@ const SelectCustomize = (props, ref) => {
     ] })
   ] });
 };
-export {
-  SelectCustomize
-};
+exports.SelectCustomize = SelectCustomize;
