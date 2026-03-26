@@ -79,7 +79,7 @@ const FiltersByYearAndMonth = () => {
 
     fetchYears();
     getLocals();
-    
+
   }, []);
 
   useEffect(() => {
@@ -133,6 +133,7 @@ const FiltersByYearAndMonth = () => {
             onChange={(option: any) => {
               setLocal(Number(option?.target.value) || null);
             }}
+            allowEmptyOption={true}
           />
         </div>
       </div>
