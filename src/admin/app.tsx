@@ -472,7 +472,7 @@ export default {
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.tipo_de_moneda":
           "Tipo de moneda",
 
-        "my-custom-fields.plugin.name": "Nombre",
+        "my-custom-fields.plugin.name": "Reporte mensual",
 
         "content-manager.plugin.name": "Gestor de contenidos",
         "app.utils.drag": "Drag",
@@ -581,6 +581,7 @@ export default {
         font-size:1.2rem;
         font-weight:600;
         text-align:center;
+        cursor: pointer;
       }
       .boton-local--download {
         display: flex;
@@ -745,7 +746,6 @@ export default {
       .filters {
         display: flex;
         gap:10px;
-        padding-bottom:20px;
       }
       .filters_filter {
         width: 50%;
@@ -755,12 +755,13 @@ export default {
 
       .container {
         padding: 56px;
+        display:grid;
+        gap:20px;
       }
       .title_h1 {
         font-weight: 600;
         font-size: 3.2rem;
         line-height: 1.25;
-        padding-bottom:20px;
       }
       .title_h3 {
         font-weight: 600;
