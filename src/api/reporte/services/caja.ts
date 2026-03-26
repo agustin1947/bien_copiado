@@ -6,11 +6,17 @@ export default ({ strapi }) => ({
     const where: any = {
       fecha_de_ingreso: { $gte: start, $lte: end },
     };
-
+    let local = null;
     if (localId) {
       where.local = { id: localId };
-    }
 
+      local = await strapi.db.query("api::local.local").findOne({
+        where: {
+          id: localId,
+        },
+      });
+      
+    }
     // 1. Traer datos
     const [ventas, ingresos, gastos, gastosDiarios] = await Promise.all([
       strapi.db.query("api::venta.venta").findMany({
@@ -49,6 +55,7 @@ export default ({ strapi }) => ({
         salidas: salidasTotales,
       },
       porDia,
+      local: local
     };
   },
 });
