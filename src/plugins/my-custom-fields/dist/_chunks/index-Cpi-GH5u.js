@@ -172,10 +172,10 @@ const DailySummaryTable = ({ data }) => {
     /* @__PURE__ */ jsxRuntime.jsxs("table", { className: "table w-100", children: [
       /* @__PURE__ */ jsxRuntime.jsx("thead", { children: /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
         /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Fecha" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Ingresos ARS" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Egresos ARS" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Ingresos USD" }),
-        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Egresos USD" })
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas USD" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas USD" })
       ] }) }),
       /* @__PURE__ */ jsxRuntime.jsx("tbody", { children: data.map((day) => /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
         /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.fecha }),
@@ -370,7 +370,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-Dp1yuhzf.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-D3smUP1U.js")).then((module2) => ({
           default: module2.SelectCustomize
         }))
       },
@@ -560,7 +560,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-GNYsQc-E.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-daLny_cz.js")).then((module2) => ({
           default: module2.SelectCustomizeGasto
         }))
       },
@@ -750,7 +750,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => require("./index-DrkCAyUU.js")).then((module2) => ({
+        Input: async () => Promise.resolve().then(() => require("./index-CFCrWkTO.js")).then((module2) => ({
           default: module2.CategoryProductSelect
         }))
       },

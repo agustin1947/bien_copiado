@@ -1,6 +1,6 @@
 import { jsx, Fragment } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { G as GenericSearchableSelect } from "./index-BbgzhGCH.mjs";
+import { G as GenericSearchableSelect } from "./index-DEGgE-A9.mjs";
 const SelectCustomizeGasto = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);

@@ -171,10 +171,10 @@ const DailySummaryTable = ({ data }) => {
     /* @__PURE__ */ jsxs("table", { className: "table w-100", children: [
       /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
         /* @__PURE__ */ jsx("th", { children: "Fecha" }),
-        /* @__PURE__ */ jsx("th", { children: "Ingresos ARS" }),
-        /* @__PURE__ */ jsx("th", { children: "Egresos ARS" }),
-        /* @__PURE__ */ jsx("th", { children: "Ingresos USD" }),
-        /* @__PURE__ */ jsx("th", { children: "Egresos USD" })
+        /* @__PURE__ */ jsx("th", { children: "Entradas ARS" }),
+        /* @__PURE__ */ jsx("th", { children: "Salidas ARS" }),
+        /* @__PURE__ */ jsx("th", { children: "Entradas USD" }),
+        /* @__PURE__ */ jsx("th", { children: "Salidas USD" })
       ] }) }),
       /* @__PURE__ */ jsx("tbody", { children: data.map((day) => /* @__PURE__ */ jsxs("tr", { children: [
         /* @__PURE__ */ jsx("td", { children: day.fecha }),
@@ -369,7 +369,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-qdlpK-hJ.mjs").then((module) => ({
+        Input: async () => import("./index-Nl6LCLeU.mjs").then((module) => ({
           default: module.SelectCustomize
         }))
       },
@@ -559,7 +559,7 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-DaYNauny.mjs").then((module) => ({
+        Input: async () => import("./index-CmAp7aS6.mjs").then((module) => ({
           default: module.SelectCustomizeGasto
         }))
       },
@@ -749,7 +749,7 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => import("./index-C29zRwkj.mjs").then((module) => ({
+        Input: async () => import("./index-kde941mp.mjs").then((module) => ({
           default: module.CategoryProductSelect
         }))
       },

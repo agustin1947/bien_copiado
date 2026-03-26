@@ -13,10 +13,10 @@ const DailySummaryTable = ({ data }: Props) => {
         <thead>
           <tr>
             <th>Fecha</th>
-            <th>Ingresos ARS</th>
-            <th>Egresos ARS</th>
-            <th>Ingresos USD</th>
-            <th>Egresos USD</th>
+            <th>Entradas ARS</th>
+            <th>Salidas ARS</th>
+            <th>Entradas USD</th>
+            <th>Salidas USD</th>
           </tr>
         </thead>
         <tbody>
