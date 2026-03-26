@@ -16,12 +16,12 @@
       "default": 0
     },
     "total": {
-      "type": "integer",
+      "type": "decimal",
       "customField": "plugin::my-custom-fields.my-input-number-total-field",
       "default": 0
     },
     "ganancia_por_item": {
-      "type": "integer",
+      "type": "decimal",
       "customField": "plugin::my-custom-fields.input-number-venta-ganancia-item",
       "default": 0
     },
