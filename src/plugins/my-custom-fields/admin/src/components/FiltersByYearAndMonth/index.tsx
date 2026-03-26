@@ -90,6 +90,11 @@ const FiltersByYearAndMonth = () => {
     }
   }, [year, month, local]);
 
+  const handleExport = () => {
+    const url = `/api/reportes/caja-mensual/export?year=${year}&month=${month}&local=${local}`;
+    window.open(url, '_blank');
+  };
+
   return (
     <>
       <div className="filters">
@@ -137,7 +142,9 @@ const FiltersByYearAndMonth = () => {
           />
         </div>
       </div>
-
+      <div>
+        <button className="boton-local boton-local--download" onClick={handleExport}>Exportar CSV</button>
+      </div>
       {reportData && (
         <div className="reports">
           <div className="reports_table">
