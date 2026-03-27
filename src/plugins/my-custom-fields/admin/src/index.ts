@@ -3,6 +3,7 @@ import { PLUGIN_ID } from './pluginId';
 import { Initializer } from './components/Initializer';
 import { PluginIcon } from './components/PluginIcon';
 import ReporteCaja from './pages/ReporteCaja';
+import { ChartLine } from './components/Icons';
 
 export default {
   register(app: any) {
@@ -449,7 +450,7 @@ export default {
 
     app.addMenuLink({
       to: `/plugins/${PLUGIN_ID}/reporte-caja`,
-      icon: () => '📊',
+      icon: ChartLine,
       intlLabel: {
         id: `${PLUGIN_ID}.plugin.name`,
         defaultMessage: 'Reportes',
