@@ -1,6 +1,6 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { G as GenericSearchableSelect } from "./index-CzaVCk2E.mjs";
+import { G as GenericSearchableSelect } from "./index-Joxc6eI5.mjs";
 const CategoryProductSelect = ({
   localId,
   productValue,
