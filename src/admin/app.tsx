@@ -779,6 +779,10 @@ export default {
       /* Cada tabla ocupa 50% (2 por fila) */
       .reports_table {
         flex: 1 1 calc(50% - 20px);
+        background: #FFF;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 21px -17px black;
       }
 
       /* La tercera tabla ocupa toda la fila */
