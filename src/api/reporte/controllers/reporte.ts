@@ -46,7 +46,8 @@ export default {
   async exportCajaMensual(ctx) {
     try {
       const { year, month, local } = ctx.query;
-      let name = `reporte_${year}_${month}`;
+      let name = `reporte_${month}_${year}`;
+
       const data = await strapi.service("api::reporte.caja").getCajaMensual({
         year: Number(year),
         month: Number(month),
