@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-const jsxRuntime = require("react/jsx-runtime");
-const react = require("react");
-const index = require("./index-BiRiSae5.js");
+import { jsx, Fragment } from "react/jsx-runtime";
+import { useState, useEffect } from "react";
+import { G as GenericSearchableSelect } from "./index-REuaoBw6.mjs";
 const SelectCustomizeGasto = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
-  const [productos, setProductos] = react.useState([]);
+  const [productos, setProductos] = useState([]);
   const localId = queryParams.get("localId");
   const nameSplit = name.split(".");
   parseInt(nameSplit[1]);
-  react.useEffect(() => {
+  useEffect(() => {
     if (!localId) {
       let urlSplit = window.location.href.split("/");
       let documentId = urlSplit[urlSplit.length - 1];
@@ -45,8 +43,8 @@ const SelectCustomizeGasto = (props, ref) => {
     label: `${p.nombre} (${p.tipo_de_moneda?.codigo})`,
     data: p
   }));
-  return /* @__PURE__ */ jsxRuntime.jsx(jsxRuntime.Fragment, { children: /* @__PURE__ */ jsxRuntime.jsx(
-    index.GenericSearchableSelect,
+  return /* @__PURE__ */ jsx(Fragment, { children: /* @__PURE__ */ jsx(
+    GenericSearchableSelect,
     {
       name,
       label: "Producto",
@@ -59,4 +57,6 @@ const SelectCustomizeGasto = (props, ref) => {
     }
   ) });
 };
-exports.SelectCustomizeGasto = SelectCustomizeGasto;
+export {
+  SelectCustomizeGasto
+};

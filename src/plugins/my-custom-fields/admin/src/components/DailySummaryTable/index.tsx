@@ -4,6 +4,10 @@ type Props = {
 
 const DailySummaryTable = ({ data }: Props) => {
   if (!data || data.length === 0) return <p>No hay datos</p>;
+  
+  const formatCurrency = (value: any) => {
+    return Number(value || 0).toLocaleString('es-AR');
+  };
 
   return (
     <>
@@ -22,11 +26,11 @@ const DailySummaryTable = ({ data }: Props) => {
         <tbody>
           {data.map((day) => (
             <tr key={day.fecha}>
-              <td>{new Date(day.fecha).toLocaleDateString("es-AR")}</td>
-              <td>{day.ingresosARS}</td>
-              <td>{day.egresosARS}</td>
-              <td>{day.ingresosUSD}</td>
-              <td>{day.egresosUSD}</td>
+              <td>{new Date(day.fecha).toLocaleDateString('es-AR')}</td>
+              <td>{formatCurrency(day.ingresosARS)}</td>
+              <td>{formatCurrency(day.egresosARS)}</td>
+              <td>{formatCurrency(day.ingresosUSD)}</td>
+              <td>{formatCurrency(day.egresosUSD)}</td>
             </tr>
           ))}
         </tbody>

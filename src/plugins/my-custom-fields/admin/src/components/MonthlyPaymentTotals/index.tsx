@@ -7,6 +7,10 @@ const MonthlyPaymentTotals = ({ resumen }: Props) => {
 
   const { entradas, salidas } = resumen;
 
+  const formatCurrency = (value: any) => {
+    return Number(value || 0).toLocaleString('es-AR');
+  };
+
   return (
     <>
       <h3 className="title_h3">Totales por medio de pago</h3>
@@ -24,34 +28,34 @@ const MonthlyPaymentTotals = ({ resumen }: Props) => {
         <tbody>
           <tr>
             <td>Efectivo</td>
-            <td>{entradas.totalEnPesosEfectivo}</td>
-            <td>{salidas.totalEnPesosEfectivo}</td>
-            <td>{entradas.totalEnDolaresEfectivo}</td>
-            <td>{salidas.totalEnDolaresEfectivo}</td>
+            <td>{formatCurrency(entradas.totalEnPesosEfectivo)}</td>
+            <td>{formatCurrency(salidas.totalEnPesosEfectivo)}</td>
+            <td>{formatCurrency(entradas.totalEnDolaresEfectivo)}</td>
+            <td>{formatCurrency(salidas.totalEnDolaresEfectivo)}</td>
           </tr>
 
           <tr>
             <td>Transferencia</td>
-            <td>{entradas.totalEnPesosTransferencia}</td>
-            <td>{salidas.totalEnPesosTransferencia}</td>
-            <td>{entradas.totalEnDolaresTransferencia}</td>
-            <td>{salidas.totalEnDolaresTransferencia}</td>
+            <td>{formatCurrency(entradas.totalEnPesosTransferencia)}</td>
+            <td>{formatCurrency(salidas.totalEnPesosTransferencia)}</td>
+            <td>{formatCurrency(entradas.totalEnDolaresTransferencia)}</td>
+            <td>{formatCurrency(salidas.totalEnDolaresTransferencia)}</td>
           </tr>
 
           <tr>
             <td>Débito</td>
-            <td>{entradas.totalEnPesosTarjetaDeDebito}</td>
-            <td>{salidas.totalEnPesosTarjetaDeDebito}</td>
-            <td>{entradas.totalEnDolaresTarjetaDeDebito}</td>
-            <td>{salidas.totalEnDolaresTarjetaDeDebito}</td>
+            <td>{formatCurrency(entradas.totalEnPesosTarjetaDeDebito)}</td>
+            <td>{formatCurrency(salidas.totalEnPesosTarjetaDeDebito)}</td>
+            <td>{formatCurrency(entradas.totalEnDolaresTarjetaDeDebito)}</td>
+            <td>{formatCurrency(salidas.totalEnDolaresTarjetaDeDebito)}</td>
           </tr>
 
           <tr>
             <td>Crédito</td>
-            <td>{entradas.totalEnPesosTarjetaDeCredito}</td>
-            <td>{salidas.totalEnPesosTarjetaDeCredito}</td>
-            <td>{entradas.totalEnDolaresTarjetaDeCredito}</td>
-            <td>{salidas.totalEnDolaresTarjetaDeCredito}</td>
+            <td>{formatCurrency(entradas.totalEnPesosTarjetaDeCredito)}</td>
+            <td>{formatCurrency(salidas.totalEnPesosTarjetaDeCredito)}</td>
+            <td>{formatCurrency(entradas.totalEnDolaresTarjetaDeCredito)}</td>
+            <td>{formatCurrency(salidas.totalEnDolaresTarjetaDeCredito)}</td>
           </tr>
         </tbody>
       </table>

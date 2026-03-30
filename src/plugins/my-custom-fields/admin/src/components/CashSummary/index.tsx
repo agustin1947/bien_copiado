@@ -7,12 +7,13 @@ const CashSummary = ({ resumen }: Props) => {
 
   const { entradas, salidas } = resumen;
 
-  const saldoARS =
-    entradas.totalEnPesosEfectivo - salidas.totalEnPesosEfectivo;
+  const saldoARS = entradas.totalEnPesosEfectivo - salidas.totalEnPesosEfectivo;
 
-  const saldoUSD =
-    entradas.totalEnDolaresEfectivo - salidas.totalEnDolaresEfectivo;
+  const saldoUSD = entradas.totalEnDolaresEfectivo - salidas.totalEnDolaresEfectivo;
 
+  const formatCurrency = (value: any) => {
+    return Number(value || 0).toLocaleString('es-AR');
+  };
   return (
     <>
       <h3 className="title_h3">Resumen Caja (Efectivo)</h3>
@@ -29,16 +30,16 @@ const CashSummary = ({ resumen }: Props) => {
         <tbody>
           <tr>
             <td>ARS</td>
-            <td>{entradas.totalEnPesosEfectivo}</td>
-            <td>{salidas.totalEnPesosEfectivo}</td>
-            <td>{saldoARS}</td>
+            <td>{formatCurrency(entradas.totalEnPesosEfectivo)}</td>
+            <td>{formatCurrency(salidas.totalEnPesosEfectivo)}</td>
+            <td>{formatCurrency(saldoARS)}</td>
           </tr>
 
           <tr>
             <td>USD</td>
-            <td>{entradas.totalEnDolaresEfectivo}</td>
-            <td>{salidas.totalEnDolaresEfectivo}</td>
-            <td>{saldoUSD}</td>
+            <td>{formatCurrency(entradas.totalEnDolaresEfectivo)}</td>
+            <td>{formatCurrency(salidas.totalEnDolaresEfectivo)}</td>
+            <td>{formatCurrency(saldoUSD)}</td>
           </tr>
         </tbody>
       </table>
