@@ -143,7 +143,7 @@ const FiltersByYearAndMonth = () => {
         </div>
       </div>
       <div>
-        <button className="boton-local boton-local--download" onClick={handleExport}>Exportar CSV</button>
+        <button className="boton-local boton-local--download" onClick={handleExport}>Generar reporte</button>
       </div>
       {reportData && (
         <div className="reports">
