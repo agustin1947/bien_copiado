@@ -626,7 +626,7 @@ export default {
     style.innerHTML = `
     nav ol li ol li:nth-child(11),
       nav ol li ol li:nth-child(17),
-      nav ul li:nth-child(n+3),
+      nav ul li:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(6)),
       nav:not([aria-label="Pagination"]) ol li span {
         display: none !important;
     }
