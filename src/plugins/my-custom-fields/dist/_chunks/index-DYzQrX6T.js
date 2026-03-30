@@ -1,5 +1,6 @@
-import { useRef, useEffect, useState, useMemo } from "react";
-import { jsxs, jsx, Fragment } from "react/jsx-runtime";
+"use strict";
+const react = require("react");
+const jsxRuntime = require("react/jsx-runtime");
 const __variableDynamicImportRuntimeHelper = (glob, path, segs) => {
   const v = glob[path];
   if (v) {
@@ -18,8 +19,8 @@ const __variableDynamicImportRuntimeHelper = (glob, path, segs) => {
 };
 const PLUGIN_ID = "my-custom-fields";
 const Initializer = ({ setPlugin }) => {
-  const ref = useRef(setPlugin);
-  useEffect(() => {
+  const ref = react.useRef(setPlugin);
+  react.useEffect(() => {
     ref.current(PLUGIN_ID);
   }, []);
   return null;
@@ -39,19 +40,19 @@ const GenericSearchableSelect = ({
   className = "",
   allowEmptyOption = false
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const containerRef = useRef(null);
-  const optionsWithEmpty = useMemo(() => {
+  const [isOpen, setIsOpen] = react.useState(false);
+  const [search, setSearch] = react.useState("");
+  const containerRef = react.useRef(null);
+  const optionsWithEmpty = react.useMemo(() => {
     if (!allowEmptyOption) return options;
     return [{ id: 0, label: placeholder, data: null }, ...options];
   }, [options, allowEmptyOption, placeholder]);
-  const filteredOptions = useMemo(() => {
+  const filteredOptions = react.useMemo(() => {
     if (!search) return optionsWithEmpty;
     console.log(search);
     return optionsWithEmpty.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()));
   }, [search, optionsWithEmpty]);
-  useEffect(() => {
+  react.useEffect(() => {
     const handleClickOutside = (event) => {
       if (!containerRef.current?.contains(event.target)) {
         setIsOpen(false);
@@ -61,22 +62,22 @@ const GenericSearchableSelect = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   const selectedOption = optionsWithEmpty.find((option) => option.id === value);
-  return /* @__PURE__ */ jsxs("div", { ref: containerRef, className: "generic_searchable_select", children: [
-    label && /* @__PURE__ */ jsx("div", { className: "label-customize", children: label }),
-    /* @__PURE__ */ jsxs("div", { children: [
-      /* @__PURE__ */ jsxs(
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { ref: containerRef, className: "generic_searchable_select", children: [
+    label && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "label-customize", children: label }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(
         "div",
         {
           className: "generic_searchable_select__select input-customize",
           onClick: () => setIsOpen((prev) => !prev),
           children: [
             selectedOption ? selectedOption.label : placeholder,
-            /* @__PURE__ */ jsx("span", { children: /* @__PURE__ */ jsx("img", { src: arrow, alt: "arrow", className: `${isOpen ? "arrow arrow_up" : "arrow"}` }) })
+            /* @__PURE__ */ jsxRuntime.jsx("span", { children: /* @__PURE__ */ jsxRuntime.jsx("img", { src: arrow, alt: "arrow", className: `${isOpen ? "arrow arrow_up" : "arrow"}` }) })
           ]
         }
       ),
-      isOpen && /* @__PURE__ */ jsxs("ul", { className: "generic_searchable_select__ul", children: [
-        /* @__PURE__ */ jsx("li", { children: /* @__PURE__ */ jsx(
+      isOpen && /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "generic_searchable_select__ul", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("li", { children: /* @__PURE__ */ jsxRuntime.jsx(
           "input",
           {
             type: "text",
@@ -87,7 +88,7 @@ const GenericSearchableSelect = ({
             onChange: (e) => setSearch(e.target.value)
           }
         ) }),
-        filteredOptions.length > 0 && filteredOptions.filter((option) => option.id !== value).map((option) => /* @__PURE__ */ jsx(
+        filteredOptions.length > 0 && filteredOptions.filter((option) => option.id !== value).map((option) => /* @__PURE__ */ jsxRuntime.jsx(
           "li",
           {
             value: option.id,
@@ -121,67 +122,67 @@ const index$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
 const MonthlyPaymentTotals = ({ resumen }) => {
   if (!resumen) return null;
   const { entradas, salidas } = resumen;
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("h3", { className: "title_h3", children: "Totales por medio de pago" }),
-    /* @__PURE__ */ jsxs("table", { className: "table w-100", children: [
-      /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-        /* @__PURE__ */ jsx("th", { children: "Medio" }),
-        /* @__PURE__ */ jsx("th", { children: "Entradas ARS" }),
-        /* @__PURE__ */ jsx("th", { children: "Salidas ARS" }),
-        /* @__PURE__ */ jsx("th", { children: "Entradas USD" }),
-        /* @__PURE__ */ jsx("th", { children: "Salidas USD" })
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "title_h3", children: "Totales por medio de pago" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("table", { className: "table w-100", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("thead", { children: /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Medio" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas USD" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas USD" })
       ] }) }),
-      /* @__PURE__ */ jsxs("tbody", { children: [
-        /* @__PURE__ */ jsxs("tr", { children: [
-          /* @__PURE__ */ jsx("td", { children: "Efectivo" }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosEfectivo }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosEfectivo }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresEfectivo }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresEfectivo })
+      /* @__PURE__ */ jsxRuntime.jsxs("tbody", { children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "Efectivo" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresEfectivo })
         ] }),
-        /* @__PURE__ */ jsxs("tr", { children: [
-          /* @__PURE__ */ jsx("td", { children: "Transferencia" }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosTransferencia }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosTransferencia }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresTransferencia }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresTransferencia })
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "Transferencia" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosTransferencia }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosTransferencia }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresTransferencia }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresTransferencia })
         ] }),
-        /* @__PURE__ */ jsxs("tr", { children: [
-          /* @__PURE__ */ jsx("td", { children: "Débito" }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosTarjetaDeDebito }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosTarjetaDeDebito }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresTarjetaDeDebito }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresTarjetaDeDebito })
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "Débito" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosTarjetaDeDebito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosTarjetaDeDebito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresTarjetaDeDebito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresTarjetaDeDebito })
         ] }),
-        /* @__PURE__ */ jsxs("tr", { children: [
-          /* @__PURE__ */ jsx("td", { children: "Crédito" }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosTarjetaDeCredito }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosTarjetaDeCredito }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresTarjetaDeCredito }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresTarjetaDeCredito })
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "Crédito" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosTarjetaDeCredito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosTarjetaDeCredito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresTarjetaDeCredito }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresTarjetaDeCredito })
         ] })
       ] })
     ] })
   ] });
 };
 const DailySummaryTable = ({ data }) => {
-  if (!data || data.length === 0) return /* @__PURE__ */ jsx("p", { children: "No hay datos" });
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("h3", { className: "title_h3", children: "Resumen diario" }),
-    /* @__PURE__ */ jsxs("table", { className: "table w-100", children: [
-      /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-        /* @__PURE__ */ jsx("th", { children: "Fecha" }),
-        /* @__PURE__ */ jsx("th", { children: "Entradas ARS" }),
-        /* @__PURE__ */ jsx("th", { children: "Salidas ARS" }),
-        /* @__PURE__ */ jsx("th", { children: "Entradas USD" }),
-        /* @__PURE__ */ jsx("th", { children: "Salidas USD" })
+  if (!data || data.length === 0) return /* @__PURE__ */ jsxRuntime.jsx("p", { children: "No hay datos" });
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "title_h3", children: "Resumen diario" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("table", { className: "table w-100", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("thead", { children: /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Fecha" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas ARS" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas USD" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas USD" })
       ] }) }),
-      /* @__PURE__ */ jsx("tbody", { children: data.map((day) => /* @__PURE__ */ jsxs("tr", { children: [
-        /* @__PURE__ */ jsx("td", { children: new Date(day.fecha).toLocaleDateString("es-AR") }),
-        /* @__PURE__ */ jsx("td", { children: day.ingresosARS }),
-        /* @__PURE__ */ jsx("td", { children: day.egresosARS }),
-        /* @__PURE__ */ jsx("td", { children: day.ingresosUSD }),
-        /* @__PURE__ */ jsx("td", { children: day.egresosUSD })
+      /* @__PURE__ */ jsxRuntime.jsx("tbody", { children: data.map((day) => /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: new Date(day.fecha).toLocaleDateString("es-AR") }),
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.ingresosARS }),
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.egresosARS }),
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.ingresosUSD }),
+        /* @__PURE__ */ jsxRuntime.jsx("td", { children: day.egresosUSD })
       ] }, day.fecha)) })
     ] })
   ] });
@@ -191,27 +192,27 @@ const CashSummary = ({ resumen }) => {
   const { entradas, salidas } = resumen;
   const saldoARS = entradas.totalEnPesosEfectivo - salidas.totalEnPesosEfectivo;
   const saldoUSD = entradas.totalEnDolaresEfectivo - salidas.totalEnDolaresEfectivo;
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("h3", { className: "title_h3", children: "Resumen Caja (Efectivo)" }),
-    /* @__PURE__ */ jsxs("table", { className: "table w-100", children: [
-      /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsxs("tr", { children: [
-        /* @__PURE__ */ jsx("th", { children: "Moneda" }),
-        /* @__PURE__ */ jsx("th", { children: "Entradas" }),
-        /* @__PURE__ */ jsx("th", { children: "Salidas" }),
-        /* @__PURE__ */ jsx("th", { children: "Saldo" })
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "title_h3", children: "Resumen Caja (Efectivo)" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("table", { className: "table w-100", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("thead", { children: /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Moneda" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Entradas" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Salidas" }),
+        /* @__PURE__ */ jsxRuntime.jsx("th", { children: "Saldo" })
       ] }) }),
-      /* @__PURE__ */ jsxs("tbody", { children: [
-        /* @__PURE__ */ jsxs("tr", { children: [
-          /* @__PURE__ */ jsx("td", { children: "ARS" }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnPesosEfectivo }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnPesosEfectivo }),
-          /* @__PURE__ */ jsx("td", { children: saldoARS })
+      /* @__PURE__ */ jsxRuntime.jsxs("tbody", { children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "ARS" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnPesosEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: saldoARS })
         ] }),
-        /* @__PURE__ */ jsxs("tr", { children: [
-          /* @__PURE__ */ jsx("td", { children: "USD" }),
-          /* @__PURE__ */ jsx("td", { children: entradas.totalEnDolaresEfectivo }),
-          /* @__PURE__ */ jsx("td", { children: salidas.totalEnDolaresEfectivo }),
-          /* @__PURE__ */ jsx("td", { children: saldoUSD })
+        /* @__PURE__ */ jsxRuntime.jsxs("tr", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: "USD" }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: entradas.totalEnDolaresEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: salidas.totalEnDolaresEfectivo }),
+          /* @__PURE__ */ jsxRuntime.jsx("td", { children: saldoUSD })
         ] })
       ] })
     ] })
@@ -232,14 +233,14 @@ const MONTHS = [
   { id: 12, label: "Diciembre", data: 12 }
 ];
 const FiltersByYearAndMonth = () => {
-  const [year, setYear] = useState(null);
-  const [month, setMonth] = useState(null);
-  const [yearsOptions, setYearsOptions] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [reportData, setReportData] = useState(null);
-  const [locals, setLocals] = useState([]);
-  const [local, setLocal] = useState(null);
-  useEffect(() => {
+  const [year, setYear] = react.useState(null);
+  const [month, setMonth] = react.useState(null);
+  const [yearsOptions, setYearsOptions] = react.useState([]);
+  const [loading, setLoading] = react.useState(false);
+  const [reportData, setReportData] = react.useState(null);
+  const [locals, setLocals] = react.useState([]);
+  const [local, setLocal] = react.useState(null);
+  react.useEffect(() => {
     const fetchYears = async () => {
       try {
         setLoading(true);
@@ -281,7 +282,7 @@ const FiltersByYearAndMonth = () => {
     fetchYears();
     getLocals();
   }, []);
-  useEffect(() => {
+  react.useEffect(() => {
     if (year && month) {
       fetch(`/api/reportes/caja-mensual?year=${year}&month=${month}&local=${local}`).then((res) => res.json()).then((data) => {
         setReportData(data);
@@ -292,76 +293,70 @@ const FiltersByYearAndMonth = () => {
     const url = `/api/reportes/caja-mensual/export?year=${year}&month=${month}&local=${local}`;
     window.open(url, "_blank");
   };
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs("div", { className: "filters", children: [
-      /* @__PURE__ */ jsxs("div", { className: "filters_filter", children: [
-        /* @__PURE__ */ jsx("h3", { className: "title_h3", children: "Año" }),
-        /* @__PURE__ */ jsx(
-          GenericSearchableSelect,
-          {
-            name: "year",
-            options: yearsOptions,
-            value: year ?? "",
-            disabled: loading,
-            required: true,
-            placeholder: "Seleccionar Año",
-            onChange: (option) => {
-              setYear(Number(option?.target.value) || null);
-            }
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "filters", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsxRuntime.jsx(
+        GenericSearchableSelect,
+        {
+          name: "year",
+          label: "Año",
+          options: yearsOptions,
+          value: year ?? "",
+          disabled: loading,
+          required: true,
+          placeholder: "Seleccionar Año",
+          onChange: (option) => {
+            setYear(Number(option?.target.value) || null);
           }
-        )
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "filters_filter", children: [
-        /* @__PURE__ */ jsx("h3", { className: "title_h3", children: "Mes" }),
-        /* @__PURE__ */ jsx(
-          GenericSearchableSelect,
-          {
-            name: "month",
-            options: MONTHS,
-            value: month ?? "",
-            disabled: !year,
-            required: true,
-            placeholder: "Seleccionar Mes",
-            onChange: (option) => {
-              setMonth(Number(option?.target.value) || null);
-            }
+        }
+      ) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsxRuntime.jsx(
+        GenericSearchableSelect,
+        {
+          name: "month",
+          label: "Mes",
+          options: MONTHS,
+          value: month ?? "",
+          disabled: !year,
+          required: true,
+          placeholder: "Seleccionar Mes",
+          onChange: (option) => {
+            setMonth(Number(option?.target.value) || null);
           }
-        )
-      ] }),
-      /* @__PURE__ */ jsxs("div", { className: "filters_filter", children: [
-        /* @__PURE__ */ jsx("h3", { className: "title_h3", children: "Local" }),
-        /* @__PURE__ */ jsx(
-          GenericSearchableSelect,
-          {
-            name: "locals",
-            options: locals,
-            value: local ?? "",
-            disabled: !year,
-            required: true,
-            placeholder: "Seleccionar Local",
-            onChange: (option) => {
-              setLocal(Number(option?.target.value) || null);
-            },
-            allowEmptyOption: true
-          }
-        )
-      ] })
+        }
+      ) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "filters_filter", children: /* @__PURE__ */ jsxRuntime.jsx(
+        GenericSearchableSelect,
+        {
+          name: "locals",
+          label: "Local",
+          options: locals,
+          value: local ?? "",
+          disabled: !year,
+          required: true,
+          placeholder: "Seleccionar Local",
+          onChange: (option) => {
+            setLocal(Number(option?.target.value) || null);
+          },
+          allowEmptyOption: true
+        }
+      ) })
     ] }),
-    /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("button", { className: "boton-local boton-local--download", onClick: handleExport, children: "Exportar CSV" }) }),
-    reportData && /* @__PURE__ */ jsxs("div", { className: "reports", children: [
-      /* @__PURE__ */ jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsx(MonthlyPaymentTotals, { resumen: reportData.resumen }) }),
-      /* @__PURE__ */ jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsx(CashSummary, { resumen: reportData.resumen }) }),
-      /* @__PURE__ */ jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsx(DailySummaryTable, { data: reportData.porDia }) })
+    /* @__PURE__ */ jsxRuntime.jsx("div", { children: /* @__PURE__ */ jsxRuntime.jsx("button", { className: "boton-local boton-local--download", onClick: handleExport, children: "Exportar CSV" }) }),
+    reportData && /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "reports", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsxRuntime.jsx(MonthlyPaymentTotals, { resumen: reportData.resumen }) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsxRuntime.jsx(CashSummary, { resumen: reportData.resumen }) }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "reports_table", children: /* @__PURE__ */ jsxRuntime.jsx(DailySummaryTable, { data: reportData.porDia }) })
     ] })
   ] });
 };
 const ReporteCaja = () => {
-  return /* @__PURE__ */ jsxs("div", { className: "container", children: [
-    /* @__PURE__ */ jsx("div", { className: "title_h1", children: "Reporte Caja" }),
-    /* @__PURE__ */ jsx(FiltersByYearAndMonth, {})
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "container", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "title_h1", children: "Reporte Caja" }),
+    /* @__PURE__ */ jsxRuntime.jsx(FiltersByYearAndMonth, {})
   ] });
 };
-const ChartLine = () => /* @__PURE__ */ jsx("svg", { width: 18, xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 640 640", children: /* @__PURE__ */ jsx("path", { fill: "#8e8ea9", d: "M128 128C128 110.3 113.7 96 96 96C78.3 96 64 110.3 64 128L64 464C64 508.2 99.8 544 144 544L544 544C561.7 544 576 529.7 576 512C576 494.3 561.7 480 544 480L144 480C135.2 480 128 472.8 128 464L128 128zM534.6 214.6C547.1 202.1 547.1 181.8 534.6 169.3C522.1 156.8 501.8 156.8 489.3 169.3L384 274.7L326.6 217.4C314.1 204.9 293.8 204.9 281.3 217.4L185.3 313.4C172.8 325.9 172.8 346.2 185.3 358.7C197.8 371.2 218.1 371.2 230.6 358.7L304 285.3L361.4 342.7C373.9 355.2 394.2 355.2 406.7 342.7L534.7 214.7z" }) });
+const ChartLine = () => /* @__PURE__ */ jsxRuntime.jsx("svg", { width: 18, xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 640 640", children: /* @__PURE__ */ jsxRuntime.jsx("path", { fill: "#8e8ea9", d: "M128 128C128 110.3 113.7 96 96 96C78.3 96 64 110.3 64 128L64 464C64 508.2 99.8 544 144 544L544 544C561.7 544 576 529.7 576 512C576 494.3 561.7 480 544 480L144 480C135.2 480 128 472.8 128 464L128 128zM534.6 214.6C547.1 202.1 547.1 181.8 534.6 169.3C522.1 156.8 501.8 156.8 489.3 169.3L384 274.7L326.6 217.4C314.1 204.9 293.8 204.9 281.3 217.4L185.3 313.4C172.8 325.9 172.8 346.2 185.3 358.7C197.8 371.2 218.1 371.2 230.6 358.7L304 285.3L361.4 342.7C373.9 355.2 394.2 355.2 406.7 342.7L534.7 214.7z" }) });
 const index = {
   register(app) {
     app.customFields.register({
@@ -377,8 +372,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-BasZQJ-_.mjs").then((module) => ({
-          default: module.SelectCustomize
+        Input: async () => Promise.resolve().then(() => require("./index-BX2dwx28.js")).then((module2) => ({
+          default: module2.SelectCustomize
         }))
       },
       options: {}
@@ -396,8 +391,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-CqFpGrDx.mjs").then((module) => ({
-          default: module.InputNumberCustomize
+        Input: async () => Promise.resolve().then(() => require("./index-pogELDak.js")).then((module2) => ({
+          default: module2.InputNumberCustomize
         }))
       },
       options: {}
@@ -415,8 +410,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-2BMoRILb.mjs").then((module) => ({
-          default: module.InputNumberTotalItemCustomize
+        Input: async () => Promise.resolve().then(() => require("./index-BmbC3AWp.js")).then((module2) => ({
+          default: module2.InputNumberTotalItemCustomize
         }))
       },
       options: {}
@@ -434,8 +429,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-_Jzzhpy8.mjs").then((module) => ({
-          default: module.InputTotalVentaCustomize
+        Input: async () => Promise.resolve().then(() => require("./index-BvnlXQFY.js")).then((module2) => ({
+          default: module2.InputTotalVentaCustomize
         }))
       },
       options: {}
@@ -453,8 +448,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-Bj59QtbH.mjs").then((module) => ({
-          default: module.InputNombreVenta
+        Input: async () => Promise.resolve().then(() => require("./index-DzWZEf3l.js")).then((module2) => ({
+          default: module2.InputNombreVenta
         }))
       },
       options: {}
@@ -472,8 +467,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-BgQyltPX.mjs").then((module) => ({
-          default: module.InputNombreLocal
+        Input: async () => Promise.resolve().then(() => require("./index-BP7hUBrc.js")).then((module2) => ({
+          default: module2.InputNombreLocal
         }))
       },
       options: {}
@@ -491,8 +486,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-DUwP-3EA.mjs").then((module) => ({
-          default: module.InputTotalGastosItem
+        Input: async () => Promise.resolve().then(() => require("./index-CiElwRqv.js")).then((module2) => ({
+          default: module2.InputTotalGastosItem
         }))
       },
       options: {}
@@ -510,8 +505,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-Yuz0ID84.mjs").then((module) => ({
-          default: module.InputCantidadGastosItem
+        Input: async () => Promise.resolve().then(() => require("./index-Bs1vA-VX.js")).then((module2) => ({
+          default: module2.InputCantidadGastosItem
         }))
       },
       options: {}
@@ -529,8 +524,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-STt4ZQqs.mjs").then((module) => ({
-          default: module.InputPrecioPorUnidadGastosItem
+        Input: async () => Promise.resolve().then(() => require("./index-D6LRObuF.js")).then((module2) => ({
+          default: module2.InputPrecioPorUnidadGastosItem
         }))
       },
       options: {}
@@ -548,8 +543,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-B6_K87qI.mjs").then((module) => ({
-          default: module.InputTotalGastos
+        Input: async () => Promise.resolve().then(() => require("./index-Bb0IO-3-.js")).then((module2) => ({
+          default: module2.InputTotalGastos
         }))
       },
       options: {}
@@ -567,8 +562,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-D9Y_hqtL.mjs").then((module) => ({
-          default: module.SelectCustomizeGasto
+        Input: async () => Promise.resolve().then(() => require("./index-CXLIWLBq.js")).then((module2) => ({
+          default: module2.SelectCustomizeGasto
         }))
       },
       options: {}
@@ -586,8 +581,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-BekRk7qZ.mjs").then((module) => ({
-          default: module.InputServiceTotalGanancia
+        Input: async () => Promise.resolve().then(() => require("./index-ClUyAwDT.js")).then((module2) => ({
+          default: module2.InputServiceTotalGanancia
         }))
       },
       options: {}
@@ -605,8 +600,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-D6xlgTMB.mjs").then((module) => ({
-          default: module.TitleSection
+        Input: async () => Promise.resolve().then(() => require("./index-B_HXBpob.js")).then((module2) => ({
+          default: module2.TitleSection
         }))
       },
       options: {}
@@ -624,8 +619,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-DkoQaWbd.mjs").then((module) => ({
-          default: module.InputNumberVentaGananciaItem
+        Input: async () => Promise.resolve().then(() => require("./index-CUXZNluD.js")).then((module2) => ({
+          default: module2.InputNumberVentaGananciaItem
         }))
       },
       options: {}
@@ -643,8 +638,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-1kgmCoKn.mjs").then((module) => ({
-          default: module.InputTotalVentaGanancia
+        Input: async () => Promise.resolve().then(() => require("./index-DGok1S7K.js")).then((module2) => ({
+          default: module2.InputTotalVentaGanancia
         }))
       },
       options: {}
@@ -662,8 +657,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-BQdLQVXX.mjs").then((module) => ({
-          default: module.InputTotalGenerico
+        Input: async () => Promise.resolve().then(() => require("./index-MwkviL5C.js")).then((module2) => ({
+          default: module2.InputTotalGenerico
         }))
       },
       options: {}
@@ -681,8 +676,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-C1lTNTMr.mjs").then((module) => ({
-          default: module.VerCajaDiaria
+        Input: async () => Promise.resolve().then(() => require("./index-B2cJ_fD9.js")).then((module2) => ({
+          default: module2.VerCajaDiaria
         }))
       },
       options: {}
@@ -700,8 +695,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-JmrmMIIE.mjs").then((module) => ({
-          default: module.SalesDetectChangesInItems
+        Input: async () => Promise.resolve().then(() => require("./index-B9D-jT9m.js")).then((module2) => ({
+          default: module2.SalesDetectChangesInItems
         }))
       },
       options: {}
@@ -719,8 +714,8 @@ const index = {
         defaultMessage: "Select any color"
       },
       components: {
-        Input: async () => import("./index-BbwVlTMq.mjs").then((module) => ({
-          default: module.PagosParciales
+        Input: async () => Promise.resolve().then(() => require("./index-DYunx6Lk.js")).then((module2) => ({
+          default: module2.PagosParciales
         }))
       },
       options: {}
@@ -738,8 +733,8 @@ const index = {
         defaultMessage: "Componente: desplegable genérico"
       },
       components: {
-        Input: async () => Promise.resolve().then(() => index$1).then((module) => ({
-          default: module.GenericSearchableSelect
+        Input: async () => Promise.resolve().then(() => index$1).then((module2) => ({
+          default: module2.GenericSearchableSelect
         }))
       },
       options: {}
@@ -757,8 +752,8 @@ const index = {
         defaultMessage: "Componente: desplegable de categorías de productos"
       },
       components: {
-        Input: async () => import("./index-CdmXoc-l.mjs").then((module) => ({
-          default: module.CategoryProductSelect
+        Input: async () => Promise.resolve().then(() => require("./index-DsEUyYiz.js")).then((module2) => ({
+          default: module2.CategoryProductSelect
         }))
       },
       options: {}
@@ -784,7 +779,7 @@ const index = {
     return Promise.all(
       locales.map(async (locale) => {
         try {
-          const { default: data } = await __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "./translations/en.json": () => import("./en-Byx4XI2L.mjs") }), `./translations/${locale}.json`, 3);
+          const { default: data } = await __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "./translations/en.json": () => Promise.resolve().then(() => require("./en-B4KWt_jN.js")) }), `./translations/${locale}.json`, 3);
           return { data, locale };
         } catch {
           return { data: {}, locale };
@@ -793,7 +788,5 @@ const index = {
     );
   }
 };
-export {
-  GenericSearchableSelect as G,
-  index as i
-};
+exports.GenericSearchableSelect = GenericSearchableSelect;
+exports.index = index;

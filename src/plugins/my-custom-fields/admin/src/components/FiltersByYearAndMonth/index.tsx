@@ -99,9 +99,9 @@ const FiltersByYearAndMonth = () => {
     <>
       <div className="filters">
         <div className="filters_filter">
-          <h3 className="title_h3">Año</h3>
           <GenericSearchableSelect
             name="year"
+            label="Año"
             options={yearsOptions}
             value={year ?? ''}
             disabled={loading}
@@ -113,9 +113,9 @@ const FiltersByYearAndMonth = () => {
           />
         </div>
         <div className="filters_filter">
-          <h3 className="title_h3">Mes</h3>
           <GenericSearchableSelect
             name="month"
+            label="Mes"
             options={MONTHS}
             value={month ?? ''}
             disabled={!year}
@@ -127,9 +127,9 @@ const FiltersByYearAndMonth = () => {
           />
         </div>
         <div className="filters_filter">
-          <h3 className="title_h3">Local</h3>
           <GenericSearchableSelect
             name="locals"
+            label="Local"
             options={locals}
             value={local ?? ''}
             disabled={!year}

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const jsxRuntime = require("react/jsx-runtime");
 const react = require("react");
-const index = require("./index-CXd0BrpN.js");
+const index = require("./index-DYzQrX6T.js");
 const CategoryProductSelect = ({
   localId,
   productValue,
