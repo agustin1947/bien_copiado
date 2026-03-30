@@ -158,6 +158,89 @@ function bloquearBotones() {
   });
 }
 
+function customHome() {
+  const observer = new MutationObserver(() => {
+    const path = window.location.pathname;
+
+    if (path === "/admin" || path === "/admin/") {
+      const main = document.querySelectorAll("#main-content  > div")[1];
+      
+      if (!main) return;
+
+      // Evitar duplicados
+      if (document.getElementById("custom-home")) return;
+
+      // Limpiar contenido
+      main.innerHTML = "";
+
+      // Crear contenedor principal
+      const container = document.createElement("div");
+      container.id = "custom-home";
+      container.className = "custom-home-container";
+
+      // Título
+      //const title = document.createElement("h1");
+      //title.innerText = "Bienvenido 👋";
+      //title.className = "custom-home-title";
+
+      // Grid
+      const grid = document.createElement("div");
+      grid.className = "custom-home-grid";
+
+      const items = [
+        {
+          name: "Ventas",
+          url: "/admin/content-manager/collection-types/api::venta.venta",
+          icon: "💰",
+        },
+        {
+          name: "Productos",
+          url: "/admin/content-manager/collection-types/api::producto.producto",
+          icon: "📦",
+        },
+        {
+          name: "Service",
+          url: "/admin/content-manager/collection-types/api::service.service",
+          icon: "🔧",
+        },
+        {
+          name: "Caja diaria",
+          url: "/admin/content-manager/collection-types/api::caja-diaria.caja-diaria",
+          icon: "📊",
+        },
+      ];
+
+      items.forEach((item) => {
+        const card = document.createElement("a");
+        card.href = item.url;
+        card.className = "custom-home-card";
+
+        const icon = document.createElement("div");
+        icon.innerText = item.icon;
+        icon.className = "custom-home-icon";
+
+        const label = document.createElement("div");
+        label.innerText = item.name;
+        label.className = "custom-home-label";
+
+        card.appendChild(icon);
+        card.appendChild(label);
+        grid.appendChild(card);
+      });
+
+      //container.appendChild(title);
+      container.appendChild(grid);
+
+      main.appendChild(container);
+    }
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+}
+
 export default {
   config: {
     locales: [
@@ -536,6 +619,7 @@ export default {
     },
   },
   bootstrap(app: StrapiApp) {
+    customHome();
     observarPaginaConLocales();
     bloquearBotones();
     const style = document.createElement("style");
@@ -788,6 +872,41 @@ export default {
       /* La tercera tabla ocupa toda la fila */
       .reports_table:nth-child(3) {
         flex: 1 1 100%;
+      }
+
+      .custom-home-title {
+        font-size: 32px;
+        margin-bottom: 30px;
+      }
+
+      .custom-home-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .custom-home-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 140px;
+        background: white;
+        border-radius: 8px;
+        text-decoration: none;
+        color: black;
+        box-shadow: 0 0 20px -10px rgba(0,0,0,0.3);
+        transition: 0.2s;
+      }
+
+      .custom-home-icon {
+        font-size: 32px;
+        margin-bottom: 10px;
+      }
+
+      .custom-home-label {
+        font-size: 16px;
+        font-weight: 600;
       }
 
       @media (max-width: 992px) {
