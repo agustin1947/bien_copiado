@@ -139,6 +139,7 @@ export default {
     await strapi.entityService.update("api::venta.venta", ventaId, {
       data: {
         Productos: productosActualizados,
+        __flag_create: true,
       },
     });
   },
@@ -147,7 +148,11 @@ export default {
     const ctxBody = ctx.request.body;
     const { params } = event;
     const ventaId = params.where.id;
-
+    
+    if (event.params?.data?.__internal_update) {
+      return;
+    }
+    
     const ventaOriginal = await strapi.entityService.findOne(
       "api::venta.venta",
       ventaId,
@@ -156,8 +161,8 @@ export default {
     const fechaIngreso = ventaOriginal["fecha_de_ingreso"];
     const hoy = new Date();
     const hoyStr = hoy.toISOString().split("T")[0];
-
-    if (hoyStr > fechaIngreso) {
+    
+    if (hoyStr > fechaIngreso && !params?.data?.__flag_create) {
       throw new errors.ApplicationError(
         "No se puede editar la venta después del día de ingreso.",
       );
@@ -183,7 +188,7 @@ export default {
         );
       }
     }
-    
+
     const validatePayment = await validatePaymentMethodWithTotal(
       ctxBody.formas_de_pago,
       ctxBody.total,
@@ -236,7 +241,7 @@ export default {
 
         productosActualizados.push({
           ...producto,
-          cantidadOriginal: cantidad,
+            cantidadOriginal: cantidad,
           idProductoOriginal: id,
         });
 
