@@ -479,6 +479,7 @@ export default {
           "Saldo inicial pesos",
         "content-manager.content-types.api::caja-diaria.caja-diaria.ver-caja-diaria":
           "Ver caja diaria",
+          "content-manager.content-types.api::caja-diaria.caja-diaria.ver_caja_diaria": "Ver caja diaria",
         "content-manager.content-types.api::caja-diaria.caja-diaria.local":
           "Local",
         "content-manager.content-types.api::caja-diaria.caja-diaria.saldo_inicial_dolar":
@@ -624,12 +625,12 @@ export default {
     bloquearBotones();
     const style = document.createElement("style");
     style.innerHTML = `
-    /*nav ol li ol li:nth-child(11),
+    nav ol li ol li:nth-child(11),
       nav ol li ol li:nth-child(17),
       nav ul li:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(5)),
       nav:not([aria-label="Pagination"]) ol li span {
         display: none !important;
-    }*/
+    }
     .hidden-delete {
       display: none;
       visibility: hidden;
