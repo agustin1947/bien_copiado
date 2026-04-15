@@ -13,6 +13,18 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+  strapi:
+    build: .
+    container_name: strapi_app
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - "1337:1337"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
 volumes:
   postgres_data:
