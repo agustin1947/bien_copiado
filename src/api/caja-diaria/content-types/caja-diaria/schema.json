@@ -31,7 +31,7 @@
       "target": "api::local.local"
     },
     "ver_caja_diaria": {
-      "type": "decimal",
+      "type": "string",
       "customField": "plugin::my-custom-fields.ver-caja-diaria"
     }
   }
