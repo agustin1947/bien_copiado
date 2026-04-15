@@ -405,7 +405,7 @@ export interface ApiCajaDiariaCajaDiaria extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    ver_caja_diaria: Schema.Attribute.Decimal &
+    ver_caja_diaria: Schema.Attribute.String &
       Schema.Attribute.CustomField<'plugin::my-custom-fields.ver-caja-diaria'>;
   };
 }
