@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+//import io from 'socket.io-client';
 
 const VerCajaDiaria = (props: any, ref: any) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
@@ -18,7 +18,7 @@ const VerCajaDiaria = (props: any, ref: any) => {
 
   if (!documentId || documentId === 'create') return;
 
-  useEffect(() => {
+  /*useEffect(() => {
     // Conectar al WebSocket del backend
     const socket = io('/', {
       transports: ['websocket'], // recomendado
@@ -33,7 +33,7 @@ const VerCajaDiaria = (props: any, ref: any) => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     //if (!documentId || documentId === 'create') return;
