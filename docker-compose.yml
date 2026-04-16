@@ -7,15 +7,13 @@ services:
     environment:
       POSTGRES_DB: strapi_db
       POSTGRES_USER: strapi_user
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: Biencopiado1234!
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   strapi:
     build:
       context: .
-    env_file:
-      - .env
     depends_on:
       - postgres
 
