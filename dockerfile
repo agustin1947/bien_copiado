@@ -1,16 +1,38 @@
-FROM node:20
+FROM node:20 AS base
 
 WORKDIR /app
 
-# Copiamos solo package.json primero (cachea dependencias)
 COPY package*.json ./
 
-# Instalamos dependencias UNA SOLA VEZ
 RUN npm install --legacy-peer-deps
 
-# Copiamos el resto del proyecto
 COPY . .
+
+# ======================
+# DESARROLLO
+# ======================
+FROM base AS development
+
+CMD ["npm", "run", "develop"]
+
+# ======================
+# BUILD (para prod)
+# ======================
+FROM base AS build
+
+RUN npm run build
+
+# ======================
+# PRODUCCIÓN
+# ======================
+FROM node:20 AS production
+
+WORKDIR /app
+
+COPY --from=build /app ./
+
+ENV NODE_ENV=production
 
 EXPOSE 1337
 
-CMD ["npm", "run", "develop"]
+CMD ["npm", "run", "start"]

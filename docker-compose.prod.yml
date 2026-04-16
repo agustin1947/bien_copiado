@@ -1,0 +1,10 @@
+services:
+  strapi:
+    build:
+      target: production
+    container_name: strapi_prod
+    ports:
+      - "1337:1337"
+    env_file:
+      - .env.production
+    restart: always
