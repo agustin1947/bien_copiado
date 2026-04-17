@@ -11,7 +11,7 @@ Tecnologías y herramientas destacadas
 - Strapi v5 como CMS y backend
 - React para el panel administrativo
 - TypeScript
-- SQLite (better-sqlite3)
+- PostgreSQL
 - Plugins personalizados en Strapi
 - Generación de PDFs (comprobantes y reportes)
 - Exportación de datos en CSV
@@ -26,14 +26,14 @@ Este proyecto está desarrollado con **Strapi**, e incluye un conjunto de **plug
 ## 🚀 Instalación del proyecto
  1️⃣ Clonar el repositorio
 ```
-git clone https://github.com/jissust/headless-cms.git
-cd headless-cms
+git clone https://github.com/agustin1947/bien_copiado.git
+cd bien_copiado
 ```
 
 2️⃣ Instalar dependencias
 Instala todas las dependencias necesarias y genera la carpeta node_modules:
 ```
-yarn install
+npm install
 ```
 
 3️⃣ Generar archivo de entorno
@@ -45,14 +45,14 @@ cp .env.example .env
 4️⃣ Compilar el proyecto
 Genera la carpeta /dist con los archivos de compilación de Strapi [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build):
 ```
-yarn build
+npm run build
 ```
 
 5️⃣ Iniciar el entorno de desarrollo
 Ejecuta el proyecto en modo desarrollo.
 Esto creará automáticamente el archivo /tmp/.data.db (base de datos local) y levantará el servidor. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
 ```
-yarn dev
+npm run dev
 ```
 
 El proyecto estará disponible, por defecto, en:
@@ -71,13 +71,6 @@ Cada vez que realices cambios en un plugin, debés compilarlo antes de ejecutarl
 ```
 cd src/plugins/my-custom-fields
 yarn build
-```
-## ⚙️ Deployment
-
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
-
-```
-yarn strapi deploy
 ```
 
 ## 📤 Subir plugins al repositorio
