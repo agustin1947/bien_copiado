@@ -554,6 +554,11 @@ export default {
         "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.descripcion": "Descripción",
         "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.createdAt": "Creado",
         "content-manager.content-types.api::producto.producto.categoria_de_producto": "Categoría de producto",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.cliente": "Cliente",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.numero_de_orden": "N° de orden",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.fecha_de_ingreso": "Fecha de ingreso",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.telefono": "Teléfono",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.nombre_completo": "Nombre completo",
 
         "content-manager.content-types.api::forma-de-pago.forma-de-pago.id": "Id",
         "content-manager.content-types.api::forma-de-pago.forma-de-pago.nombre": "Nombre",
@@ -578,6 +583,9 @@ export default {
           "Cantidad Original",
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.pagos_parciales":
           "Pagos Parciales",
+        "ontent-manager.content-types.api::cuenta-corriente.cuenta-corriente.telefono":"Teléfono",  
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.nombre_completo": "Nombre completo",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.createdAt": "Creado",
 
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.total":
           "Total",
