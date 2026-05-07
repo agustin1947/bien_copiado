@@ -19,6 +19,7 @@ const SelectCustomize = (props: any, ref: any) => {
 
   useEffect(() => {
     let urlLocalId = queryParams.get('localId');
+    
     if (!urlLocalId) {
       let urlSplit = window.location.href.split('/');
       let documentId = urlSplit[urlSplit.length - 1];
@@ -27,11 +28,13 @@ const SelectCustomize = (props: any, ref: any) => {
       if (pathname.includes('api::cuenta-corriente.cuenta-corriente')) {
         api = 'cuenta-corrientes';
       }
+
       fetch(`/api/${api}?populate=*&filters[documentId][$eq]=${documentId}`)
         .then((res) => res.json())
         .then((data) => {
           if (!data?.data) return;
           setLocalId(data.data[0].local.id);
+          setTipoDeVenta(data.data[0].tipo_de_venta);
         })
         .catch((err) => {
           console.error('Error al cargar productos', err);
@@ -53,9 +56,15 @@ const SelectCustomize = (props: any, ref: any) => {
       .catch((err) => console.error('Error al cargar tipo de venta', err));
   }, [tipoDeVentaId]);
 
+    useEffect(() => {
+      if(!tipoDeVenta) return;
+      handleProductLogic(selectedProducto);
+  }, [tipoDeVenta]);
+
   const handleProductLogic = (producto: any) => {
+
     if (!producto) {
-      setSelectedProducto(null);
+      
       onChange({
         target: {
           name: `Productos.${index}.total`,
@@ -74,16 +83,13 @@ const SelectCustomize = (props: any, ref: any) => {
 
       return;
     }
-    setSelectedProducto(producto);
 
     const cantidadHTML: HTMLInputElement | null = document.querySelector(
       `input[name="Productos.${index}.cantidad"]`
     );
 
     const cantidad = parseInt(cantidadHTML?.value || '0');
-
     const esMayorista = tipoDeVenta?.nombre?.toLowerCase().includes('mayorista');
-
     const precioSeleccionado = esMayorista ? producto.precio_mayorista : producto.precio;
 
     setPrecio(precioSeleccionado);
@@ -110,25 +116,27 @@ const SelectCustomize = (props: any, ref: any) => {
   };
 
   return (
-    <div className='select_customize'>
-        <CategoryProductSelect
-          localId={localId}
-          name={name}
-          productValue={value}
-          required={required}
-          disabled={disabled}
-          onProductChange={(e: any, productoCompleto?: any) => {
-            onChange(e);
-            handleProductLogic(productoCompleto);
-          }}
-        />
+    <div className="select_customize">
+      <CategoryProductSelect
+        localId={localId}
+        name={name}
+        productValue={value}
+        required={required}
+        disabled={disabled}
+        onProductChange={(e: any, productoCompleto?: any) => {
+          onChange(e);
+          setSelectedProducto(!productoCompleto ? null : productoCompleto);
+          if(!tipoDeVenta) return;
+          handleProductLogic(productoCompleto);
+        }}
+      />
       {selectedProducto && (
-        <div className='select_customize__description'>
+        <div className="select_customize__description">
           <div>
             <label className="label-customize p-1">
               {tipoDeVenta?.nombre?.toLowerCase().includes('mayorista')
-                ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)`
-                : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)`}
+                ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad).`
+                : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad).`}
             </label>
             <input
               className="d-none"
@@ -140,7 +148,7 @@ const SelectCustomize = (props: any, ref: any) => {
             />
           </div>
           <div>
-            <label className="label-customize p-1">{`Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)`}</label>
+            <label className="label-customize p-1">{`Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)`}.</label>
 
             <input
               className="d-none"
