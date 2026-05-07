@@ -508,6 +508,10 @@ export interface ApiCuentaCorrienteCuentaCorriente
       'oneToOne',
       'api::tipo-de-moneda.tipo-de-moneda'
     >;
+    tipo_de_venta: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::tipo-de-venta.tipo-de-venta'
+    >;
     total: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
