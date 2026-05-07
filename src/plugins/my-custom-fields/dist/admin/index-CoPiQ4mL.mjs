@@ -1,6 +1,6 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { useState, useEffect } from "react";
-import { CategoryProductSelect } from "./index-D8OYrHhE.mjs";
+import { CategoryProductSelect } from "./index-Cp1VTeY-.mjs";
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
@@ -25,6 +25,7 @@ const SelectCustomize = (props, ref) => {
       fetch(`/api/${api}?populate=*&filters[documentId][$eq]=${documentId}`).then((res) => res.json()).then((data) => {
         if (!data?.data) return;
         setLocalId(data.data[0].local.id);
+        setTipoDeVenta(data.data[0].tipo_de_venta);
       }).catch((err) => {
         console.error("Error al cargar productos", err);
       });
@@ -39,9 +40,12 @@ const SelectCustomize = (props, ref) => {
       setTipoDeVenta(data.data[0]);
     }).catch((err) => console.error("Error al cargar tipo de venta", err));
   }, [tipoDeVentaId]);
+  useEffect(() => {
+    if (!tipoDeVenta) return;
+    handleProductLogic(selectedProducto);
+  }, [tipoDeVenta]);
   const handleProductLogic = (producto) => {
     if (!producto) {
-      setSelectedProducto(null);
       onChange({
         target: {
           name: `Productos.${index}.total`,
@@ -58,7 +62,6 @@ const SelectCustomize = (props, ref) => {
       });
       return;
     }
-    setSelectedProducto(producto);
     const cantidadHTML = document.querySelector(
       `input[name="Productos.${index}.cantidad"]`
     );
@@ -95,13 +98,15 @@ const SelectCustomize = (props, ref) => {
         disabled,
         onProductChange: (e, productoCompleto) => {
           onChange(e);
+          setSelectedProducto(!productoCompleto ? null : productoCompleto);
+          if (!tipoDeVenta) return;
           handleProductLogic(productoCompleto);
         }
       }
     ),
     selectedProducto && /* @__PURE__ */ jsxs("div", { className: "select_customize__description", children: [
       /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx("label", { className: "label-customize p-1", children: tipoDeVenta?.nombre?.toLowerCase().includes("mayorista") ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad)` }),
+        /* @__PURE__ */ jsx("label", { className: "label-customize p-1", children: tipoDeVenta?.nombre?.toLowerCase().includes("mayorista") ? `Precio mayorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad).` : `Precio minorista: ${selectedProducto.tipo_de_moneda?.simbolo} ${precio} (por unidad).` }),
         /* @__PURE__ */ jsx(
           "input",
           {
