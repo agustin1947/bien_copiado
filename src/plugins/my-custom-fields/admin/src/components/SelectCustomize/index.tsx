@@ -19,7 +19,7 @@ const SelectCustomize = (props: any, ref: any) => {
 
   useEffect(() => {
     let urlLocalId = queryParams.get('localId');
-    
+
     if (!urlLocalId) {
       let urlSplit = window.location.href.split('/');
       let documentId = urlSplit[urlSplit.length - 1];
@@ -56,63 +56,70 @@ const SelectCustomize = (props: any, ref: any) => {
       .catch((err) => console.error('Error al cargar tipo de venta', err));
   }, [tipoDeVentaId]);
 
-    useEffect(() => {
-      if(!tipoDeVenta) return;
-      handleProductLogic(selectedProducto);
+  useEffect(() => {
+    if (!tipoDeVenta) return;
+    handleProductLogic(selectedProducto);
   }, [tipoDeVenta]);
 
-  const handleProductLogic = (producto: any) => {
+  const getProductPrice = (producto: any, tipoDeVenta: any) => {
+    const esMayorista = tipoDeVenta?.nombre?.toLowerCase().includes('mayorista');
 
-    if (!producto) {
-      
-      onChange({
-        target: {
-          name: `Productos.${index}.total`,
-          type: 'number',
-          value: 0,
-        },
-      });
+    return esMayorista ? producto.precio_mayorista : producto.precio;
+  };
 
-      onChange({
-        target: {
-          name: `Productos.${index}.ganancia_por_item`,
-          type: 'number',
-          value: 0,
-        },
-      });
-
-      return;
-    }
-
+  const getCantidad = (index: number) => {
     const cantidadHTML: HTMLInputElement | null = document.querySelector(
       `input[name="Productos.${index}.cantidad"]`
     );
 
     const cantidad = parseInt(cantidadHTML?.value || '0');
-    const esMayorista = tipoDeVenta?.nombre?.toLowerCase().includes('mayorista');
-    const precioSeleccionado = esMayorista ? producto.precio_mayorista : producto.precio;
+    return cantidad;
+  };
+
+  const calculateTotals = (cantidad: number, precioVenta: number, precioCompra: number) => {
+    return {
+      total: cantidad * precioVenta,
+      ganancia: (precioVenta - precioCompra) * cantidad,
+    };
+  };
+  22;
+
+  const updateField = (name: string, value: any) => {
+    onChange({
+      target: {
+        name: name,
+        type: 'number',
+        value: value,
+      },
+    });
+  };
+
+  const handleProductLogic = (producto: any) => {
+    if (!producto) {
+      updateField(`Productos.${index}.total`, 0);
+
+      updateField(`Productos.${index}.ganancia_por_item`, 0);
+
+      return;
+    }
+
+    const cantidad = getCantidad(index);
+
+    const precioSeleccionado = getProductPrice(producto, tipoDeVenta);
 
     setPrecio(precioSeleccionado);
     setPrecioCompra(producto.precio_compra);
 
-    const total = cantidad > 0 ? precioSeleccionado * cantidad : 0;
-    const ganancia = precioSeleccionado * cantidad - producto.precio_compra * cantidad;
+    const { total, ganancia } = calculateTotals(
+      cantidad,
+      precioSeleccionado,
+      producto.precio_compra
+    );
 
-    onChange({
-      target: {
-        name: `Productos.${index}.total`,
-        type: 'number',
-        value: total,
-      },
-    });
+    updateField(`Productos.${index}.total`, total);
 
-    onChange({
-      target: {
-        name: `Productos.${index}.ganancia_por_item`,
-        type: 'number',
-        value: ganancia,
-      },
-    });
+    updateField(`Productos.${index}.ganancia_por_item`, ganancia);
+
   };
 
   return (
@@ -126,7 +133,7 @@ const SelectCustomize = (props: any, ref: any) => {
         onProductChange={(e: any, productoCompleto?: any) => {
           onChange(e);
           setSelectedProducto(!productoCompleto ? null : productoCompleto);
-          if(!tipoDeVenta) return;
+          if (!tipoDeVenta) return;
           handleProductLogic(productoCompleto);
         }}
       />
@@ -148,7 +155,7 @@ const SelectCustomize = (props: any, ref: any) => {
             />
           </div>
           <div>
-            <label className="label-customize p-1">{`Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)`}.</label>
+            <label className="label-customize p-1">{`Precio de costo: ${selectedProducto.tipo_de_moneda?.simbolo} ${precioCompra} (por unidad)`}</label>
 
             <input
               className="d-none"

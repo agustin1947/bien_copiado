@@ -2,7 +2,7 @@
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const jsxRuntime = require("react/jsx-runtime");
 const react = require("react");
-const index = require("./index-HROkOrgK.js");
+const index = require("./index-zXGC6k0N.js");
 const SelectCustomize = (props, ref) => {
   const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
   const queryParams = new URLSearchParams(window.location.search);
@@ -46,48 +46,50 @@ const SelectCustomize = (props, ref) => {
     if (!tipoDeVenta) return;
     handleProductLogic(selectedProducto);
   }, [tipoDeVenta]);
-  const handleProductLogic = (producto) => {
-    if (!producto) {
-      onChange({
-        target: {
-          name: `Productos.${index$1}.total`,
-          type: "number",
-          value: 0
-        }
-      });
-      onChange({
-        target: {
-          name: `Productos.${index$1}.ganancia_por_item`,
-          type: "number",
-          value: 0
-        }
-      });
-      return;
-    }
+  const getProductPrice = (producto, tipoDeVenta2) => {
+    const esMayorista = tipoDeVenta2?.nombre?.toLowerCase().includes("mayorista");
+    return esMayorista ? producto.precio_mayorista : producto.precio;
+  };
+  const getCantidad = (index2) => {
     const cantidadHTML = document.querySelector(
-      `input[name="Productos.${index$1}.cantidad"]`
+      `input[name="Productos.${index2}.cantidad"]`
     );
     const cantidad = parseInt(cantidadHTML?.value || "0");
-    const esMayorista = tipoDeVenta?.nombre?.toLowerCase().includes("mayorista");
-    const precioSeleccionado = esMayorista ? producto.precio_mayorista : producto.precio;
+    return cantidad;
+  };
+  const calculateTotals = (cantidad, precioVenta, precioCompra2) => {
+    return {
+      total: cantidad * precioVenta,
+      ganancia: (precioVenta - precioCompra2) * cantidad
+    };
+  };
+  const updateField = (name2, value2) => {
+    console.log("update field: ", name2, value2);
+    onChange({
+      target: {
+        name: name2,
+        type: "number",
+        value: value2
+      }
+    });
+  };
+  const handleProductLogic = (producto) => {
+    if (!producto) {
+      updateField(`Productos.${index$1}.total`, 0);
+      updateField(`Productos.${index$1}.ganancia_por_item`, 0);
+      return;
+    }
+    const cantidad = getCantidad(index$1);
+    const precioSeleccionado = getProductPrice(producto, tipoDeVenta);
     setPrecio(precioSeleccionado);
     setPrecioCompra(producto.precio_compra);
-    const total = cantidad > 0 ? precioSeleccionado * cantidad : 0;
-    const ganancia = precioSeleccionado * cantidad - producto.precio_compra * cantidad;
-    onChange({
-      target: {
-        name: `Productos.${index$1}.total`,
-        type: "number",
-        value: total
-      }
-    });
-    onChange({
-      target: {
-        name: `Productos.${index$1}.ganancia_por_item`,
-        type: "number",
-        value: ganancia
-      }
-    });
+    const { total, ganancia } = calculateTotals(
+      cantidad,
+      precioSeleccionado,
+      producto.precio_compra
+    );
+    updateField(`Productos.${index$1}.total`, total);
+    updateField(`Productos.${index$1}.ganancia_por_item`, ganancia);
   };
   return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "select_customize", children: [
     /* @__PURE__ */ jsxRuntime.jsx(
