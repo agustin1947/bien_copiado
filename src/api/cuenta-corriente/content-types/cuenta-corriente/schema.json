@@ -47,9 +47,14 @@
       "type": "string",
       "customField": "plugin::my-custom-fields.pagos-parciales"
     },
-    "sales_detect_changes_in_items": {  
+    "sales_detect_changes_in_items": {
       "type": "string",
       "customField": "plugin::my-custom-fields.sales-detect-changes-in-items"
+    },
+    "tipo_de_venta": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tipo-de-venta.tipo-de-venta"
     }
   }
 }
