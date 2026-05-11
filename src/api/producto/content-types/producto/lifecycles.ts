@@ -2,9 +2,10 @@ import { errors } from "@strapi/utils";
 
 export default {
   async beforeCreate(event) {
+    const ctx = strapi.requestContext.get();
     const { data } = event.params;
     const name = data.nombre?.trim();
-    
+
     if (!data.categoria_de_producto) {
       event.params.data.categoria_de_producto = {
         connect: [{ id: 1 }],
@@ -36,6 +37,15 @@ export default {
         `Ya existe un producto con el nombre ${name}`,
       );
     }
+
+    /** */
+    console.log("BEFORE CREATE PRODUCTO LIFECYCLE");
+    console.log("BODY:");
+    console.log(JSON.stringify(ctx.request.body, null, 2));
+
+    console.log("DATA:");
+    console.log(JSON.stringify(event.params.data, null, 2));
+    /** */
   },
   async beforeUpdate(event) {
     const ctx = strapi.requestContext.get();
@@ -97,5 +107,13 @@ export default {
         }
       }
     }
+    /** */
+    console.log("BEFORE UPDATE PRODUCTO LIFECYCLE");
+    console.log("BODY:");
+    console.log(JSON.stringify(ctx.request.body, null, 2));
+
+    console.log("DATA:");
+    console.log(JSON.stringify(event.params.data, null, 2));
+    /** */
   },
 };
