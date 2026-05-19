@@ -17,14 +17,14 @@ export default {
     }
     const tipoDeMonedaId = data.tipo_de_moneda.connect[0].id;
     
-    const localId = 1;
+    const localId = 2;
 
     event.params.data.locales = {
       connect: [{ id: localId }],
     };
-
+    
     const productoDbName = await strapi.db
-      .query("api::producto.producto")
+      .query("api::producto-local-b.producto-local-b")
       .findOne({
         where: {
           nombre: name,
@@ -65,7 +65,7 @@ export default {
     ) {
       const { data } = event.params;
       const productoDb = await strapi.db
-        .query("api::producto.producto")
+        .query("api::producto-local-b.producto-local-b")
         .findOne({
           where: { documentId: data.documentId },
           populate: true,
