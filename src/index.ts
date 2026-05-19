@@ -7,6 +7,7 @@ import seedLocales from '../seeds/seed-locales';
 import seedFormaDePago from '../seeds/seed-forma-de-pago';
 import seedEstadoDeService from '../seeds/seed-estado-service';
 import seedCategoriaDeProducto from '../seeds/seed-categoria-de-producto';
+import addProductsLocalB from '../scripts/add_products_local_b'
 
 import { Server } from "socket.io";
 
@@ -99,6 +100,9 @@ export default {
        * 7️⃣ CATEGORÍA DE PRODUCTO
        * */
       await seedCategoriaDeProducto(strapi)
+
+      await addProductsLocalB(strapi)
+
 
     } catch (error) {
       strapi.log.error("❌ Error ejecutando seeds iniciales", error);
