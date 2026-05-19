@@ -753,6 +753,49 @@ export interface ApiLocalLocal extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiProductoLocalBProductoLocalB
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'producto_local_bs';
+  info: {
+    displayName: 'Producto local b';
+    pluralName: 'producto-local-bs';
+    singularName: 'producto-local-b';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    categoria_de_producto: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::categoria-de-producto.categoria-de-producto'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    descripcion: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    locales: Schema.Attribute.Relation<'oneToOne', 'api::local.local'>;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::producto-local-b.producto-local-b'
+    > &
+      Schema.Attribute.Private;
+    nombre: Schema.Attribute.String & Schema.Attribute.Required;
+    precio: Schema.Attribute.Decimal;
+    precio_compra: Schema.Attribute.Decimal;
+    precio_mayorista: Schema.Attribute.Decimal;
+    publishedAt: Schema.Attribute.DateTime;
+    stock: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    tipo_de_moneda: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::tipo-de-moneda.tipo-de-moneda'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiProductoProducto extends Struct.CollectionTypeSchema {
   collectionName: 'productos';
   info: {
@@ -1662,6 +1705,7 @@ declare module '@strapi/strapi' {
       'api::gasto.gasto': ApiGastoGasto;
       'api::ingreso.ingreso': ApiIngresoIngreso;
       'api::local.local': ApiLocalLocal;
+      'api::producto-local-b.producto-local-b': ApiProductoLocalBProductoLocalB;
       'api::producto.producto': ApiProductoProducto;
       'api::remito.remito': ApiRemitoRemito;
       'api::service.service': ApiServiceService;

@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "producto_local_bs",
+  "info": {
+    "singularName": "producto-local-b",
+    "pluralName": "producto-local-bs",
+    "displayName": "Producto local b"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "required": true,
+      "unique": false
+    },
+    "descripcion": {
+      "type": "text"
+    },
+    "locales": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::local.local"
+    },
+    "tipo_de_moneda": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tipo-de-moneda.tipo-de-moneda"
+    },
+    "precio_compra": {
+      "type": "decimal"
+    },
+    "precio": {
+      "type": "decimal"
+    },
+    "precio_mayorista": {
+      "type": "decimal"
+    },
+    "stock": {
+      "type": "integer",
+      "default": 0
+    },
+    "categoria_de_producto": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::categoria-de-producto.categoria-de-producto"
+    }
+  }
+}
