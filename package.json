@@ -19,9 +19,9 @@
     "@redon2inc/strapi-plugin-pdf-creator": "0.1.4",
     "@strapi/admin": "5.18.1",
     "@strapi/plugin-cloud": "5.18.1",
+    "@strapi/plugin-color-picker": "^5.25.0",
     "@strapi/plugin-users-permissions": "5.18.1",
     "@strapi/strapi": "5.18.1",
-    "@strapi/plugin-color-picker": "^5.25.0",
     "pdfkit": "0.17.2",
     "pg": "8.20.0",
     "react": "^18",
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@strapi/sdk-plugin": "5.3.2",
+    "tsx": "^4.22.2",
     "typescript": "^5"
   },
   "engines": {
