@@ -32,6 +32,10 @@ export default {
       /*if (ctx.uid === "api::local.local") {
         await applyLocalFilter(strapi, ctx);
       }*/
+      if (ctx.uid === "api::venta.venta") {
+        await applyLocalFilter(strapi, ctx, { relationField :"local", actions : ["findMany", "count"] });
+        
+      }
       return next();
     });
   },
