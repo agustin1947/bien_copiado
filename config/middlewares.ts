@@ -12,4 +12,5 @@ export default [
   'global::filter-products-by-local',
   'global::pdf-fix',
   'global::csv-file-add',
+  'global::filter-relations',
 ];
