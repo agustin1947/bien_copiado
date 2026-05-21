@@ -1,14 +1,15 @@
 //import fs from "fs";
 //import path from "path";
-import seedPdfTemplates from '../seeds/seed-pdf';
-import seedTipoDeVenta from '../seeds/seed-tipo-de-venta';
-import seedTipoDeMoneda from '../seeds/seed-tipo-de-moneda';
-import seedLocales from '../seeds/seed-locales';
-import seedFormaDePago from '../seeds/seed-forma-de-pago';
-import seedEstadoDeService from '../seeds/seed-estado-service';
-import seedCategoriaDeProducto from '../seeds/seed-categoria-de-producto';
-
+import seedPdfTemplates from "../seeds/seed-pdf";
+import seedTipoDeVenta from "../seeds/seed-tipo-de-venta";
+import seedTipoDeMoneda from "../seeds/seed-tipo-de-moneda";
+import seedLocales from "../seeds/seed-locales";
+import seedFormaDePago from "../seeds/seed-forma-de-pago";
+import seedEstadoDeService from "../seeds/seed-estado-service";
+import seedCategoriaDeProducto from "../seeds/seed-categoria-de-producto";
 import { Server } from "socket.io";
+import { applyLocalFilter } from "./utils/permissions/local-access";
+import { forceLocalOnWrite } from "./utils/permissions/force-local-on-create"
 
 export default {
   /**
@@ -17,7 +18,23 @@ export default {
    *
    * This gives you an opportunity to extend code.
    */
-  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+  
+  register({ strapi }) {
+    strapi.documents.use(async (ctx, next) => {
+      /** funcionalidad para filtrar por productos según el local que tenga asigando el usuario */
+      
+      if (ctx.uid === "api::producto.producto") {
+        await applyLocalFilter(strapi, ctx);
+        
+        //await forceLocalOnWrite(strapi, ctx);
+      }
+
+      /*if (ctx.uid === "api::local.local") {
+        await applyLocalFilter(strapi, ctx);
+      }*/
+      return next();
+    });
+  },
 
   /**
    * An asynchronous bootstrap function that runs before
@@ -73,33 +90,32 @@ export default {
       /**
        * 1️⃣ ESTADOS DE SERVICE
        */
-      await seedEstadoDeService(strapi)
+      await seedEstadoDeService(strapi);
       /**
        * 2️⃣ FORMAS DE PAGO
        */
-      await seedFormaDePago(strapi)
+      await seedFormaDePago(strapi);
       /**
        * 3️⃣ LOCALS
        */
-      await seedLocales(strapi)
+      await seedLocales(strapi);
       /**
        * 4️⃣ TIPOS DE MONEDA
        */
-      await seedTipoDeMoneda(strapi)
+      await seedTipoDeMoneda(strapi);
       /**
        * 5️⃣ TIPOS DE VENTA
        */
-      await seedTipoDeVenta(strapi)
+      await seedTipoDeVenta(strapi);
       /**
        * 6️⃣ PDF CREATOR - TEMPLATES
        */
-      await seedPdfTemplates(strapi)
-      
+      await seedPdfTemplates(strapi);
+
       /**
        * 7️⃣ CATEGORÍA DE PRODUCTO
        * */
-      await seedCategoriaDeProducto(strapi)
-
+      await seedCategoriaDeProducto(strapi);
     } catch (error) {
       strapi.log.error("❌ Error ejecutando seeds iniciales", error);
     }
