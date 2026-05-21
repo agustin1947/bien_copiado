@@ -1,4 +1,5 @@
 import { ROLE_LOCAL_MAP } from "../utils/permissions/role-local-map";
+import { obtainUserForMiddleware } from "../utils/permissions/obtain-user-for-middleware"
 
 export default (config: any, { strapi }: { strapi: typeof global.strapi }) => {
   return async (ctx, next) => {
@@ -7,31 +8,15 @@ export default (config: any, { strapi }: { strapi: typeof global.strapi }) => {
         "/content-manager/relations/api::producto.producto/locales",
       )
     ) {
-      const authorization = ctx.request.header.authorization;
 
-      if (!authorization) {
-        return next();
-      }
-
-      const token = authorization.replace("Bearer ", "");
-
-      const decoded = await strapi.admin.services.token.decodeJwtToken(token);
-
-      const user = await strapi.db.query("admin::user").findOne({
-        where: {
-          id: decoded.payload.id,
-        },
-
-        populate: ["roles"],
-      });
-
+      const user = await obtainUserForMiddleware(strapi, ctx)  
       console.log("ADMIN USER:");
       console.log(user);
 
       if (!user) {
         return null;
       }
-
+ 
       const roles = user.roles || [];
       console.log("ROLES: ", roles);
       const isSuperAdmin = roles.some(
