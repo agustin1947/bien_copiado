@@ -6,7 +6,9 @@ export default (config: any, { strapi }: { strapi: typeof global.strapi }) => {
     if (
       ctx.url.includes(
         "/content-manager/relations/api::producto.producto/locales",
-      )
+      ) || ctx.url.includes(
+        "/content-manager/relations/api::venta.venta/local",
+      ) 
     ) {
 
       const user = await obtainUserForMiddleware(strapi, ctx)  
