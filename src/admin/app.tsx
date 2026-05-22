@@ -9,7 +9,16 @@ function limpiarDuplicadosLocalesButtons(id: any) {
   }
 }
 
-function insertarBotonesLocales(contentType: string) {
+async function insertarBotonesLocales(contentType: string) {
+  const user = await getCurrentAdminUser();
+  const roles = user.data.roles || [];
+
+  const hasLocalA = roles.some((role: any) => role.name === "local-a");
+  const hasLocalB = roles.some((role: any) => role.name === "local-b");
+  const isSuperAdmin = roles.some(
+    (role: any) => role.code === "strapi-super-admin",
+  );
+
   limpiarDuplicadosLocalesButtons("#locales-buttons-gastos");
   if (document.getElementById("locales-buttons-gastos")) return;
 
@@ -40,7 +49,22 @@ function insertarBotonesLocales(contentType: string) {
       .then((data) => {
         if (!data?.data) return;
 
-        data.data.forEach((local: any) => {
+        let locals: any[] = data.data || [];
+        if (!isSuperAdmin) {
+          locals = locals.filter((local: any) => {
+            if (hasLocalA && local.id === 1) {
+              return true;
+            }
+
+            if (hasLocalB && local.id === 2) {
+              return true;
+            }
+
+            return false;
+          });
+        }
+        
+        locals.forEach((local: any) => {
           fetch("/api/tipo-de-ventas")
             .then((res) => res.json())
             .then((tipos) => {
@@ -164,7 +188,7 @@ function customHome() {
 
     if (path === "/admin" || path === "/admin/") {
       const main = document.querySelectorAll("#main-content  > div")[1];
-      
+
       if (!main) return;
 
       // Evitar duplicados
@@ -239,6 +263,38 @@ function customHome() {
     childList: true,
     subtree: true,
   });
+}
+
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+
+  if (parts.length === 2) {
+    return parts.pop()?.split(";").shift();
+  }
+
+  return null;
+}
+
+async function getCurrentAdminUser() {
+  const token = getCookie("jwtToken");
+
+  if (!token) {
+    throw new Error("No se encontró el token");
+  }
+
+  const response = await fetch("/admin/users/me", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("No se pudo obtener el usuario");
+  }
+
+  return response.json();
 }
 
 export default {
@@ -369,8 +425,10 @@ export default {
         "content-manager.content-types.api::service.service.simbolo": "Símbolo",
         "content-manager.content-types.api::service.service.codigo": "Código",
         "content-manager.content-types.api::service.service.nombre": "Nombre",
-        "content-manager.content-types.api::service.service.fecha_de_entrega": "Fecha de entrega",
-        "content-manager.content-types.api::service.service.pagos_parciales": "Pagos parciales", 
+        "content-manager.content-types.api::service.service.fecha_de_entrega":
+          "Fecha de entrega",
+        "content-manager.content-types.api::service.service.pagos_parciales":
+          "Pagos parciales",
 
         "content-manager.content-types.api::remito.remito.fecha": "Fecha",
         "content-manager.content-types.api::remito.remito.telefono": "Teléfono",
@@ -407,8 +465,10 @@ export default {
         "content-manager.components.productos.productos.cantidad": "Cantidad",
         "content-manager.components.productos.productos.productoItem":
           "Producto",
-        "content-manager.components.productos.productos.cantidadOriginal": "Cantidad original",
-        "content-manager.components.productos.productos.idProductoOriginal": "ID producto original",
+        "content-manager.components.productos.productos.cantidadOriginal":
+          "Cantidad original",
+        "content-manager.components.productos.productos.idProductoOriginal":
+          "ID producto original",
 
         "content-manager.components.DynamicZone.add-item-below": "Agregar ítem",
         "content-manager.components.DynamicZone.add-item-above": "Agregar ítem",
@@ -451,11 +511,14 @@ export default {
         "content-manager.content-types.api::venta.venta.nombre_venta": "Nombre",
         "content-manager.content-types.api::venta.venta.nombre_local":
           "Nombre local",
-        "content-manager.content-types.api::venta.venta.formas_de_pago": "Formas de pago",
+        "content-manager.content-types.api::venta.venta.formas_de_pago":
+          "Formas de pago",
 
         "formas-de-pago": "Formas de pago",
-        "content-manager.components.formas-de-pago.formas-de-pago.forma_de_pago": "Forma de pago",
-        "content-manager.components.formas-de-pago.formas-de-pago.total": "Total",
+        "content-manager.components.formas-de-pago.formas-de-pago.forma_de_pago":
+          "Forma de pago",
+        "content-manager.components.formas-de-pago.formas-de-pago.total":
+          "Total",
 
         "content-manager.content-types.api::local.local.telefono": "Teléfono",
         "content-manager.content-types.api::local.local.direccion": "Dirección",
@@ -490,7 +553,8 @@ export default {
           "Saldo inicial pesos",
         "content-manager.content-types.api::caja-diaria.caja-diaria.ver-caja-diaria":
           "Ver caja diaria",
-          "content-manager.content-types.api::caja-diaria.caja-diaria.ver_caja_diaria": "Ver caja diaria",
+        "content-manager.content-types.api::caja-diaria.caja-diaria.ver_caja_diaria":
+          "Ver caja diaria",
         "content-manager.content-types.api::caja-diaria.caja-diaria.local":
           "Local",
         "content-manager.content-types.api::caja-diaria.caja-diaria.saldo_inicial_dolar":
@@ -534,8 +598,10 @@ export default {
         "content-manager.content-types.api::cliente.cliente.telefono":
           "Teléfono",
         "content-manager.content-types.api::cliente.cliente.id": "Id",
-        "content-manager.content-types.api::cliente.cliente.nombre_completo": "Nombre completo",
-        "content-manager.content-types.api::cliente.cliente.createdAt": "Creado",
+        "content-manager.content-types.api::cliente.cliente.nombre_completo":
+          "Nombre completo",
+        "content-manager.content-types.api::cliente.cliente.createdAt":
+          "Creado",
 
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.Productos":
           "Productos",
@@ -548,22 +614,37 @@ export default {
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.fecha_de_ingreso":
           "Fecha de ingreso",
 
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.saldo_inicial_pesos": "Saldo inicial en pesos",
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.nombre": "Nombre",
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.id": "Id",
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.descripcion": "Descripción",
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.createdAt": "Creado",
-        "content-manager.content-types.api::producto.producto.categoria_de_producto": "Categoría de producto",
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.cliente": "Cliente",
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.numero_de_orden": "N° de orden",
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.fecha_de_ingreso": "Fecha de ingreso",
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.telefono": "Teléfono",
-        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.nombre_completo": "Nombre completo",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.saldo_inicial_pesos":
+          "Saldo inicial en pesos",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.nombre":
+          "Nombre",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.id":
+          "Id",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.descripcion":
+          "Descripción",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.createdAt":
+          "Creado",
+        "content-manager.content-types.api::producto.producto.categoria_de_producto":
+          "Categoría de producto",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.cliente":
+          "Cliente",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.numero_de_orden":
+          "N° de orden",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.fecha_de_ingreso":
+          "Fecha de ingreso",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.telefono":
+          "Teléfono",
+        "content-manager.content-types.api::categoria-de-producto.categoria-de-producto.nombre_completo":
+          "Nombre completo",
 
-        "content-manager.content-types.api::forma-de-pago.forma-de-pago.id": "Id",
-        "content-manager.content-types.api::forma-de-pago.forma-de-pago.nombre": "Nombre",
-        "content-manager.content-types.api::forma-de-pago.forma-de-pago.createdAt": "Creado",
-        "content-manager.content-types.api::forma-de-pago.forma-de-pago.updatedAt": "Editado",
+        "content-manager.content-types.api::forma-de-pago.forma-de-pago.id":
+          "Id",
+        "content-manager.content-types.api::forma-de-pago.forma-de-pago.nombre":
+          "Nombre",
+        "content-manager.content-types.api::forma-de-pago.forma-de-pago.createdAt":
+          "Creado",
+        "content-manager.content-types.api::forma-de-pago.forma-de-pago.updatedAt":
+          "Editado",
 
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.id":
           "ID",
@@ -583,9 +664,12 @@ export default {
           "Cantidad Original",
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.pagos_parciales":
           "Pagos Parciales",
-        "ontent-manager.content-types.api::cuenta-corriente.cuenta-corriente.telefono":"Teléfono",  
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.nombre_completo": "Nombre completo",
-        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.createdAt": "Creado",
+        "ontent-manager.content-types.api::cuenta-corriente.cuenta-corriente.telefono":
+          "Teléfono",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.nombre_completo":
+          "Nombre completo",
+        "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.createdAt":
+          "Creado",
 
         "content-manager.content-types.api::cuenta-corriente.cuenta-corriente.total":
           "Total",
