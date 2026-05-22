@@ -3,6 +3,8 @@ import { errors } from "@strapi/utils";
 export default {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
+    const user = ctx.state.user;
+
     const { data } = event.params;
     const name = data.nombre?.trim();
 
@@ -20,6 +22,8 @@ export default {
       throw new errors.ApplicationError(`Debe seleccionar un local`);
     }
     const localId = data.locales.connect[0].id;
+
+    validateLocalProductPermissions(user, localId);
 
     const productoDbName = await strapi.db
       .query("api::producto.producto")
@@ -49,6 +53,7 @@ export default {
   },
   async beforeUpdate(event) {
     const ctx = strapi.requestContext.get();
+    const user = ctx.state.user;
     const ctxBody = ctx.request.body;
     /** esta validación se realiza para todos los datos que no vienen de ventas. */
     if (
@@ -106,6 +111,7 @@ export default {
           );
         }
       }
+      
     }
     /** */
     console.log("BEFORE UPDATE PRODUCTO LIFECYCLE");
@@ -117,3 +123,29 @@ export default {
     /** */
   },
 };
+
+function validateLocalProductPermissions(user, localId) {
+  const roles = user.roles || [];
+
+  const isSuperAdmin = roles.some(
+    (role: any) => role.code === "strapi-super-admin",
+  );
+
+  if (isSuperAdmin) return;
+
+  const hasLocalA = roles.some((role: any) => role.name === "local-a");
+
+  const hasLocalB = roles.some((role: any) => role.name === "local-b");
+
+  if (hasLocalA && localId !== 1) {
+    throw new errors.ApplicationError(
+      "Usted no tiene permisos para grabar en ese local.",
+    );
+  }
+
+  if (hasLocalB && localId !== 2) {
+    throw new errors.ApplicationError(
+      "Usted no tiene permisos para grabar en ese local.",
+    );
+  }
+}
