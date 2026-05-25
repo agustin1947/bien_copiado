@@ -1,0 +1,26 @@
+{
+  "method": "POST",
+  "url": "http://localhost:1337/content-manager/collection-types/api::caja-diaria.caja-diaria",
+  "headers": {
+    "Authorization": "Bearer TOKEN",
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "body": {
+    "saldo_inicial_pesos": 100,
+    "saldo_inicial_dolar": 100,
+    "fecha_de_ingreso": "2026-05-25T00:00:00.000Z",
+    "local": {
+      "connect": [
+        {
+          "id": 2
+        }
+      ]
+    },
+    "ver_caja_diaria": null,
+    "createdAt": null,
+    "updatedAt": null,
+    "createdBy": null,
+    "updatedBy": null
+  }
+}

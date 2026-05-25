@@ -1,0 +1,38 @@
+{
+  "method": "PUT",
+  "url": "http://localhost:1337/content-manager/collection-types/api::producto.producto/g93nharo35cnsyllj41feqo3",
+  "headers": {
+    "Authorization": "Bearer TOKEN",
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "body": {
+    "nombre": "Producto Veintidos",
+    "descripcion": "  ",
+    "locales": {
+      "connect": [
+        {
+          "id": 1
+        }
+      ],
+      "disconnect": []
+    },
+    "tipo_de_moneda": {
+      "connect": [],
+      "disconnect": []
+    },
+    "precio_compra": 100,
+    "precio": 300,
+    "precio_mayorista": 200,
+    "stock": 12,
+    "categoria_de_producto": {
+      "connect": [],
+      "disconnect": []
+    },
+    "createdAt": null,
+    "updatedAt": null,
+    "createdBy": null,
+    "updatedBy": null,
+    "documentId": "g93nharo35cnsyllj41feqo3"
+  }
+}

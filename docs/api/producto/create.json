@@ -1,0 +1,38 @@
+{
+  "method": "POST",
+  "url": "http://localhost:1337/content-manager/collection-types/api::producto.producto",
+  "headers": {
+    "Authorization": "Bearer TOKEN",
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "body": {
+    "nombre": "Producto Veinticuatro",
+    "descripcion": null,
+    "locales": {
+      "connect": [
+        {
+          "id": 1
+        }
+      ]
+    },
+    "tipo_de_moneda": {
+      "connect": [
+        {
+          "id": 1
+        }
+      ]
+    },
+    "precio_compra": 100,
+    "precio": 300,
+    "precio_mayorista": 200,
+    "stock": 10,
+    "categoria_de_producto": {
+      "connect": [
+        {
+          "id": 4
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "method": "POST",
+  "url": "http://localhost:1337/content-manager/collection-types/api::venta.venta?localId=2&tipoDeVentaId=1",
+  "headers": {
+    "Authorization": "Bearer TOKEN",
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "body": {
+    "nombre_venta": null,
+    "nombre_local": null,
+    "nombre": "Venta Doce",
+    "apellido": "seis",
+    "telefono": null,
+    "dni": null,
+    "email": null,
+    "local": null,
+    "descripcion": null,
+    "tipo_de_venta": null,
+    "tipo_de_moneda": {
+      "connect": [
+        {
+          "id": 1,
+          "documentId": "z7zpoz754l6xyudm73nlwg4e",
+          "isTemporary": true
+        }
+      ]
+    },
+    "fecha_de_ingreso": "2026-05-25T00:00:00.000Z",
+    "Productos": [
+      {
+        "__component": "productos.productos",
+        "productoItem": 11,
+        "cantidad": 1,
+        "total": 300,
+        "ganancia_por_item": 200,
+        "cantidadOriginal": null,
+        "idProductoOriginal": null
+      }
+    ],
+    "total": 300,
+    "total_ganancia": 200,
+    "sales_detect_changes_in_items": null,
+    "formas_de_pago": [
+      {
+        "__component": "formas-de-pago.formas-de-pago",
+        "forma_de_pago": {
+          "connect": [
+            {
+              "id": 1,
+              "documentId": "g923s4jlg9opthq5euo572iv",
+              "isTemporary": true
+            }
+          ]
+        },
+        "total": 300
+      }
+    ],
+    "createdAt": null,
+    "updatedAt": null,
+    "createdBy": null,
+    "updatedBy": null
+  }
+}

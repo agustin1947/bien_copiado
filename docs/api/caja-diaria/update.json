@@ -1,0 +1,28 @@
+{
+  "method": "PUT",
+  "url": "http://localhost:1337/content-manager/collection-types/api::caja-diaria.caja-diaria/hyvpsv07jxvwctugxc5cnj8y",
+  "headers": {
+    "Authorization": "Bearer TOKEN",
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "body": {
+    "saldo_inicial_pesos": 1000,
+    "saldo_inicial_dolar": 1000,
+    "fecha_de_ingreso": "2026-05-25",
+    "local": {
+      "connect": [
+        {
+          "id": 2
+        }
+      ],
+      "disconnect": []
+    },
+    "ver_caja_diaria": null,
+    "createdAt": null,
+    "updatedAt": null,
+    "createdBy": null,
+    "updatedBy": null,
+    "documentId": "hyvpsv07jxvwctugxc5cnj8y"
+  }
+}
