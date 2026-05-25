@@ -1,4 +1,5 @@
 import { errors } from "@strapi/utils";
+import { validateLocalPermissions } from "../../../../utils/validateLocalPermissions";
 
 export default {
   async beforeCreate(event) {
@@ -23,7 +24,8 @@ export default {
     }
     const localId = data.locales.connect[0].id;
 
-    validateLocalProductPermissions(user, localId);
+    //validateLocalProductPermissions(user, localId);
+    validateLocalPermissions(user, localId);
 
     const productoDbName = await strapi.db
       .query("api::producto.producto")
@@ -124,6 +126,7 @@ export default {
   },
 };
 
+/*
 function validateLocalProductPermissions(user, localId) {
   const roles = user.roles || [];
 
@@ -149,3 +152,4 @@ function validateLocalProductPermissions(user, localId) {
     );
   }
 }
+*/
