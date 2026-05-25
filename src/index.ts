@@ -9,7 +9,7 @@ import seedEstadoDeService from "../seeds/seed-estado-service";
 import seedCategoriaDeProducto from "../seeds/seed-categoria-de-producto";
 import { Server } from "socket.io";
 import { applyLocalFilter } from "./utils/permissions/local-access";
-import { forceLocalOnWrite } from "./utils/permissions/force-local-on-create"
+import { forceLocalOnWrite } from "./utils/permissions/force-local-on-create";
 
 export default {
   /**
@@ -18,23 +18,26 @@ export default {
    *
    * This gives you an opportunity to extend code.
    */
-  
+
   register({ strapi }) {
     strapi.documents.use(async (ctx, next) => {
       /** funcionalidad para filtrar por productos según el local que tenga asigando el usuario */
-      
+
       if (ctx.uid === "api::producto.producto") {
         await applyLocalFilter(strapi, ctx);
-        
-        //await forceLocalOnWrite(strapi, ctx);
       }
 
-      /*if (ctx.uid === "api::local.local") {
-        await applyLocalFilter(strapi, ctx);
-      }*/
       if (ctx.uid === "api::venta.venta") {
-        await applyLocalFilter(strapi, ctx, { relationField :"local", actions : ["findMany", "count"] });
-        
+        await applyLocalFilter(strapi, ctx, {
+          relationField: "local",
+          actions: ["findMany", "count"],
+        });
+      }
+      if (ctx.uid === "api::caja-diaria.caja-diaria") {
+        await applyLocalFilter(strapi, ctx, {
+          relationField: "local",
+          actions: ["findMany", "count"],
+        });
       }
       return next();
     });
