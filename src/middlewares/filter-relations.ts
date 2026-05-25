@@ -12,25 +12,25 @@ export default (config: any, { strapi }: { strapi: typeof global.strapi }) => {
     ) {
 
       const user = await obtainUserForMiddleware(strapi, ctx)  
-      console.log("ADMIN USER:");
-      console.log(user);
+      //console.log("ADMIN USER:");
+      //console.log(user);
 
       if (!user) {
         return null;
       }
  
       const roles = user.roles || [];
-      console.log("ROLES: ", roles);
+      //console.log("ROLES: ", roles);
       const isSuperAdmin = roles.some(
         (role) => role.code === "strapi-super-admin",
       );
-      console.log("IS SUPER ADMIN: ", isSuperAdmin);
+      //console.log("IS SUPER ADMIN: ", isSuperAdmin);
 
       const allowedLocalIds = roles
         .map((role) => ROLE_LOCAL_MAP[role.name])
         .filter((id): id is number => Boolean(id));
 
-      console.log("allowedLocalIds: ", allowedLocalIds);
+      //console.log("allowedLocalIds: ", allowedLocalIds);
 
       if (!isSuperAdmin) {
         ctx.query.filters = {
