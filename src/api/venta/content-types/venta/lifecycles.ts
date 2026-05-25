@@ -2,10 +2,12 @@ import { errors } from "@strapi/utils";
 const { ApplicationError } = errors;
 import { factories } from "@strapi/strapi";
 import { validatePaymentMethodWithTotal } from "../../../../utils/validatePaymentMethodWithTotal";
+import { validateLocalPermissions } from "../../../../utils/validateLocalPermissions";
 
 export default {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
+    const user = ctx.state.user;
     const ctxBody = ctx.request.body;
 
     if (
@@ -28,6 +30,7 @@ export default {
     if (!localId) {
       throw new errors.ApplicationError(`Debe seleccionar un local`);
     }
+    validateLocalPermissions(user, localId);
 
     event.params.data.local = {
       connect: [{ id: localId }],
@@ -148,7 +151,8 @@ export default {
     const ctxBody = ctx.request.body;
     const { params } = event;
     const ventaId = params.where.id;
-    
+    const user = ctx.state.user;
+
     if (event.params?.data?.__internal_update) {
       return;
     }
@@ -157,7 +161,12 @@ export default {
       "api::venta.venta",
       ventaId,
     );
-
+    
+    if(ctxBody.local !== null && ctxBody.local.connect && ctxBody.local.connect.length > 0){
+      const localId = ctxBody.local.connect[0].id;
+      validateLocalPermissions(user, localId);
+    }
+    
     const fechaIngreso = ventaOriginal["fecha_de_ingreso"];
     const hoy = new Date();
     const hoyStr = hoy.toISOString().split("T")[0];
