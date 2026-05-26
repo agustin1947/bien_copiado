@@ -1,12 +1,14 @@
 import { errors } from "@strapi/utils";
 import { factories } from "@strapi/strapi";
-import ingreso from "../../controllers/ingreso";
-import { get } from "http";
+//import ingreso from "../../controllers/ingreso";
+//import { get } from "http";
+import { validateLocalPermissions } from "../../../../utils/validateLocalPermissions";
 
 export default {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
+    const user = ctx.state.user;
 
     if (ctxBody.n_orden_st && ctxBody.n_orden_cc) {
       throw new errors.ApplicationError(
@@ -21,6 +23,11 @@ export default {
       ctxBody.local.connect.length === 0
     ) {
       throw new errors.ApplicationError(`Debe seleccionar un "Local"`);
+    }
+
+    if (ctxBody.local.connect && ctxBody.local.connect.length > 0) {
+      const localId = ctxBody.local.connect[0].id;
+      validateLocalPermissions(user, localId);
     }
 
     if (
@@ -64,6 +71,7 @@ export default {
   async afterCreate(event) {},
   async beforeUpdate(event) {
     const ctx = strapi.requestContext.get();
+    const user = ctx.state.user;
     const ctxBody = ctx.request.body;
     const { params } = event;
     const ingresoId = params.where.id;
@@ -104,6 +112,11 @@ export default {
       }
     }
 
+    if (ctxBody.local.connect && ctxBody.local.connect.length > 0) {
+      const localId = ctxBody.local.connect[0].id;
+      validateLocalPermissions(user, localId);
+    }
+    
     // que se seleccione un local y que no se modfique
     if (
       (ctxBody.local.connect.length > 0 &&
@@ -142,7 +155,11 @@ export default {
       if (ctxBody.n_orden_cc) {
         apiEntity = "api::cuenta-corriente.cuenta-corriente";
       }
-      const diff = await validateEntryAgainstOrder(ctxBody, apiEntity, ingresoId);
+      const diff = await validateEntryAgainstOrder(
+        ctxBody,
+        apiEntity,
+        ingresoId,
+      );
 
       if (diff.error) {
         throw new errors.ApplicationError(diff.message);
@@ -183,8 +200,15 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
 
   console.log("TIPO DE MONEDA: ", orden.tipo_de_moneda?.id);
   console.log("ctxBody: ", ctxBody.tipo_de_moneda);
-  if(api === "api::cuenta-corriente.cuenta-corriente" && ctxBody.tipo_de_moneda.connect[0] && orden.tipo_de_moneda?.id !== ctxBody.tipo_de_moneda.connect[0].id){
-    console.log("TIPO DE MONEDA ENVIADO: ", ctxBody.tipo_de_moneda.connect[0].id);
+  if (
+    api === "api::cuenta-corriente.cuenta-corriente" &&
+    ctxBody.tipo_de_moneda.connect[0] &&
+    orden.tipo_de_moneda?.id !== ctxBody.tipo_de_moneda.connect[0].id
+  ) {
+    console.log(
+      "TIPO DE MONEDA ENVIADO: ",
+      ctxBody.tipo_de_moneda.connect[0].id,
+    );
     return {
       error: true,
       message: `${name}: El número de orden ingresado tiene un tipo de moneda diferente al seleccionado en el ingreso.`,
@@ -203,8 +227,6 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     };
   }
 
-
-
   // validar si tienen el mismo local
   if (
     ctxBody.local.connect[0] &&
@@ -215,8 +237,8 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
       message: `${name}: El número de orden ingresado tiene un local diferente al seleccionado en el ingreso.`,
     };
   }
-  console.log("ingresoId", ingresoId)
-  console.log("ctxBody", ctxBody)
+  console.log("ingresoId", ingresoId);
+  console.log("ctxBody", ctxBody);
   const n_orden_ingresos_relacionados =
     api === "api::service.service"
       ? { n_orden_st: ctxBody.n_orden_st }
@@ -232,13 +254,13 @@ const validateEntryAgainstOrder = async (ctxBody, api, ingresoId = null) => {
     .findMany({
       where: whereClause,
     });
-  console.log("ingresosRelacionados: ", ingresosRelacionados)
+  console.log("ingresosRelacionados: ", ingresosRelacionados);
   const pagosParciales = ingresosRelacionados.reduce((total, ingreso) => {
     return total + parseFloat(ingreso.total);
   }, 0);
-  
+
   const diferencia = parseFloat(orden.total) - pagosParciales;
-  
+
   if (diferencia === 0) {
     return {
       error: true,
