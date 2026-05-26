@@ -2,11 +2,14 @@ import { errors } from "@strapi/utils";
 const { ApplicationError } = errors;
 import { syncProducts } from "../../../../utils/syncProducts";
 import { updateToStockAfterDeleting } from "../../../../utils/updateToStockAfterDeleting";
+import { validateLocalPermissions } from "../../../../utils/validateLocalPermissions";
 
 export default {
   async beforeCreate(event) {
+    const { data } = event.params;
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
+    const user = ctx.state.user;
 
     if (
       !ctxBody.cliente ||
@@ -29,6 +32,8 @@ export default {
     if (!localId) {
       throw new errors.ApplicationError(`Debe seleccionar un local`);
     }
+    
+    validateLocalPermissions(user, localId);
 
     event.params.data.local = {
       connect: [{ id: localId }],
@@ -154,6 +159,7 @@ export default {
   async beforeUpdate(event) {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
+    const user = ctx.state.user;
     const { params } = event;
 
     if (
@@ -194,6 +200,12 @@ export default {
         throw new errors.ApplicationError(`No puede editar el "Cliente"`);
       }
     }
+    
+    if (ctxBody.local.connect && ctxBody.local.connect.length > 0){
+      const LocalId = ctxBody.local.connect[0].id;
+      validateLocalPermissions(user, LocalId);
+    }
+
   },
   async afterUpdate(event) {
     const ccId = event.result.id;
