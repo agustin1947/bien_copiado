@@ -18,6 +18,8 @@ export default (config: any, { strapi }: { strapi: typeof global.strapi }) => {
         "/content-manager/relations/api::gasto.gasto/local",
       ) || ctx.url.includes(
         "/content-manager/relations/api::ingreso.ingreso/local",
+      ) || ctx.url.includes(
+        "/content-manager/relations/api::service.service/local",
       ) 
     ) {
 
