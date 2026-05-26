@@ -50,6 +50,18 @@ export default {
           actions: ["findMany", "count"],
         });
       }
+      if (ctx.uid === "api::gasto.gasto") {
+        await applyLocalFilter(strapi, ctx, {
+          relationField: "local",
+          actions: ["findMany", "count"],
+        });
+      }
+      if (ctx.uid === "api::ingreso.ingreso") {
+        await applyLocalFilter(strapi, ctx, {
+          relationField: "local",
+          actions: ["findMany", "count"],
+        });
+      }
       return next();
     });
   },
