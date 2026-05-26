@@ -1,0 +1,31 @@
+{
+  "method": "PUT",
+  "url": "http://localhost:1337/content-manager/collection-types/api::gasto-diario.gasto-diario/fwzznbq6ymdx2jb7h7xneq8y",
+  "headers": {
+    "Authorization": "Bearer TOKEN",
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "body": {
+    "descripcion": "GASTO CINTO EDIT",
+    "fecha_de_ingreso": "2026-05-25",
+    "tipo_de_moneda": {
+      "connect": [],
+      "disconnect": []
+    },
+    "forma_de_pago": {
+      "connect": [],
+      "disconnect": []
+    },
+    "local": {
+      "connect": [],
+      "disconnect": []
+    },
+    "total": 10,
+    "createdAt": null,
+    "updatedAt": null,
+    "createdBy": null,
+    "updatedBy": null,
+    "documentId": "fwzznbq6ymdx2jb7h7xneq8y"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "method": "POST",
+  "url": "http://localhost:1337/content-manager/collection-types/api::gasto-diario.gasto-diario",
+  "headers": {
+    "Authorization": "Bearer TOKEN",
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "body": {
+    "descripcion": "GASTO DIECIOCHO",
+    "fecha_de_ingreso": "2026-05-26T00:00:00.000Z",
+    "tipo_de_moneda": {
+      "connect": [
+        {
+          "id": 1,
+          "documentId": "z7zpoz754l6xyudm73nlwg4e",
+          "isTemporary": true
+        }
+      ]
+    },
+    "forma_de_pago": {
+      "connect": [
+        {
+          "id": 1,
+          "documentId": "g923s4jlg9opthq5euo572iv",
+          "isTemporary": true
+        }
+      ]
+    },
+    "local": {
+      "connect": [
+        {
+          "id": 1,
+          "documentId": "jtl1zg1z5ya0i5hqfm7vlhns",
+          "isTemporary": true
+        }
+      ]
+    },
+    "total": 250,
+    "createdAt": null,
+    "updatedAt": null,
+    "createdBy": null,
+    "updatedBy": null
+  }
+}
