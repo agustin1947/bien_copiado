@@ -12,6 +12,8 @@ export default (config: any, { strapi }: { strapi: typeof global.strapi }) => {
         "/content-manager/relations/api::caja-diaria.caja-diaria/local",
       ) || ctx.url.includes(
         "/content-manager/relations/api::gasto-diario.gasto-diario/local",
+      ) || ctx.url.includes(
+        "/content-manager/relations/api::cuenta-corriente.cuenta-corriente/local",
       ) 
     ) {
 
