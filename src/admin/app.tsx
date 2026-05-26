@@ -63,7 +63,7 @@ async function insertarBotonesLocales(contentType: string) {
             return false;
           });
         }
-        
+
         locals.forEach((local: any) => {
           fetch("/api/tipo-de-ventas")
             .then((res) => res.json())
@@ -88,7 +88,21 @@ async function insertarBotonesLocales(contentType: string) {
       .then((res) => res.json())
       .then((data) => {
         if (!data?.data) return;
-        data.data.forEach((local: any) => {
+        let locals: any[] = data.data || [];
+        if (!isSuperAdmin) {
+          locals = locals.filter((local: any) => {
+            if (hasLocalA && local.id === 1) {
+              return true;
+            }
+
+            if (hasLocalB && local.id === 2) {
+              return true;
+            }
+
+            return false;
+          });
+        }
+        locals.forEach((local: any) => {
           const a = document.createElement("a");
           a.href = `/admin/content-manager/collection-types/${contentType}/create?localId=${local.id}`;
           a.innerText = `${local.nombre}` || `Local ${local.id}`;
