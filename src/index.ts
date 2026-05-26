@@ -62,6 +62,12 @@ export default {
           actions: ["findMany", "count"],
         });
       }
+      if (ctx.uid === "api::service.service") {
+        await applyLocalFilter(strapi, ctx, {
+          relationField: "local",
+          actions: ["findMany", "count"],
+        });
+      }      
       return next();
     });
   },
