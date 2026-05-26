@@ -1,8 +1,12 @@
 import { errors } from "@strapi/utils";
+import { validateLocalPermissions } from "../../../../utils/validateLocalPermissions";
 
 export default {
   async beforeCreate(event) {
     const { data } = event.params;
+    const ctx = strapi.requestContext.get();
+    const ctxBody = ctx.request.body;
+    const user = ctx.state.user;
 
     if (
       !data.local ||
@@ -10,6 +14,11 @@ export default {
       data.local.connect.length === 0
     ) {
       throw new errors.ApplicationError(`Debe seleccionar un local.`);
+    }
+
+    if (data.local.connect && data.local.connect.length > 0) {
+      const localId = data.local.connect[0].id;
+      validateLocalPermissions(user, localId);
     }
 
     if (
@@ -45,12 +54,14 @@ export default {
   async beforeUpdate(event) {
     const { data, where } = event.params;
     const serviceId = where.id;
+    const ctx = strapi.requestContext.get();
+    const user = ctx.state.user;
 
     const serviceData = await strapi.db.query("api::service.service").findOne({
       where: { id: serviceId },
       populate: ["estado_de_service"],
     });
-    
+
     if (data.local.connect.length === 0 && data.local.disconnect.length > 0) {
       throw new errors.ApplicationError(`Debe seleccionar un local.`);
     }
@@ -59,6 +70,11 @@ export default {
         throw new errors.ApplicationError(`No se puede editar el local.`);
       }
     }
+    if (data.local.connect && data.local.connect.length > 0) {
+      const localId = data.local.connect[0].id;
+      validateLocalPermissions(user, localId);
+    }
+    
     if (
       data.estado_de_service.connect.length === 0 &&
       data.estado_de_service.disconnect.length > 0
@@ -68,7 +84,7 @@ export default {
     if (!data.numero_de_orden) {
       event.params.data.numero_de_orden = where.id;
     }
-    
+
     const fechaDeEntrega = data?.fecha_de_entrega?.split("T")[0];
     if (fechaDeEntrega) {
       if (fechaDeEntrega < data?.fecha_de_ingreso) {
