@@ -44,6 +44,12 @@ export default {
           actions: ["findMany", "count"],
         });
       }
+      if (ctx.uid === "api::cuenta-corriente.cuenta-corriente") {
+        await applyLocalFilter(strapi, ctx, {
+          relationField: "local",
+          actions: ["findMany", "count"],
+        });
+      }
       return next();
     });
   },
