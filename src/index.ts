@@ -26,7 +26,6 @@ export default {
       if (ctx.uid === "api::producto.producto") {
         await applyLocalFilter(strapi, ctx);
       }
-
       if (ctx.uid === "api::venta.venta") {
         await applyLocalFilter(strapi, ctx, {
           relationField: "local",
@@ -34,6 +33,12 @@ export default {
         });
       }
       if (ctx.uid === "api::caja-diaria.caja-diaria") {
+        await applyLocalFilter(strapi, ctx, {
+          relationField: "local",
+          actions: ["findMany", "count"],
+        });
+      }
+      if (ctx.uid === "api::gasto-diario.gasto-diario") {
         await applyLocalFilter(strapi, ctx, {
           relationField: "local",
           actions: ["findMany", "count"],
