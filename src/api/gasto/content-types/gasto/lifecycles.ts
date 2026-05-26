@@ -1,9 +1,11 @@
 import { errors } from "@strapi/utils";
+import { validateLocalPermissions } from "../../../../utils/validateLocalPermissions";
 
 export default {
   async beforeCreate(event) {
     const ctx = strapi.requestContext.get();
     const ctxBody = ctx.request.body;
+    const user = ctx.state.user;
     const { data } = event.params;
     const gastos = ctxBody.Gastos;
 
@@ -17,6 +19,8 @@ export default {
     if (!localId) {
       throw new errors.ApplicationError(`Debe seleccionar un local`);
     }
+
+    validateLocalPermissions(user, localId);
 
     event.params.data.local = {
       connect: [{ id: localId }],
