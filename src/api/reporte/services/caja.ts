@@ -21,7 +21,14 @@ export default ({ strapi }) => ({
     const [ventas, ingresos, gastos, gastosDiarios] = await Promise.all([
       strapi.db.query("api::venta.venta").findMany({
         where,
-        populate: ["tipo_de_moneda", "formas_de_pago"],
+        populate:{
+          "tipo_de_moneda": true, 
+          "formas_de_pago": {
+            "populate": {
+              forma_de_pago: true
+            }
+          }
+        },
       }),
       strapi.db.query("api::ingreso.ingreso").findMany({
         where,
@@ -62,7 +69,6 @@ export default ({ strapi }) => ({
 
 const normalizarEntradas = (entradas) => {
   const resultado = [];
-
   for (const item of entradas) {
     if (item.formas_de_pago && item.formas_de_pago.length > 0) {
       for (const pago of item.formas_de_pago) {
